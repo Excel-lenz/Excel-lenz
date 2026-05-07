@@ -21,4 +21,3 @@ Once you cloned the project to your PC, change the branch!! (**very important**)
 
 > -> Fetch the origin by pressing `fetch origin`
 
-test
