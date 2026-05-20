@@ -1,7 +1,22 @@
-import React from "react";
+import { useState } from "react";
+import LoadingScreen from "./components/loadingScreen";
 import Dashboard from "./pages/Dashboard";
-import "./styles/global.css";
 
 export default function App() {
-  return <Dashboard />;
+  const [done, setDone] = useState(false);
+
+  return (
+    <>
+      <div style={{
+        opacity: done ? 1 : 0,
+        transition: "opacity 0.4s ease",
+        background: "#0b0b10",
+        minHeight: "100vh"
+      }}>
+        <Dashboard />
+      </div>
+
+      <LoadingScreen onComplete={() => setDone(true)} />
+    </>
+  );
 }
