@@ -10,13 +10,22 @@
     margin-bottom: 25px;
 }
 
+{/* Sections dienen als die individuelle Bereiche in der Finanzpage (Umsatz, Kosten, Kapital, etc.)*/}
 section{
     border: 2px solid;
-    width: fit-content;
     border-radius: 20px;
     border-color : white;
     background-color: #044225;
     padding : 10px;
+    width: calc(100vw - 100px);
+    margin-bottom: 20px;
+}
+section:hover{
+
+}
+
+h1{
+    margin-bottom: 10px;
 }
 
 
@@ -53,7 +62,8 @@ section{
 }
 
 
-.umsatz{
+.berechnet{
+    margin-right: 20px;
     padding: 10px;
     font-size: 20px;
 }
