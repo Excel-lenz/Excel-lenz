@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "../styles/finanz.css";
 
-//noch nichts wie sidebar und so eingefügt,
+//noch nichts wie sidebar und so eingefügt, zeigt einfach nur diese Page jetzt,
 //dient bis jetzt einfach nur als vorlage
 //Layout, UI, noch nichts konkretes, bis jetzt nur die basic Umsatzechnung
 
@@ -10,12 +10,12 @@ export default function Finanz() {
 
     const [] = useState();
 
-    //Variablen sind bis jetzt nur als Beispiel mit vorgegebenen Wert
+    //Variablen sind bis jetzt nur Beispiele mit vorgegebenen Werten
 
 
     //Variablen Umsatz
     const [verkauf, setVerkauf] = useState(2000);
-    const [preis, setPreis] = useState(25);
+    const [preis, setPreis] = useState(35);
     const umsatz = verkauf * preis;
     //const alterUmsatz = ;
     //const umsatzWachstum = ((umsatz - alterUmsatz) / alterUmsatz) * 100;
@@ -29,7 +29,14 @@ export default function Finanz() {
     const gesamtKosten = varKosten + fixKosten;
 
 
-    //Variablen Gewinn
+
+    //Variablen Deckungsbeitrag
+    const deckBeitrag = umsatz - varKosten;
+    const deckBeitragEinheit = preis - einheitKosten;
+    const deckBeitragQuote = (deckBeitrag / umsatz) * 100;
+
+
+    //Variablen Gewinn und Verlust
     const gewinn = umsatz - gesamtKosten;
 
 
@@ -95,9 +102,24 @@ export default function Finanz() {
 
 
             <section>
-                <h1>Gewinn</h1>
+                <h1>Deckungsbeitrag</h1>
                 <div className="berechnet box">
-                    Gewinn: {gewinn}€
+                    gesamt: {deckBeitrag}€
+                </div>
+                <div className="berechnet box">
+                    pro Einheit: {deckBeitragEinheit}€
+                </div>
+                <div className="berechnet box">
+                    quote: {deckBeitragQuote.toFixed(2)}%
+                </div>
+            </section>
+
+
+
+            <section>
+                <h1>Gewinn/Verlust</h1>
+                <div className="berechnet box">
+                    Gewinn/Verlust: {gewinn}€
                 </div>
             </section>
 
