@@ -1,0 +1,48 @@
+.streak-card {
+  background: #141a1f;
+  border-radius: 12px;
+  padding: 20px;
+  color: #e5e7eb;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.07);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.streak-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+}
+
+.streak-title {
+  color: #00ff88;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.streak-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  border: 2px solid #00ff88;
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+}
+
+.streak-elements {
+  display: grid;
+  grid-template-columns: 65px 135px;
+  gap: 20px;
+}
+
+.streak-texts {
+  display: grid;
+  grid-template-rows: 10px 50px;
+  gap: 15px;
+}
+
+.streak-text {
+    color: #00ff88;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
