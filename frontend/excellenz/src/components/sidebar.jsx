@@ -2,7 +2,11 @@ import React from "react";
 import "../styles/sidebar.css";
 import { FaTachometerAlt, FaChartLine, FaWallet, FaCogs } from "react-icons/fa";
 
+
+
 export default function Sidebar() {
+
+
   return (
     <div className="sidebar">
       <h2 className="sidebar-logo">Excellenz</h2>

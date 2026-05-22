@@ -6,6 +6,9 @@
   flex-direction: column;
   padding: 30px 20px;
   box-shadow: 2px 0 10px rgba(0, 255, 136, 0.1);
+
+  position: sticky;
+  top: 0;
 }
 
 .sidebar-logo {
@@ -25,6 +28,7 @@
   color: #9ca3af;
   cursor: pointer;
   transition: 0.3s ease;
+
 }
 
 .sidebar-item:hover {

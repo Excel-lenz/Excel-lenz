@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import "../styles/finanz.css";
+import Sidebar from "../components/Sidebar";
 
 //noch nichts wie sidebar und so eingefügt, zeigt einfach nur diese Page jetzt,
 //dient bis jetzt einfach nur als vorlage
@@ -49,7 +50,12 @@ export default function Finanz() {
 
 
     return (
-        <div className="vbox">
+        <div className="hbox">
+
+            <Sidebar />
+
+            <div className="vbox">
+
             <h1 className="title">Finanzen</h1>
 
 
@@ -144,7 +150,7 @@ export default function Finanz() {
                 <h1>Liquidität</h1>
             </section>
 
-
+            </div>
 
         </div>
 
