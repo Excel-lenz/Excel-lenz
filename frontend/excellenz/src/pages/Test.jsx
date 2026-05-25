@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/topbar";
-import deadly from "../../Assets/Dont-Open.gif";
+import deadly from "../Assets/Dont-Open.gif";
 import "../styles/dashboard.css";
 
 export default function Dashboard() {

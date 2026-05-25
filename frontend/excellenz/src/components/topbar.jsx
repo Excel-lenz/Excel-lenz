@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/topbar.css";
-import logo from "../../Assets/Logo_proto07.png";
+import logo from "../Assets/Logo_proto07.png";
 import { Link } from "react-router-dom";
 
 export default function Topbar() {
