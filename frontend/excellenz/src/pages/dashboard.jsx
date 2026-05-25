@@ -1,5 +1,6 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
+import Topbar from "../components/topbar";
 import ProgressBar from "../components/ProgressBar";
 import ChartPlaceholder from "../components/ChartPlaceholder";
 import Card from "../components/Card";
@@ -8,7 +9,9 @@ import "../styles/dashboard.css";
 export default function Dashboard() {
   return (
     <div className="layout">
+      <Topbar />
       <Sidebar />
+
       <main className="main">
         <h1 className="title">Fortschritt: Umsatzziel</h1>
         <ProgressBar value={68} />
