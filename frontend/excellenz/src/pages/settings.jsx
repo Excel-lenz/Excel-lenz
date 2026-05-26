@@ -1,0 +1,21 @@
+import React from "react";
+import Sidebar from "../components/Sidebar";
+
+
+
+export default function Settings({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}) {
+    return(
+        <div>
+            <div className="layout">
+                <Sidebar
+                    open={sidebarOpen}
+                    setOpen={setSidebarOpen}
+                    salesOpen={salesOpen}
+                    setSalesOpen={setSalesOpen}
+                    financeOpen={financeOpen}
+                    setFinanceOpen={setFinanceOpen}
+                />
+            </div>
+        </div>
+    );
+}

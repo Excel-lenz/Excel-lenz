@@ -1,0 +1,100 @@
+.layout {
+  display: flex;
+  flex: 1;              
+  align-items: flex-start;
+  background: radial-gradient(circle at top, #141420, #0b0b10);
+  color: #eaeaf0;
+  font-family: Inter, system-ui, sans-serif;
+}
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 42px;
+  overflow-y: auto;    
+  height: 100vh;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+.subtitle {
+  color: #a1a1b3;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* BADGE */
+.badge {
+  background: rgba(0, 255, 136, 0.12);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  color: #00ff88;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+/* PROGRESS */
+.progressSection {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 18px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+}
+
+.progressMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #b5b5c6;
+  margin-top: 10px;
+}
+
+/* CHART */
+.chartCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 18px;
+  border-radius: 16px;
+  margin-bottom: 22px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease;
+}
+
+.chartCard:hover {
+  transform: translateY(-2px);
+}
+
+/* CARDS GRID */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+/* OPTIONAL: smooth hover for Card component */
+.cards > * {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.cards > *:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 136, 0.25);
+}

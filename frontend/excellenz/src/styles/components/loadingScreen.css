@@ -1,0 +1,221 @@
+/* ── Reset ── */
+html, body { margin: 0; padding: 0; overflow-x: hidden; background-color: #141420;}
+
+/* ── Overlay ── */
+.ls-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(circle at 50% 30%, #141420, #080810);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ls-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,255,136,0.015) 3px, rgba(0,255,136,0.015) 4px
+  );
+  pointer-events: none;
+}
+
+/* ── Logo wrapper ── */
+.ls-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 18px rgba(0,255,136,0.5))
+          drop-shadow(0 0 55px rgba(0,255,136,0.18));
+}
+.ls-svg {
+  width: min(70vw, 70vh);
+  height: min(70vw, 70vh);
+  max-width: 500px;
+  max-height: 500px;
+  overflow: visible;
+}
+
+/* ─────────────────────────────────────────────────────
+   BASE
+───────────────────────────────────────────────────── */
+.ls-path { opacity: 0; animation-fill-mode: both; }
+.ls-text { opacity: 0; animation-fill-mode: both; }
+
+/* ─────────────────────────────────────────────────────
+   PHASE: in
+───────────────────────────────────────────────────── */
+.ls-in .ls-outer-ring {
+  stroke-dasharray: 679; stroke-dashoffset: 679;
+  animation: ls-appear 10ms 0ms both, ls-draw 900ms 0ms both cubic-bezier(0.4,0,0.2,1);
+}
+.ls-in .ls-inner-ring {
+  stroke-dasharray: 591; stroke-dashoffset: 591;
+  animation: ls-appear 10ms 260ms both, ls-draw 850ms 260ms both cubic-bezier(0.4,0,0.2,1);
+}
+.ls-in .ls-doc {
+  stroke-dasharray: 200; stroke-dashoffset: 200;
+  animation: ls-appear 10ms 710ms both, ls-draw 380ms 710ms both ease-out;
+}
+.ls-in .ls-conn1 {
+  stroke-dasharray: 50; stroke-dashoffset: 50;
+  animation: ls-appear 10ms 920ms both, ls-draw 220ms 920ms both ease-out;
+}
+.ls-in .ls-dot1  { animation: ls-pop 200ms 990ms both; }
+.ls-in .ls-gear-ring {
+  stroke-dasharray: 138; stroke-dashoffset: 138;
+  animation: ls-appear 10ms 1010ms both, ls-draw 480ms 1010ms both cubic-bezier(0.4,0,0.2,1);
+}
+.ls-in .ls-gear-teeth {
+  stroke-dasharray: 120; stroke-dashoffset: 120;
+  animation: ls-appear 10ms 1210ms both, ls-draw 280ms 1210ms both ease-out;
+}
+.ls-in .ls-check {
+  stroke-dasharray: 30; stroke-dashoffset: 30;
+  animation: ls-appear 10ms 1360ms both, ls-draw 320ms 1360ms both ease-out;
+}
+.ls-in .ls-dot2  { animation: ls-pop 200ms 1310ms both; }
+.ls-in .ls-conn2 {
+  stroke-dasharray: 50; stroke-dashoffset: 50;
+  animation: ls-appear 10ms 1360ms both, ls-draw 220ms 1360ms both ease-out;
+}
+.ls-in .ls-bars {
+  stroke-dasharray: 180; stroke-dashoffset: 180;
+  animation: ls-appear 10ms 1460ms both, ls-draw 330ms 1460ms both ease-out;
+}
+.ls-in .ls-arrow-right {
+  stroke-dasharray: 40; stroke-dashoffset: 40;
+  animation: ls-appear 10ms 1610ms both, ls-draw 230ms 1610ms both ease-out;
+}
+.ls-in .ls-arrow-left {
+  stroke-dasharray: 100; stroke-dashoffset: 100;
+  animation: ls-appear 10ms 1410ms both, ls-draw 330ms 1410ms both ease-out;
+}
+.ls-in .ls-arrow-left-head {
+  stroke-dasharray: 30; stroke-dashoffset: 30;
+  animation: ls-appear 10ms 1610ms both, ls-draw 180ms 1610ms both ease-out;
+}
+.ls-in .ls-dot3  { animation: ls-pop 200ms 1060ms both; }
+.ls-in .ls-text-die   { animation: ls-fade-in 0.45s ease 1660ms both; }
+.ls-in .ls-text-excel { animation: ls-fade-in 0.45s ease 1810ms both; }
+.ls-in .ls-text-lenz  { animation: ls-fade-in 0.45s ease 1960ms both; }
+
+/* ─────────────────────────────────────────────────────
+   PHASE: hold — everything frozen fully visible
+───────────────────────────────────────────────────── */
+.ls-hold .ls-path,
+.ls-hold .ls-text { opacity: 1; stroke-dashoffset: 0; }
+
+/* ─────────────────────────────────────────────────────
+   PHASE: out — explicit undraw, last-in → first-out
+   Text fades out first, then inner elements,
+   then rings. All via ls-fade-out / ls-undraw.
+───────────────────────────────────────────────────── */
+
+/* Text out first */
+.ls-out .ls-text-lenz  { opacity: 1; animation: ls-fade-out 0.35s ease 0ms    both; }
+.ls-out .ls-text-excel { opacity: 1; animation: ls-fade-out 0.35s ease 100ms  both; }
+.ls-out .ls-text-die   { opacity: 1; animation: ls-fade-out 0.35s ease 200ms  both; }
+
+/* Arrows + chart */
+.ls-out .ls-arrow-right {
+  opacity: 1; stroke-dasharray: 40; stroke-dashoffset: 0;
+  animation: ls-undraw 230ms ease-in 300ms both;
+}
+.ls-out .ls-arrow-left-head {
+  opacity: 1; stroke-dasharray: 30; stroke-dashoffset: 0;
+  animation: ls-undraw 180ms ease-in 300ms both;
+}
+.ls-out .ls-bars {
+  opacity: 1; stroke-dasharray: 180; stroke-dashoffset: 0;
+  animation: ls-undraw 330ms ease-in 380ms both;
+}
+.ls-out .ls-arrow-left {
+  opacity: 1; stroke-dasharray: 100; stroke-dashoffset: 0;
+  animation: ls-undraw 330ms ease-in 380ms both;
+}
+
+/* Connectors + dots */
+.ls-out .ls-conn2 {
+  opacity: 1; stroke-dasharray: 50; stroke-dashoffset: 0;
+  animation: ls-undraw 220ms ease-in 500ms both;
+}
+.ls-out .ls-dot2  { opacity: 1; animation: ls-unpop 150ms ease-in 500ms both; }
+.ls-out .ls-conn1 {
+  opacity: 1; stroke-dasharray: 50; stroke-dashoffset: 0;
+  animation: ls-undraw 220ms ease-in 500ms both;
+}
+.ls-out .ls-dot1  { opacity: 1; animation: ls-unpop 150ms ease-in 500ms both; }
+.ls-out .ls-dot3  { opacity: 1; animation: ls-unpop 150ms ease-in 500ms both; }
+
+/* Gear internals */
+.ls-out .ls-check {
+  opacity: 1; stroke-dasharray: 30; stroke-dashoffset: 0;
+  animation: ls-undraw 200ms ease-in 580ms both;
+}
+.ls-out .ls-gear-teeth {
+  opacity: 1; stroke-dasharray: 120; stroke-dashoffset: 0;
+  animation: ls-undraw 280ms ease-in 620ms both;
+}
+.ls-out .ls-gear-ring {
+  opacity: 1; stroke-dasharray: 138; stroke-dashoffset: 0;
+  animation: ls-undraw 480ms ease-in 700ms both;
+}
+
+/* Doc */
+.ls-out .ls-doc {
+  opacity: 1; stroke-dasharray: 200; stroke-dashoffset: 0;
+  animation: ls-undraw 380ms ease-in 900ms both;
+}
+
+/* Inner ring */
+.ls-out .ls-inner-ring {
+  opacity: 1; stroke-dasharray: 591; stroke-dashoffset: 0;
+  animation: ls-undraw 600ms ease-in 1050ms both;
+}
+
+/* Outer ring — last to disappear */
+.ls-out .ls-outer-ring {
+  opacity: 1; stroke-dasharray: 679; stroke-dashoffset: 0;
+  animation: ls-undraw 750ms ease-in 1200ms both;
+}
+
+/* Overlay fades out as outer ring finishes */
+.ls-out { animation: ls-overlay-fade 0.4s ease 1750ms both; }
+
+/* ─────────────────────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────────────────────── */
+@keyframes ls-appear {
+  to { opacity: 1; }
+}
+@keyframes ls-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes ls-undraw {
+  from { stroke-dashoffset: 0;   opacity: 1; }
+  to   { stroke-dashoffset: 679; opacity: 0; }
+}
+@keyframes ls-fade-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ls-fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-5px); }
+}
+@keyframes ls-pop {
+  0%   { opacity: 0; transform: scale(0); }
+  60%  { opacity: 1; transform: scale(1.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes ls-unpop {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0); }
+}
+@keyframes ls-overlay-fade {
+  to { opacity: 0; pointer-events: none; }
+}

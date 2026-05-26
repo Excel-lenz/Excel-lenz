@@ -1,0 +1,33 @@
+.financeProgressWrapper {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+}
+
+.financeProgressTop {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.financeProgressBar {
+  width: 100%;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.financeProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff88, #00c2ff);
+  border-radius: 999px;
+}
+
+.financeProgressWrapper p {
+  margin-top: 12px;
+  color: #9ca3af;
+  font-size: 13px;
+}

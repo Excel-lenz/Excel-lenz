@@ -1,0 +1,45 @@
+.financeInputCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  transition: 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 190px;
+}
+
+.financeInputCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 136, 0.25);
+}
+
+.financeInputCard h3 {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.financeInputCard p {
+  color: #a1a1b3;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.financeButton {
+  margin-top: 20px;
+  border: none;
+  background: #00ff88;
+  color: #0b0b10;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.financeButton:hover {
+  opacity: 0.9;
+}
