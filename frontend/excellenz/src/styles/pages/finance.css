@@ -1,0 +1,75 @@
+
+.layout {
+  display: flex;
+  flex: 1;   
+  height: 100vh;           
+  align-items: flex-start;
+  background: radial-gradient(circle at top, #141420, #0b0b10);
+  color: #eaeaf0;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.financeMain {
+  flex: 1;
+  padding: 42px;
+  overflow-y: auto;    
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.financeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.financeTitle {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.financeSubtitle {
+  margin-top: 6px;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.financeBadge {
+  background: rgba(0, 255, 136, 0.12);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  color: #00ff88;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.financeSection {
+  margin-bottom: 24px;
+}
+
+.financeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.overviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.tabsSection {
+  margin-top: 12px;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin: 24px;
+}

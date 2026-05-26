@@ -1,0 +1,41 @@
+/* src/styles/components/financeChart.css */
+
+.financeChartCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+}
+
+.financeChartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.financeChartHeader h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.financeChartHeader p {
+  margin-top: 4px;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.financeChartHeader select {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  outline: none;
+}
+
+.chartContainer {
+  width: 100%;
+  height: 320px;
+}
