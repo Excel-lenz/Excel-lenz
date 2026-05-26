@@ -4,6 +4,7 @@ import ProgressBar from "../components/ProgressBar";
 import ChartPlaceholder from "../components/ChartPlaceholder";
 import Card from "../components/Card";
 import "../styles/dashboard.css";
+import Tooltip from '../components/Tooltip';
 
 export default function Dashboard() {
   return (
@@ -14,11 +15,21 @@ export default function Dashboard() {
         <ProgressBar value={68} />
         <ChartPlaceholder />
           <div className="cards">
-              <Card title="Status" tooltip="Zeigt, ob dein Startup finanziell im Plan liegt.">🟢 Auf Kurs</Card>
-              <Card title="Aktueller Fortschritt" tooltip="Dein aktueller Umsatz im Vergleich zum Gesamtziel.">68% - €136.000</Card>
-              <Card title="Nächster Meilenstein" tooltip="Das nächste große Finanzziel, das erreicht werden soll.">75% - noch €14.000</Card>
-              <Card title="Streak" tooltip="Anzahl der aufeinanderfolgenden Tage, an denen du deine Finanzen gepflegt hast.">🔥 12 Tage stark</Card>
-          </div>
+              <Tooltip text="Zeigt, ob dein Startup finanziell im Plan liegt.">
+                  <Card title="Status">Auf Kurs</Card>
+              </Tooltip>
+
+              <Tooltip text="Dein aktueller Umsatz im Vergleich zum Gesamtziel.">
+                  <Card title="Aktueller Fortschritt"> >68% - €136.000</Card>
+              </Tooltip>
+
+              <Tooltip text="Das nächste große Finanzziel, das erreicht werden soll.">
+                  <Card title="Nächster Meilenstein"> >75% - noch €14.000</Card>
+              </Tooltip>
+
+              <Tooltip text="Anzahl der aufeinanderfolgenden Tage, an denen du deine Finanzen gepflegt hast.">
+                  <Card title="Streak">🔥 12 Tage</Card>
+              </Tooltip></div>
       </main>
     </div>
   );
