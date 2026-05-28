@@ -111,6 +111,8 @@ export default function Linechart({startdate, enddate, ticks, minValue, maxValue
         plugins: {
             legend: {
                 position: "bottom",
+
+                onClick: null,
             },
         },
 
