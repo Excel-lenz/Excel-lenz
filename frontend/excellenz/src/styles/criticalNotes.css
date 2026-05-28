@@ -1,0 +1,25 @@
+.criticalNotes {
+  background: #141a1f;
+  border-radius: 12px;
+  padding: 20px;
+  color: #e5e7eb;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.07);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.criticalNotes:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(245, 52, 32, 0.15);
+}
+
+.note-title {
+  color: #f53420;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.symbol-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+}

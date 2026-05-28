@@ -3,6 +3,7 @@ import Sidebar from "../components/Sidebar";
 import ProgressBar from "../components/ProgressBar";
 import ChartPlaceholder from "../components/ChartPlaceholder";
 import Card from "../components/Card";
+import CriticalNotes from "../components/CriticalNotes";
 import "../styles/dashboard.css";
 
 export default function Dashboard() {
@@ -14,10 +15,10 @@ export default function Dashboard() {
         <ProgressBar value={68} />
         <ChartPlaceholder />
         <div className="cards">
-          <Card title="Status">🟢 Auf Kurs</Card>
           <Card title="Aktueller Fortschritt">68% – €136.000</Card>
           <Card title="Nächster Meilenstein">75% – noch €14.000</Card>
           <Card title="Streak">🔥 12 Tage stark</Card>
+          <CriticalNotes></CriticalNotes>
         </div>
       </main>
     </div>
