@@ -1,0 +1,42 @@
+.financeTabsWrapper {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+}
+
+.financeTabsHeader {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.financeTabsHeader button {
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: #eaeaf0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.financeTabsHeader button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.financeTabsHeader .active {
+  background: #00ff88;
+  color: #0b0b10;
+  font-weight: 600;
+}
+
+.financeTabContent h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.financeTabContent p {
+  color: #a1a1b3;
+  line-height: 1.5;
+}

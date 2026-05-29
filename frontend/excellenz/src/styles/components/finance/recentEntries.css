@@ -1,0 +1,92 @@
+.recentEntriesCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+}
+
+.recentEntriesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.recentEntriesHeader h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.recentEntriesHeader button {
+  background: transparent;
+  border: none;
+  color: #00ff88;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.recentEntriesList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.entryItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  border-radius: 14px;
+  transition: 0.2s ease;
+}
+
+.entryItem:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.entryIcon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.entryIcon.green {
+  background: rgba(0, 255, 136, 0.15);
+  color: #00ff88;
+}
+
+.entryIcon.blue {
+  background: rgba(0, 194, 255, 0.15);
+  color: #00c2ff;
+}
+
+.entryIcon.orange {
+  background: rgba(255, 149, 0, 0.15);
+  color: #ff9500;
+}
+
+.entryContent {
+  flex: 1;
+}
+
+.entryContent h4 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.entryContent p {
+  margin-top: 4px;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.entryDate {
+  color: #6b7280;
+  font-size: 12px;
+}
