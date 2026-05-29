@@ -3,6 +3,8 @@ import Sidebar from "../components/Sidebar";
 import ProgressBar from "../components/ProgressBar";
 import ChartPlaceholder from "../components/ChartPlaceholder";
 import Card from "../components/Card";
+import CriticalNotes from "../components/CriticalNotes";
+import "../styles/dashboard.css";
 import "../styles/pages/dashboard.css";
 import Streak from "../components/streak"
 
@@ -41,7 +43,7 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
         </section>
 
         <section className="cards">
-          <Card title="Status">Auf Kurs</Card>
+          <CriticalNotes></CriticalNotes>
           <Card title="Nächster Meilenstein">75% – €14.000 fehlen</Card>
           <Card title="Performance">+12% diese Woche</Card>
           <Card title="Zieltrend">Stark wachsend</Card>
