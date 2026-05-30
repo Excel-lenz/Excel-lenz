@@ -2,7 +2,7 @@ import React from 'react';
 
 const Tooltip = ({ children, text }) => {
     return (
-        <div title={text} style={{ display: 'inline-block', width: '100%' }}>
+        <div title={text} style={{ display: 'contents' }}>
             {children}
         </div>
     );
