@@ -1,8 +1,8 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import ProgressBar from "../components/ProgressBar";
-import ChartPlaceholder from "../components/ChartPlaceholder";
-import Card from "../components/Card";
+import Sidebar from "../components/sidebar";
+import ProgressBar from "../components/progressBar";
+import ChartPlaceholder from "../components/chartPlaceholder";
+import Card from "../components/card";
 import "../styles/pages/dashboard.css";
 import Streak from "../components/streak"
 
