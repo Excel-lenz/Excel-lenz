@@ -1,10 +1,9 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import ProgressBar from "../components/ProgressBar";
-import ChartPlaceholder from "../components/ChartPlaceholder";
-import Card from "../components/Card";
-import CriticalNotes from "../components/CriticalNotes";
-import "../styles/dashboard.css";
+import Sidebar from "../components/sidebar";
+import ProgressBar from "../components/progressBar";
+import ChartPlaceholder from "../components/chartPlaceholder";
+import Card from "../components/card";
+import CriticalNotes from "../components/criticalNotes";
 import "../styles/pages/dashboard.css";
 import Streak from "../components/streak"
 
@@ -43,7 +42,9 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
         </section>
 
         <section className="cards">
-          <CriticalNotes></CriticalNotes>
+          <div className="notes-critical">
+              <CriticalNotes></CriticalNotes>
+          </div>
           <Card title="Nächster Meilenstein">75% – €14.000 fehlen</Card>
           <Card title="Performance">+12% diese Woche</Card>
           <Card title="Zieltrend">Stark wachsend</Card>

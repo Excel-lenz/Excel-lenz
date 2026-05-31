@@ -86,7 +86,7 @@
 }
 
 /* OPTIONAL: smooth hover for Card component */
-.cards > * {
+.cards > *:not(.notes-critical) {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
@@ -94,7 +94,7 @@
   transition: all 0.2s ease;
 }
 
-.cards > *:hover {
+.cards > *:not(.notes-critical):hover {
   transform: translateY(-4px);
   border-color: rgba(0, 255, 136, 0.25);
 }

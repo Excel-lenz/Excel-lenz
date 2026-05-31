@@ -1,19 +1,46 @@
-.criticalNotes {
-  background: #141a1f;
-  border-radius: 12px;
+
+.normalNotes {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
   padding: 20px;
+  /*Hier meinte ich in der Commit-Beschreibung*/
+  padding-bottom: 28px;
   color: #e5e7eb;
   box-shadow: 0 0 15px rgba(0, 255, 136, 0.07);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.2s ease;
+}
+
+.normalNotes:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 136, 0.25);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+}
+
+.criticalNotes {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 20px;
+  color: #e5e7eb;
+  box-shadow: 0 0 15px rgba(245, 52, 32, 0.07);
+  transition: all 0.2s ease;
 }
 
 .criticalNotes:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  border-color: rgba(245, 52, 32, 0.25);
   box-shadow: 0 0 20px rgba(245, 52, 32, 0.15);
 }
 
-.note-title {
+.crit-note-title {
   color: #f53420;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.normal-note-title {
+  color: #00ff88;
   margin-bottom: 10px;
   font-size: 16px;
 }
