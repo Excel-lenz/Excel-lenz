@@ -5,11 +5,15 @@ import ChartPlaceholder from "../components/chartPlaceholder";
 import Card from "../components/card";
 import "../styles/pages/dashboard.css";
 import Streak from "../components/streak"
+import Popup, {InfoPopup, WarningPopup, SuccessPopup} from "../components/popup.jsx";
 
 export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen})
 {
   return (
     <div className="layout">
+
+      <WarningPopup/>
+
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}

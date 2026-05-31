@@ -1,0 +1,49 @@
+
+
+.popupbox{
+    position: fixed;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1c1c20;
+    font-family: "Poppins", sans-serif;
+
+
+    width: 200px;
+    min-height: 20px;
+
+    border: solid black 4px;
+    border-radius: 12px;
+
+    padding: 8px;
+    padding-left: 12px;
+    paddin-right: 12px;
+
+    z-index: 9999;
+
+}
+
+.popuptitle{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-bottom: 6px;
+}
+
+.popuptext{
+    font-size: 15px;
+
+}
+
+.popupbutton{
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    cursor: pointer;
+
+    
+    font-weight: bold;
+    border: 2px solid #303345;
+    border-radius: 5px;
+
+}
