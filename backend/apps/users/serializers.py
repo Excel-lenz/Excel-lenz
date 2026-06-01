@@ -6,7 +6,7 @@ from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
 from rest_framework.fields import ErrorDetail
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 

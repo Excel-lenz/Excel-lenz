@@ -7,5 +7,6 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     companySetupDone = models.BooleanField(default=False)
     isMailVerified = models.BooleanField(default=False)
+    currentStreak = models.IntegerField(default=0)
 
 

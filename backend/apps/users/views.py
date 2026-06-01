@@ -2,13 +2,28 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
-
 from .serializers import (
     LoginSerializer,
     RegisterSerializer,
     MeSerializer,
 )
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        user = self.user
+        data["companySetupDone"] = user.companySetupDone
+        data["isMailVerified"] = user.isMailVerified
+
+        return data
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 
 class RegisterView(generics.CreateAPIView):
@@ -50,21 +65,3 @@ class MeView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
-
-
-class LoginView(APIView):
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-
-        if not serializer.is_valid():
-            return Response(
-                serializer.errors,
-                status=status.HTTP_200_OK
-            )
-
-        user = serializer.validated_data["user"]
-
-        return Response({
-            "message": "Login erfolgreich",
-            "username": user.username,
-        }, status=status.HTTP_200_OK)

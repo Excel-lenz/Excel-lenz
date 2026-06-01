@@ -1,49 +1,123 @@
-
-
-.popupbox{
+.popupbox {
     position: fixed;
-    top: 5px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: #1c1c20;
+
+    min-width: 320px;
+    max-width: 450px;
+
+    background: rgba(28, 28, 32, 0.92);
+    backdrop-filter: blur(14px);
+
+    color: white;
     font-family: "Poppins", sans-serif;
 
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
-    width: 200px;
-    min-height: 20px;
+    padding: 16px;
 
-    border: solid black 4px;
-    border-radius: 12px;
-
-    padding: 8px;
-    padding-left: 12px;
-    paddin-right: 12px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.03);
 
     z-index: 9999;
+    overflow: hidden;
 
+    animation: popup-enter 0.35s ease forwards;
 }
 
-.popuptitle{
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 3px;
+.popuptitle {
+    font-size: 18px;
+    font-weight: 700;
     margin-bottom: 6px;
 }
 
-.popuptext{
-    font-size: 15px;
-
+.popuptext {
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+    padding-right: 30px;
+    white-space: pre-line;
 }
 
-.popupbutton{
+.popupbutton {
     position: absolute;
-    top: 3px;
-    right: 3px;
+    top: 12px;
+    right: 12px;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
     cursor: pointer;
 
-    
-    font-weight: bold;
-    border: 2px solid #303345;
-    border-radius: 5px;
+    transition: all 0.2s ease;
+}
 
+.popupbutton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.popup-progress-wrapper {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 4px;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.popup-progress {
+    height: 100%;
+    width: 100%;
+    border-radius: 999px;
+
+    animation-name: popup-progress-animation;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.popup-closing {
+    animation: popup-exit 0.25s ease forwards;
+}
+
+/* ANIMATIONEN */
+@keyframes popup-enter {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes popup-exit {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-15px);
+    }
+}
+
+@keyframes popup-progress-animation {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
 }

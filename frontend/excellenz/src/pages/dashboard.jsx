@@ -12,8 +12,6 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
   return (
     <div className="layout">
 
-      <WarningPopup/>
-
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
