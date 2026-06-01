@@ -1,0 +1,111 @@
+.inputButtonContainer {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 500;
+}
+
+.inputButton {
+    background: rgb(15, 31, 30);
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 12px;
+    padding: 14px 20px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+}
+
+.inputButton:hover {
+    background: rgb(20, 40, 39);
+}
+
+.minimizeButton {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+}
+
+.inputMenu {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 350px;
+    padding: 20px;
+    background: rgb(15, 31, 30);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 500;
+}
+
+.menuHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menuHeader h3 {
+    margin: 0;
+    color: #00ff88;
+}
+
+.closeButton {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.inputMenu label {
+    color: white;
+    font-size: 14px;
+}
+
+.inputMenu select,
+.inputMenu input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgb(20, 40, 39);
+    color: white;
+    box-sizing: border-box;
+}
+
+.confirmButton {
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #00ff88;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.confirmButton:hover {
+    filter: brightness(1.1);
+}
+
+.restoreArrow {
+    position: fixed;
+    right: 0;
+    bottom: 2%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: #00ff88;
+    cursor: pointer;
+    transition: opacity 0.25s ease;
+    z-index: 500;
+}
