@@ -1,5 +1,6 @@
 import React from "react";
 import Sidebar from "../components/sidebar";
+import Topbar from "../components/topbar";
 import ProgressBar from "../components/progressBar";
 import ChartPlaceholder from "../components/chartPlaceholder";
 import Card from "../components/card";
@@ -13,7 +14,7 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
     <div className="layout">
 
       <WarningPopup/>
-
+      <Topbar/>
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
