@@ -10,21 +10,6 @@ export default function Topbar() {
     return (
 
         <div className="topbar">
-            <Link to="/dashboard">
-                <div className="logoContainer">
-                    <img
-                        src={logoFull}
-                        alt="Excellenz Logo"
-                        className="topbar-logo"
-                    />
-
-                    <p className="logoText">
-                        Excellenz
-                    </p>
-                </div>
-            </Link>
-
-
             <div
                 className="topbar-user"
                 onClick={() => setMenuOpen(!menuOpen)}
