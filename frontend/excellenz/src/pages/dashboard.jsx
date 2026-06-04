@@ -4,7 +4,8 @@ import ProgressBar from "../components/ProgressBar";
 import ChartPlaceholder from "../components/ChartPlaceholder";
 import Card from "../components/Card";
 import "../styles/pages/dashboard.css";
-import Streak from "../components/streak"
+import Streak from "../components/streak";
+import AddMilestoneButton from "../components/addMilestoneButton";
 
 export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen})
 {
@@ -38,6 +39,10 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
         <section className="chartCard">
           <ChartPlaceholder />
+        </section>
+
+        <section className="card-buttons">
+            <AddMilestoneButton />
         </section>
 
         <section className="cards">
