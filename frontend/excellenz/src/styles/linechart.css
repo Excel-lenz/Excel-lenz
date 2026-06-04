@@ -6,6 +6,8 @@
     border-radius: 30px;
     padding: 20px;
 
+    background-color: #0c1c1c;
+
     display: flex;
     flex-direction: column;
     box-sizing: border-box;

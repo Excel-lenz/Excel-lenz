@@ -7,10 +7,11 @@ import {
     LinearScale,
     PointElement,
     Tooltip,
-    Legend,
+    Legend, scales,
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
+import annotationPlugin from "chartjs-plugin-annotation";
 
 
 
@@ -21,7 +22,8 @@ ChartJS.register(
     LinearScale,
     PointElement,
     Tooltip,
-    Legend
+    Legend,
+    annotationPlugin
 );
 
 
@@ -50,7 +52,7 @@ export function createListContent(name,numbers,color){
 
 function parseMonthYear(str) {
     const [month, year] = str.split(".");
-    return new Date(year, month - 1, 1); // always day = 1
+    return new Date(year, month - 1, 1); // always date = 1
 }
 
 
@@ -65,7 +67,7 @@ function generateMonthLabels(start, end) {
         const month = current.toLocaleString("default", { month: "short" });
         const year = current.getFullYear();
 
-        labels.push(`${month} ${year}`);
+        labels.push(`${month}`);
 
         current.setMonth(current.getMonth() + 1);
     }
@@ -97,24 +99,20 @@ function formatMonthYear(str) {
 
 //PROBLEM: hard to link the numbers of the list to the correct month, everything is needed to be in the right order
 
-export default function Linechart({startdate, enddate, ticks, minValue, maxValue, list}) {
+export default function Linechart({startdate, enddate, Ytext, ticks, minValue, maxValue, list}) {
 
     const data = {
         labels: generateMonthLabels(startdate, enddate),
         datasets: createDataset(list),
     };
 
+
+
     const options = {
         responsive: true,
         maintainAspectRatio: false,
 
-        plugins: {
-            legend: {
-                position: "bottom",
 
-                onClick: null,
-            },
-        },
 
         scales: {
             x: {
@@ -138,9 +136,47 @@ export default function Linechart({startdate, enddate, ticks, minValue, maxValue
                 grid: {
                     color: "grey",
                 },
+
+                title: {
+                    display: true,
+                    text: Ytext,
+                    color: "white",
+                }
             },
         },
-    };
+
+        plugins: {
+            legend: {
+                position: "bottom",
+
+                onClick: null,
+
+                labels: {
+                    color: "white",
+                },
+            },
+
+        },
+
+
+    }
+
+
+
+    if (options.scales.y.min < 0) {
+        options.plugins.annotation = {
+            annotations: {
+                zeroLine: {
+                    type: "line",
+                    yMin: 0,
+                    yMax: 0,
+                    borderColor: "grey",
+                    borderWidth: 3,
+                    drawTime: "beforeDatasetsDraw",
+                },
+            },
+        };
+    }
 
     return (
 

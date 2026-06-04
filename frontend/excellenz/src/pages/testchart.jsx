@@ -3,18 +3,24 @@ import Linechart, {createListContent} from "../components/linechart.jsx";
 export default function TestChart(){
 
 var startdate ="01.2025";
-var enddate = "03.2025";
+var enddate = "06.2025";
 var ticks = 2000;
 var minValue = 0;
 var maxValue = 10000;
 
-var income= [1000, 3800, 5500];
-var costs = [900,2000,5100];
+var income= [1000, 3500, 5500, 6000, 5900, 7900];
+var costs = [500, 2000, 5100, 5200, 6200, 6300];
+
+var profit = income.map((value, index) => value - costs[index]);
 
 var list = [
     createListContent("income", income, "green"),
     createListContent("costs", costs, "red")
 ];
+
+var listProfit = [
+    createListContent("profit", profit, "white")
+]
 
 
 
@@ -37,16 +43,28 @@ return(
     <Linechart
         startdate={startdate}
         enddate={enddate}
+        Ytext={"income and costs in €"}
         ticks={ticks}
         minValue={minValue}
         maxValue={maxValue}
         list={list}
     />
 
+        <Linechart
+            startdate={startdate}
+            enddate={enddate}
+            Ytext={"profit in €"}
+            ticks={500}
+            minValue={-500}
+            maxValue={2000}
+            list={listProfit}
+        />
+
     <Linechart
         startdate={startdate2}
         enddate={enddate2}
         ticks={ticks2}
+        Ytext={"here comes stuff"}
         minValue={minValue2}
         maxValue={maxValue2}
         list={list2}
@@ -56,6 +74,7 @@ return(
     <Linechart
         startdate={"04.2026"}
         enddate={"07.2026"}
+        Ytext={"heres comes the text"}
         ticks={100}
         minValue={0}
         maxValue={1000}
