@@ -1,0 +1,94 @@
+.login-container {
+  width: 100%;
+  max-width: 420px;
+
+  margin: 120px auto;
+  padding: 28px;
+
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+
+  color: #eaeaf0;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.login-container h2 {
+  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.login-container::before {
+  content: "Willkommen zurück";
+  display: block;
+  color: #a1a1b3;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+
+  color: #eaeaf0;
+  font-size: 14px;
+
+  transition: all 0.2s ease;
+}
+
+.login-container input::placeholder {
+  color: #8f8fa3;
+}
+
+.login-container input:focus {
+  outline: none;
+  border-color: rgba(0, 255, 136, 0.25);
+
+  box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.08);
+}
+
+.login-container button {
+  width: 100%;
+  padding: 14px;
+
+  margin-top: 4px;
+
+  background: rgba(0, 255, 136, 0.12);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+
+  border-radius: 12px;
+
+  color: #00ff88;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-container button:hover {
+  background: rgba(0, 255, 136, 0.18);
+  transform: translateY(-2px);
+}
+
+.switch-text {
+  margin-top: 18px;
+  text-align: center;
+
+  color: #a1a1b3;
+  font-size: 14px;
+
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.switch-text:hover {
+  color: #00ff88;
+}

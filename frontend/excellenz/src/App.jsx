@@ -7,6 +7,10 @@ import Finance from "./pages/finance.jsx";
 import Revenue from "./pages/finance/revenue.jsx";
 import Sales from "./pages/sales/sales.jsx";
 import Products from "./pages/sales/products.jsx";
+import LandingPage from "./pages/landing/landingPage.jsx";
+
+import Login from "./pages/login/login.jsx";
+import Register from "./pages/login/register.jsx"
 import "./index.css";
 import CompanySetup from "./pages/companySetup"
 
@@ -16,6 +20,10 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [financeOpen, setFinanceOpen] = useState(true);
   const [salesOpen, setSalesOpen] = useState(true);
+
+  {/* Testing */}
+  const [isLogin, setIsLogin] = useState(true);
+
 
   return (
     <BrowserRouter>
@@ -30,17 +38,7 @@ export default function App() {
         }}
       >
         <Routes>
-          <Route path="/" element={
-            <Dashboard
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              financeOpen={financeOpen}
-              setFinanceOpen={setFinanceOpen}
-              salesOpen={salesOpen}
-              setSalesOpen={setSalesOpen}
-            />
-            } 
-          />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={
             <Dashboard
               sidebarOpen={sidebarOpen}
@@ -111,6 +109,17 @@ export default function App() {
           />
 
           {/* Test Route */}
+          <Route path="/login" element={ <Login
+              onSwitch={() => setIsLogin(false)}
+            />
+            } 
+          />
+
+          <Route path="/register" element={ <Register
+              onSwitch={() => setIsLogin(true)}
+            />
+            } 
+          />
           <Route path="/setup" element={ <CompanySetup
             />
             }
