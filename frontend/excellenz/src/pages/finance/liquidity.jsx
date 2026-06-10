@@ -104,15 +104,26 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                     <div className="revenueCard">
                         <div>
-                            <span>Operativer Cashflow</span>
-                            <h2>€ {operativerCF.toLocaleString()}</h2>
+                            <span>Liquide Mittel am Periodenende</span>
+                            <h2>€ {endbestand.toLocaleString()}</h2>
                         </div>
                     </div>
 
+
+
+                    {/* HAB VERGESSEN FÜR WAS DAS HIER IST
                     <div className="revenueCard">
                         <div>
                             <span>Nächster Monat</span>
                             <h2>€ {naechster.toLocaleString()}</h2>
+                        </div>
+                    </div>
+                    */}
+
+                    <div className="revenueCard">
+                        <div>
+                            <span>Liquiditätsgrad 1</span>
+                            <h2>{erstenGrades.toLocaleString()}%</h2>
                         </div>
                     </div>
 
@@ -122,6 +133,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                             <h2>{runway.toLocaleString()}</h2>
                         </div>
                     </div>
+
 
                 </section>
 
@@ -161,17 +173,12 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                     <div className="revenueCard">
                         <div>
-                            <span>Liquide Mittel am Periodenende</span>
-                            <h2>€ {endbestand.toLocaleString()}</h2>
+                            <span>Operativer Cashflow</span>
+                            <h2>€ {operativerCF.toLocaleString()}</h2>
                         </div>
                     </div>
 
-                    <div className="revenueCard">
-                        <div>
-                            <span>Liquiditätsgrad 1</span>
-                            <h2>{erstenGrades.toLocaleString()}%</h2>
-                        </div>
-                    </div>
+
 
                 </section>
 
