@@ -7,16 +7,24 @@ import "../../styles/pages/finance/liquidity.css";
 
 export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}){
 
-
-    const liquiditaet = 50000;
-    const operativerCF = 7200;
-    const naechster = -3700;
-    //runway rechnung = ((aktuelle liquidität - einmalige abrechnungen) / monatliche abrechnungen)
-    const runway = "31,8 Monate";
-
+    //variablen aus der Datenbank holen
+    const bestand = 50000;
     const einzahlungen = 12000;
     const auszahlungen = 7500;
+    const naechster = -3700;
+    const abschreibung = 1200;
+    const gewinn = 5000;
+
+
+    //runway rechnung = ((aktuelle liquidität - einmalige abrechnungen) / monatliche abrechnungen)
+    //implementier noch runway rechnung
+    const runway = "31,8 Monate";
+
     const cashFlow = einzahlungen - auszahlungen;
+    const operativerCF = gewinn + abschreibung;
+    const endbestand = bestand + einzahlungen - auszahlungen;
+    //implementiere noch rechnung für erstengrades
+    const erstenGrades = 55;
 
 
 
@@ -44,6 +52,8 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             price: 1700,
         },
     ]);
+
+
 
 
 
@@ -88,7 +98,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     <div className="revenueCard">
                         <div>
                             <span>Aktuelle Liquidität</span>
-                            <h2>€ {liquiditaet.toLocaleString()}</h2>
+                            <h2>€ {bestand.toLocaleString()}</h2>
                         </div>
                     </div>
 
@@ -152,14 +162,14 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     <div className="revenueCard">
                         <div>
                             <span>Liquide Mittel am Periodenende</span>
-                            <h2>stuff</h2>
+                            <h2>€ {endbestand.toLocaleString()}</h2>
                         </div>
                     </div>
 
                     <div className="revenueCard">
                         <div>
                             <span>Liquiditätsgrad 1</span>
-                            <h2>stuff</h2>
+                            <h2>{erstenGrades.toLocaleString()}%</h2>
                         </div>
                     </div>
 
