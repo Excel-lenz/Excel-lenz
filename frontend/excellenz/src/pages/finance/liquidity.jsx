@@ -7,28 +7,34 @@ import "../../styles/pages/finance/liquidity.css";
 
 export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}){
 
-    //variablen aus der Datenbank holen
-    const bestand = 50000;
-    const einzahlungen = 12000;
-    const auszahlungen = 7500;
-    const naechster = -3700;
-    const abschreibung = 1200;
-    const gewinn = 5000;
-
-
-    //runway rechnung = ((aktuelle liquidität - einmalige abrechnungen) / monatliche abrechnungen)
-    //implementier noch runway rechnung
-    const runway = "31,8 Monate";
-
-    const cashFlow = einzahlungen - auszahlungen;
-    const operativerCF = gewinn + abschreibung;
-    const endbestand = bestand + einzahlungen - auszahlungen;
-    //implementiere noch rechnung für erstengrades
-    const erstenGrades = 55;
-
-
 
     const [liquids] = useState([
+
+        {
+            id: 7,
+            name: "Einnahmen von Verkauf",
+            category: "Einnahme",
+            typ: "Monatlich",
+            price: 21000,
+        },
+
+        {
+            id: 8,
+            name: "Fixkosten",
+            category: "Ausgabe",
+            typ: "Monatlich",
+            price: -9050,
+        },
+
+        {
+            id: 9,
+            name: "Variable Kosten",
+            category: "Ausgabe",
+            typ: "Monatlich",
+            price: -4200,
+        },
+
+
         {
             id: 1,
             name: "Miete",
@@ -51,8 +57,82 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             typ: "Monatlich",
             price: 1700,
         },
+
+        {
+            id: 4,
+            name: "Stakeholder Investoren",
+            category: "Einnahme",
+            typ: "Monatlich",
+            price: 5700,
+        },
+
+        {
+            id: 5,
+            name: "Stakeholder Investoren",
+            category: "Einnahme",
+            typ: "Monatlich",
+            price: 1700,
+        },
+
+        {
+            id: 6,
+            name: "Steuern",
+            category: "Ausgabe",
+            typ: "Einmalig",
+            price: -1500,
+        },
+
     ]);
 
+
+
+
+
+
+    //variablen aus der Datenbank holen
+    const [bestand, setBestand] = useState(50000);
+    const [einzahlungen, setEinzahlungen] = useState(12000);
+    const [auszahlungen, setAuszahlungen] = useState(7500);
+    const [naechster, setNaechster] = useState(-3700);
+    const [abschreibung, setAbschreibung] = useState(1200);
+    const [gewinn, setGewinn] = useState(10000);
+
+    //runway rechnung = ((aktuelle liquidität - einmalige abrechnungen) / monatliche abrechnungen)
+    //implementier noch runway rechnung
+    const [runway, setRunway] = useState("31,8 Monate");
+    //implementiere noch rechnung für erstengrades
+    const [erstenGrades, setErstenGrades] = useState(55);
+
+    var allEinzahlungen = rechenallEinzahlungen();
+
+    var allAuszahlungen = rechenallAuszahlungen();
+
+    const cashFlow = einzahlungen - auszahlungen;
+    const operativerCF = gewinn + abschreibung;
+    const endbestand = bestand + allEinzahlungen + allAuszahlungen;
+
+
+
+
+
+
+    function rechenallEinzahlungen(){
+        return liquids.reduce((total, item) => {
+            if (item.category === "Einnahme") {
+                return total + item.price;
+            }
+            return total;
+        }, 0);
+    }
+
+    function rechenallAuszahlungen(){
+        return liquids.reduce((total, item) => {
+            if (item.category === "Ausgabe") {
+                return total + item.price;
+            }
+            return total;
+        }, 0);
+    }
 
 
 
@@ -152,15 +232,15 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                     <div className="revenueCard">
                         <div>
-                            <span>Einzahlungen</span>
-                            <h2>€ {einzahlungen.toLocaleString()}</h2>
+                            <span>alle Einzahlungen diesen Monat</span>
+                            <h2>€ {allEinzahlungen.toLocaleString()}</h2>
                         </div>
                     </div>
 
                     <div className="revenueCard">
                         <div>
-                            <span>Auszahlungen</span>
-                            <h2>€ {auszahlungen.toLocaleString()}</h2>
+                            <span>alle Auszahlungen diesen Monat</span>
+                            <h2>€ {allAuszahlungen.toLocaleString()}</h2>
                         </div>
                     </div>
 
