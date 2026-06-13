@@ -152,6 +152,17 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
             <FaUniversity />
             <span>Liquidität</span>
           </div>
+            <div
+                className={`submenu-item ${
+                    isActive("/finance/investitionen")
+                        ? "active-sub"
+                        : ""
+                }`}
+                onClick={() => navigate("/finance/investitionen")}
+            >
+                <FaUniversity />
+                <span>Investitionen</span>
+            </div>
         </div>
       )}
 

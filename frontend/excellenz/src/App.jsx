@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/settings.jsx";
 import Finance from "./pages/finance.jsx";
 import Revenue from "./pages/finance/revenue.jsx";
+import Investitionen from "./pages/finance/Investitionen.jsx";
 import Sales from "./pages/sales/sales.jsx";
 import Products from "./pages/sales/products.jsx";
 import LandingPage from "./pages/landing/landingPage.jsx";
@@ -84,6 +85,16 @@ export default function App() {
             />
             } 
           />
+            <Route path="/finance/investitionen" element={ <Investitionen
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+            />
+            }
+            />
 
           <Route path="/sales" element={ <Sales
               sidebarOpen={sidebarOpen}
