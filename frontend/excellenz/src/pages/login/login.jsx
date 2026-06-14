@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LOGIN } from "../../api/auth";
 import { WarningPopup, SuccessPopup } from "../../components/popup";
 
+
 export default function Login() {
     const navigate = useNavigate();
 
@@ -52,10 +53,12 @@ export default function Login() {
                 return;
             }
 
-            // Beispiel: Token speichern
-            if (data?.token) {
-                localStorage.setItem("token", data.token);
-            }
+            localStorage.setItem("access", data.access);
+            localStorage.setItem("refresh", data.refresh);
+            localStorage.setItem("companySetupDone", data.companySetupDone);
+            localStorage.setItem("isMailVerified", data.isMailVerified);
+
+            console.log("Token: " + data.access);
 
             setSuccessPopup({
                 id: Date.now(),

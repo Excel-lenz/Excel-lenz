@@ -9,4 +9,12 @@ class User(AbstractUser):
     isMailVerified = models.BooleanField(default=False)
     currentStreak = models.IntegerField(default=0)
 
+    company = models.OneToOneField(
+        "companies.Company",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="owner_user"
+    )
+
 

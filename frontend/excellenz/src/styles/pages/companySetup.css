@@ -137,4 +137,35 @@
 .button-row button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+.inputBox select {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 14px 16px;
+
+  background: #0f1117;
+  color: white;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+
+  outline: none;
+
+  margin-bottom: 28px;
+
+  transition: border-color 0.2s ease;
+}
+
+.inputBox select:focus {
+  border-color: #00ff88;
+}
+
+.inputBox select option {
+  background: #0f1117;
+  color: white;
 }

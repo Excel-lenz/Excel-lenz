@@ -76,6 +76,9 @@ class MeSerializer(serializers.ModelSerializer):
             "id",
             "username",
             "email",
+            "companySetupDone",
+            "isMailVerified",
+            "currentStreak",
         )
 
 

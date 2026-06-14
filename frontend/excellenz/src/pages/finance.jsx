@@ -7,12 +7,16 @@ import FinanceProgress from "../components/finance/financeProgress";
 import FinanceTabs from "../components/finance/financeTabs";
 import FinanceChart from "../components/finance/financeChart";
 import RecentEntries from "../components/finance/recentEntries"; 
+import Input from "../components/inputs";
 
 import "../styles/pages/finance.css";
 
 export default function Finance({ sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen }) {
   return (
     <div className="layout">
+
+      <Input />
+
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
