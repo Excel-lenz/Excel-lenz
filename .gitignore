@@ -1,1 +1,4 @@
 /backend/.venv
+node_modules/@reduxjs/toolkit/dist/cjs/index.js
+node_modules/.package-lock.json
+/node_modules/
