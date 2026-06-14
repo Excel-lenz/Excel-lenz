@@ -160,7 +160,7 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
                 }`}
                 onClick={() => navigate("/finance/investitionen")}
             >
-                <FaUniversity />
+                <FaChartLine />
                 <span>Investitionen</span>
             </div>
         </div>
