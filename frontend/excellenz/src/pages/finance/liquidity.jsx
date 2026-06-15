@@ -47,6 +47,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             name: "Steuern",
             category: "Ausgabe",
             typ: "Einmalig",
+            datum:"12.7.2026",
             price: -2200,
         },
 
@@ -76,10 +77,29 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
         {
             id: 6,
-            name: "Steuern",
+            name: "Steuern2",
             category: "Ausgabe",
             typ: "Einmalig",
-            price: -1500,
+            datum:"28.7.2026",
+            price: -2500,
+        },
+
+        {
+            id: 10,
+            name: "Steuern3",
+            category: "Ausgabe",
+            typ: "Einmalig",
+            datum:"6.8.2026",
+            price: -1700,
+        },
+
+        {
+            id: 11,
+            name: "Steuern4",
+            category: "Ausgabe",
+            typ: "Einmalig",
+            datum:"15.9.2026",
+            price: -1100,
         },
 
     ]);
@@ -111,7 +131,108 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const operativerCF = gewinn + abschreibung;
     const endbestand = bestand + allEinzahlungen + allAuszahlungen;
 
+    const [showFirstTable, setShowFirstTable] = useState(true);
 
+    const [startDate, setStartDate] = useState("1.5.2026");
+    const [endDate, setEndDate] = useState("28.9.2026");
+
+    function AllTable(){
+        return(
+
+            <section className="revenueTableWrapper">
+                <div className="tableHeader">
+                    <h3>Liquiditätsbewegung insgesamt</h3>
+
+                    <button className="tableSwapBtn"
+                        onClick={() => setShowFirstTable(!showFirstTable)}
+                    >
+                        Swap Table
+                    </button>
+                </div>
+
+
+
+                <table className="revenueTable">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Kategorie</th>
+                        <th>Typ</th>
+                        <th>Voladate</th>
+                        <th>Betrag</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {liquids.map((item) => (
+                        <tr key={item.id}>
+                            <td>{item.name}</td>
+                            <td>{item.category}</td>
+                            <td>{item.typ}</td>
+                            <td>{item.datum}</td>
+                            <td className={item.price < 0 ? "negative" : "positive"}>
+                                € {item.price}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </section>
+
+        );
+    }
+
+    function MonthTable(){
+        return(
+            <section className="revenueTableWrapper">
+
+                <div className="tableHeader">
+                    <h3>Liquiditätsbewegung von {startDate} bis {endDate}</h3>
+
+                    <button className="tableAddBtn">
+                        Startdatum festlegen: {startDate}
+                    </button>
+
+                    <button className="tableAddBtn">
+                        Enddatum festlegen: {endDate}
+                    </button>
+
+                    <button className="tableSwapBtn"
+                        onClick={() => setShowFirstTable(!showFirstTable)}
+                    >
+                        Swap Table
+                    </button>
+                </div>
+
+                <table className="revenueTable">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Kategorie</th>
+                        <th>Typ</th>
+                        <th>Voladate</th>
+                        <th>Betrag</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {liquids.map((item) => (
+                        <tr key={item.id}>
+                            <td>{item.name}</td>
+                            <td>{item.category}</td>
+                            <td>{item.typ}</td>
+                            <td>{item.datum}</td>
+                            <td className={item.price < 0 ? "negative" : "positive"}>
+                                € {item.price}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+
+            </section>
+        );
+    }
 
 
 
@@ -264,42 +385,11 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
 
                 {/* TABLE */}
-                <section className="revenueTableWrapper">
 
-                    <div className="tableHeader">
-                        <h3>Liquiditätsbewegung</h3>
 
-                        <button className="tableAddBtn">
-                            <FaPlus />
-                            Hinzufügen
-                        </button>
-                    </div>
-
-                    <table className="revenueTable">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Kategorie</th>
-                            <th>Typ</th>
-                            <th>Betrag</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {liquids.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.name}</td>
-                                <td>{item.category}</td>
-                                <td>{item.typ}</td>
-                                <td className={item.price < 0 ? "negative" : "positive"}>
-                                    € {item.price}
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-
-                </section>
+                <div>
+                    {showFirstTable ? <AllTable /> : <MonthTable />}
+                </div>
 
 
 
