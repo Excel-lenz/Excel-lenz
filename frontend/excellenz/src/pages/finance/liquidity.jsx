@@ -214,10 +214,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         return false;
     });
 
-    const [selectedFilteredList, setSelectedFilteredList] = useState(filteredLiquids);
-
-    const [nextSelectedFilteredList, setNextSelectedFilteredList] = useState(selectedFilteredList);
-
     const filteredEinnahmen = filteredLiquids.filter((item) =>{
         return item.category === "Einnahme";
     })
@@ -225,6 +221,19 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const filteredAusgaben = filteredLiquids.filter((item) =>{
         return item.category === "Ausgabe";
     })
+
+    const [selectedFilteredList, setSelectedFilteredList] = useState(filteredLiquids);
+
+    const [nextSelectedFilteredList, setNextSelectedFilteredList] = useState(selectedFilteredList);
+
+    const selectedFilteredMonatlich = selectedFilteredList.filter((item) =>{
+        return item.typ === "Monatlich";
+    })
+
+    const selectedFilteredEinmalig = selectedFilteredList.filter((item) =>{
+        return item.typ === "Einmalig";
+    })
+
 
     useEffect(() => {
         setNextSelectedSortedList(selectedSortedList);
@@ -266,6 +275,9 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const [activeCategory, setActiveCategory] = useState("all");
     const [activeType, setActiveType] = useState("all");
 
+    const [activeCategory2, setActiveCategory2] = useState("all");
+    const [activeType2, setActiveType2] = useState("all");
+
     function AllTable(){
         return(
 
@@ -294,61 +306,65 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                 </div>
                 */}
 
-                <div className="tableHeader">
-                    <button className={activeCategory === "all" ? "activeBtn" : ""}
-                        onClick={() =>{
-                            setActiveCategory("all");
+                <div className="tableDropdown">
+                    <select
+                        value={activeCategory}
+                        onChange={(e) => {
+                            const value = e.target.value;
+
+                            setActiveCategory(value);
                             setActiveType("all");
-                        setSelectedSortedList(sortedLiquids);
-                        setNextSelectedSortedList(sortedLiquids);
-                    }
-                    }>
-                        All
-                    </button>
-                    <button className={activeCategory === "einnahmen" ? "activeBtn" : ""}
-                        onClick={() => {
-                            setActiveCategory("einnahmen");
-                            setActiveType("all");
-                        setSelectedSortedList(sortedEinnahmen);
-                        setNextSelectedSortedList(sortedEinnahmen);
-                    }
-                    }>
-                        Einnahmen
-                    </button>
-                    <button className={activeCategory === "ausgaben" ? "activeBtn" : ""}
-                        onClick={() => {
-                            setActiveCategory("ausgaben");
-                            setActiveType("all");
-                        setSelectedSortedList(sortedAusgaben);
-                        setNextSelectedSortedList(sortedAusgaben);
-                    }}>
-                        Ausgaben
-                    </button>
+
+                            switch (value) {
+                                case "einnahmen":
+                                    setSelectedSortedList(sortedEinnahmen);
+                                    setNextSelectedSortedList(sortedEinnahmen);
+                                    break;
+
+                                case "ausgaben":
+                                    setSelectedSortedList(sortedAusgaben);
+                                    setNextSelectedSortedList(sortedAusgaben);
+                                    break;
+
+                                default:
+                                    setSelectedSortedList(sortedLiquids);
+                                    setNextSelectedSortedList(sortedLiquids);
+                            }
+                        }}
+                    >
+                        <option value="all">All</option>
+                        <option value="einnahmen">Einnahmen</option>
+                        <option value="ausgaben">Ausgaben</option>
+                    </select>
+
+                    <select
+                        value={activeType}
+                        onChange={(e) => {
+                            const value = e.target.value;
+
+                            setActiveType(value);
+
+                            switch (value) {
+                                case "monatlich":
+                                    setNextSelectedSortedList(selectedSortedMonatlich);
+                                    break;
+
+                                case "einmalig":
+                                    setNextSelectedSortedList(selectedSortedEinmalig);
+                                    break;
+
+                                default:
+                                    setNextSelectedSortedList(selectedSortedList);
+                            }
+                        }}
+                    >
+                        <option value="all">All</option>
+                        <option value="monatlich">Monatlich</option>
+                        <option value="einmalig">Einmalig</option>
+                    </select>
                 </div>
 
-                <div className="tableHeader">
-                    <button className={activeType === "all" ? "activeBtn" : ""}
-                        onClick={() => {
-                            setActiveType("all");
-                            setNextSelectedSortedList(selectedSortedList)
-                        }}>
-                        All
-                    </button>
-                    <button className={activeType === "monatlich" ? "activeBtn" : ""}
-                        onClick={() => {
-                        setActiveType("monatlich");
-                        setNextSelectedSortedList(selectedSortedMonatlich)
-                    }}>
-                        Monatlich
-                    </button>
-                    <button className={activeType === "einmalig" ? "activeBtn" : ""}
-                        onClick={() => {
-                            setActiveType("einmalig");
-                            setNextSelectedSortedList(selectedSortedEinmalig)
-                        }}>
-                        Einmalig
-                    </button>
-                </div>
+
 
 
 
@@ -425,16 +441,62 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </button>
                 </div>
 
-                <div className="tableHeader">
-                    <button onClick={() => setSelectedFilteredList(filteredLiquids)}>
-                        All
-                    </button>
-                    <button onClick={() => setSelectedFilteredList(filteredEinnahmen)}>
-                        Einnahmen
-                    </button>
-                    <button onClick={() => setSelectedFilteredList(filteredAusgaben)}>
-                        Ausgaben
-                    </button>
+                <div className="tableDropdown">
+                    <select
+                        value={activeCategory2}
+                        onChange={(e) => {
+                            const value = e.target.value;
+
+                            setActiveCategory2(value);
+                            setActiveType2("all");
+
+                            switch (value) {
+                                case "einnahmen":
+                                    setSelectedFilteredList(filteredEinnahmen);
+                                    setNextSelectedFilteredList(filteredEinnahmen);
+                                    break;
+
+                                case "ausgaben":
+                                    setSelectedFilteredList(filteredAusgaben);
+                                    setNextSelectedFilteredList(filteredAusgaben);
+                                    break;
+
+                                default:
+                                    setSelectedFilteredList(filteredLiquids);
+                                    setNextSelectedFilteredList(filteredLiquids);
+                            }
+                        }}
+                    >
+                        <option value="all">All</option>
+                        <option value="einnahmen">Einnahmen</option>
+                        <option value="ausgaben">Ausgaben</option>
+                    </select>
+
+                    <select
+                        value={activeType2}
+                        onChange={(e) => {
+                            const value = e.target.value;
+
+                            setActiveType2(value);
+
+                            switch (value) {
+                                case "monatlich":
+                                    setNextSelectedFilteredList(selectedFilteredMonatlich);
+                                    break;
+
+                                case "einmalig":
+                                    setNextSelectedFilteredList(selectedFilteredEinmalig);
+                                    break;
+
+                                default:
+                                    setNextSelectedFilteredList(selectedFilteredList);
+                            }
+                        }}
+                    >
+                        <option value="all">All</option>
+                        <option value="monatlich">Monatlich</option>
+                        <option value="einmalig">Einmalig</option>
+                    </select>
                 </div>
 
 
@@ -450,7 +512,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </thead>
 
                     <tbody>
-                    {selectedFilteredList.map((item) => (
+                    {nextSelectedFilteredList.map((item) => (
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.category}</td>

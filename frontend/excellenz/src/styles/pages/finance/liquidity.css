@@ -207,6 +207,14 @@
     margin: 0;
 }
 
+.tableDropdown{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
 .tableButtons {
     display: flex;
     align-items: center;
