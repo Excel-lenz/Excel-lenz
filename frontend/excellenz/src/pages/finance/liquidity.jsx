@@ -1,6 +1,9 @@
 import Sidebar from "../../components/sidebar.jsx";
 import React, {useState} from "react";
 import {FaEuroSign, FaPlus} from "react-icons/fa";
+import DatePicker from "react-datepicker";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import "../../styles/pages/finance/liquidity.css";
 
@@ -47,7 +50,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             name: "Steuern",
             category: "Ausgabe",
             typ: "Einmalig",
-            datum:"12.7.2026",
+            datum:"2026-05-17",
             price: -2200,
         },
 
@@ -80,7 +83,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             name: "Steuern2",
             category: "Ausgabe",
             typ: "Einmalig",
-            datum:"28.7.2026",
+            datum:"2026-07-27",
             price: -2500,
         },
 
@@ -89,7 +92,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             name: "Steuern3",
             category: "Ausgabe",
             typ: "Einmalig",
-            datum:"6.8.2026",
+            datum:"2026-09-12",
             price: -1700,
         },
 
@@ -98,8 +101,17 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             name: "Steuern4",
             category: "Ausgabe",
             typ: "Einmalig",
-            datum:"15.9.2026",
+            datum:"2026-08-15",
             price: -1100,
+        },
+
+        {
+            id: 11,
+            name: "CoolesGeld",
+            category: "Eingabe",
+            typ: "Einmalig",
+            datum:"2026-05-07",
+            price: 3200,
         },
 
     ]);
@@ -107,7 +119,8 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
 
 
-
+    const [startDate, setStartDate] = useState("2026-05-10");
+    const [endDate, setEndDate] = useState("2026-08-27");
 
     //variablen aus der Datenbank holen
     const [bestand, setBestand] = useState(50000);
@@ -133,8 +146,72 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
     const [showFirstTable, setShowFirstTable] = useState(true);
 
-    const [startDate, setStartDate] = useState("1.5.2026");
-    const [endDate, setEndDate] = useState("28.9.2026");
+
+    const formatDate = (dateString) => {
+        if (!dateString) return "";
+        return new Date(dateString).toLocaleDateString("de-DE");
+    };
+
+    const sortOrder = {
+        Monatlich: 0,
+        Einmalig: 1,
+    };
+
+    const sortedLiquids = [...liquids].sort((a, b) => {
+        if (a.typ === "Monatlich" && b.typ === "Einmalig") return -1;
+        if (a.typ === "Einmalig" && b.typ === "Monatlich") return 1;
+
+        if (a.typ === "Einmalig" && b.typ === "Einmalig") {
+            return new Date(a.datum) - new Date(b.datum);
+        }
+
+        return 0;
+    });
+
+    const filteredLiquids = sortedLiquids.filter((item) => {
+        if (item.typ === "Monatlich") return true;
+
+        if (item.typ === "Einmalig") {
+            return item.datum >= startDate && item.datum <= endDate;
+        }
+
+        return false;
+    });
+
+
+    function LiquidDatePicker({ typeDate, setTypeDate }) {
+        return (
+            <ReactDatePicker
+                selected={typeDate ? new Date(typeDate) : null}
+                onChange={(d) =>
+                    setTypeDate(d ? d.toISOString().split("T")[0] : "")
+                }
+                dateFormat="dd.MM.yyyy"
+                popperPlacement="bottom-start"
+            />
+        );
+    }
+
+
+    function rechenallEinzahlungen(){
+        return liquids.reduce((total, item) => {
+            if (item.category === "Einnahme") {
+                return total + item.price;
+            }
+            return total;
+        }, 0);
+    }
+
+    function rechenallAuszahlungen(){
+        return liquids.reduce((total, item) => {
+            if (item.category === "Ausgabe") {
+                return total + item.price;
+            }
+            return total;
+        }, 0);
+    }
+
+
 
     function AllTable(){
         return(
@@ -164,7 +241,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </thead>
 
                     <tbody>
-                    {liquids.map((item) => (
+                    {sortedLiquids.map((item) => (
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.category}</td>
@@ -187,15 +264,30 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             <section className="revenueTableWrapper">
 
                 <div className="tableHeader">
-                    <h3>Liquiditätsbewegung von {startDate} bis {endDate}</h3>
+                    <h3>Liquiditätsbewegung von {formatDate(startDate)} bis {formatDate(endDate)}</h3>
 
+
+                    <div>
                     <button className="tableAddBtn">
-                        Startdatum festlegen: {startDate}
+                        Startdatum festlegen
+
                     </button>
 
+                    <LiquidDatePicker
+                        typeDate={startDate}
+                        setTypeDate={setStartDate}
+                    />
+                    </div>
+
+                    <div>
                     <button className="tableAddBtn">
-                        Enddatum festlegen: {endDate}
+                        Enddatum festlegen
                     </button>
+                        <LiquidDatePicker
+                            typeDate={endDate}
+                            setTypeDate={setEndDate}
+                        />
+                    </div>
 
                     <button className="tableSwapBtn"
                         onClick={() => setShowFirstTable(!showFirstTable)}
@@ -216,7 +308,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </thead>
 
                     <tbody>
-                    {liquids.map((item) => (
+                    {filteredLiquids.map((item) => (
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.category}</td>
@@ -237,23 +329,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
 
 
-    function rechenallEinzahlungen(){
-        return liquids.reduce((total, item) => {
-            if (item.category === "Einnahme") {
-                return total + item.price;
-            }
-            return total;
-        }, 0);
-    }
 
-    function rechenallAuszahlungen(){
-        return liquids.reduce((total, item) => {
-            if (item.category === "Ausgabe") {
-                return total + item.price;
-            }
-            return total;
-        }, 0);
-    }
 
 
 
