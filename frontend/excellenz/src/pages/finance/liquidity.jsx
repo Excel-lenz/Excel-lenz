@@ -4,6 +4,7 @@ import {FaEuroSign, FaPlus} from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useEffect } from "react";
 
 import "../../styles/pages/finance/liquidity.css";
 
@@ -108,7 +109,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         {
             id: 11,
             name: "CoolesGeld",
-            category: "Eingabe",
+            category: "Einnahme",
             typ: "Einmalig",
             datum:"2026-05-07",
             price: 3200,
@@ -121,6 +122,19 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
     const [startDate, setStartDate] = useState("2026-05-10");
     const [endDate, setEndDate] = useState("2026-08-27");
+
+    const getMonthCount = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        return (
+            (end.getFullYear() - start.getFullYear()) * 12 +
+            (end.getMonth() - start.getMonth()) +
+            1
+        );
+    };
+
+    const monthCount = getMonthCount(startDate, endDate);
 
     //variablen aus der Datenbank holen
     const [bestand, setBestand] = useState(50000);
@@ -152,6 +166,8 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         return new Date(dateString).toLocaleDateString("de-DE");
     };
 
+
+
     const sortOrder = {
         Monatlich: 0,
         Einmalig: 1,
@@ -168,6 +184,26 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         return 0;
     });
 
+    const sortedEinnahmen = sortedLiquids.filter((item) =>{
+        return item.category === "Einnahme";
+    })
+
+    const sortedAusgaben = sortedLiquids.filter((item) =>{
+        return item.category === "Ausgabe";
+    })
+
+    const [selectedSortedList, setSelectedSortedList] = useState(sortedLiquids);
+
+    const [nextSelectedSortedList, setNextSelectedSortedList] = useState(selectedSortedList);
+
+    const selectedSortedMonatlich = selectedSortedList.filter((item) =>{
+        return item.typ === "Monatlich";
+    })
+
+    const selectedSortedEinmalig = selectedSortedList.filter((item) =>{
+        return item.typ === "Einmalig";
+    })
+
     const filteredLiquids = sortedLiquids.filter((item) => {
         if (item.typ === "Monatlich") return true;
 
@@ -178,6 +214,21 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         return false;
     });
 
+    const [selectedFilteredList, setSelectedFilteredList] = useState(filteredLiquids);
+
+    const [nextSelectedFilteredList, setNextSelectedFilteredList] = useState(selectedFilteredList);
+
+    const filteredEinnahmen = filteredLiquids.filter((item) =>{
+        return item.category === "Einnahme";
+    })
+
+    const filteredAusgaben = filteredLiquids.filter((item) =>{
+        return item.category === "Ausgabe";
+    })
+
+    useEffect(() => {
+        setNextSelectedSortedList(selectedSortedList);
+    }, [selectedSortedList]);
 
     function LiquidDatePicker({ typeDate, setTypeDate }) {
         return (
@@ -212,6 +263,8 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     }
 
 
+    const [activeCategory, setActiveCategory] = useState("all");
+    const [activeType, setActiveType] = useState("all");
 
     function AllTable(){
         return(
@@ -224,6 +277,76 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                         onClick={() => setShowFirstTable(!showFirstTable)}
                     >
                         Swap Table
+                    </button>
+                </div>
+
+                {/*
+                <div className="tableHeader">
+                    <button onClick={() => setSelectedSortedList(sortedLiquids)}>
+                        All
+                    </button>
+                    <button onClick={() => setSelectedSortedList(sortedEinnahmen)}>
+                        Einnahmen
+                    </button>
+                    <button onClick={() => setSelectedSortedList(sortedAusgaben)}>
+                        Ausgaben
+                    </button>
+                </div>
+                */}
+
+                <div className="tableHeader">
+                    <button className={activeCategory === "all" ? "activeBtn" : ""}
+                        onClick={() =>{
+                            setActiveCategory("all");
+                            setActiveType("all");
+                        setSelectedSortedList(sortedLiquids);
+                        setNextSelectedSortedList(sortedLiquids);
+                    }
+                    }>
+                        All
+                    </button>
+                    <button className={activeCategory === "einnahmen" ? "activeBtn" : ""}
+                        onClick={() => {
+                            setActiveCategory("einnahmen");
+                            setActiveType("all");
+                        setSelectedSortedList(sortedEinnahmen);
+                        setNextSelectedSortedList(sortedEinnahmen);
+                    }
+                    }>
+                        Einnahmen
+                    </button>
+                    <button className={activeCategory === "ausgaben" ? "activeBtn" : ""}
+                        onClick={() => {
+                            setActiveCategory("ausgaben");
+                            setActiveType("all");
+                        setSelectedSortedList(sortedAusgaben);
+                        setNextSelectedSortedList(sortedAusgaben);
+                    }}>
+                        Ausgaben
+                    </button>
+                </div>
+
+                <div className="tableHeader">
+                    <button className={activeType === "all" ? "activeBtn" : ""}
+                        onClick={() => {
+                            setActiveType("all");
+                            setNextSelectedSortedList(selectedSortedList)
+                        }}>
+                        All
+                    </button>
+                    <button className={activeType === "monatlich" ? "activeBtn" : ""}
+                        onClick={() => {
+                        setActiveType("monatlich");
+                        setNextSelectedSortedList(selectedSortedMonatlich)
+                    }}>
+                        Monatlich
+                    </button>
+                    <button className={activeType === "einmalig" ? "activeBtn" : ""}
+                        onClick={() => {
+                            setActiveType("einmalig");
+                            setNextSelectedSortedList(selectedSortedEinmalig)
+                        }}>
+                        Einmalig
                     </button>
                 </div>
 
@@ -241,7 +364,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </thead>
 
                     <tbody>
-                    {sortedLiquids.map((item) => (
+                    {nextSelectedSortedList.map((item) => (
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.category}</td>
@@ -267,26 +390,32 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     <h3>Liquiditätsbewegung von {formatDate(startDate)} bis {formatDate(endDate)}</h3>
 
 
-                    <div>
-                    <button className="tableAddBtn">
-                        Startdatum festlegen
+                    <div className="tableButtons">
+                        <div className="tableDateField">
+                            <div>
+                                Startdatum festlegen
 
-                    </button>
+                            </div>
 
-                    <LiquidDatePicker
-                        typeDate={startDate}
-                        setTypeDate={setStartDate}
-                    />
-                    </div>
+                            <LiquidDatePicker
+                                typeDate={startDate}
+                                setTypeDate={setStartDate}
+                            />
+                        </div>
 
-                    <div>
-                    <button className="tableAddBtn">
-                        Enddatum festlegen
-                    </button>
-                        <LiquidDatePicker
-                            typeDate={endDate}
-                            setTypeDate={setEndDate}
-                        />
+                        <div className="tableDateField">
+                            <div>
+                                Enddatum festlegen
+                            </div>
+                            <LiquidDatePicker
+                                typeDate={endDate}
+                                setTypeDate={setEndDate}
+                            />
+                        </div>
+
+                        <div>
+                            Anzahl der Monate : {monthCount}
+                        </div>
                     </div>
 
                     <button className="tableSwapBtn"
@@ -295,6 +424,19 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                         Swap Table
                     </button>
                 </div>
+
+                <div className="tableHeader">
+                    <button onClick={() => setSelectedFilteredList(filteredLiquids)}>
+                        All
+                    </button>
+                    <button onClick={() => setSelectedFilteredList(filteredEinnahmen)}>
+                        Einnahmen
+                    </button>
+                    <button onClick={() => setSelectedFilteredList(filteredAusgaben)}>
+                        Ausgaben
+                    </button>
+                </div>
+
 
                 <table className="revenueTable">
                     <thead>
@@ -308,7 +450,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </thead>
 
                     <tbody>
-                    {filteredLiquids.map((item) => (
+                    {selectedFilteredList.map((item) => (
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.category}</td>

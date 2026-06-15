@@ -199,10 +199,25 @@
     align-items: center;
 
     margin-bottom: 20px;
+
+    height:50px;
 }
 
 .tableHeader h3 {
     margin: 0;
+}
+
+.tableButtons {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.activeBtn {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
 }
 
 .tableAddBtn {
@@ -252,6 +267,28 @@
 
 .tableSwapBtn:hover {
     background: rgba(0, 255, 136, 0.18);
+}
+
+.tableDateField{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    background: rgba(0, 255, 136, 0.12);
+
+    color: #00ff88;
+
+    border: 1px solid rgba(0, 255, 136, 0.2);
+
+    border-radius: 10px;
+
+    padding: 10px 14px;
+
+    margin-right: 20px;
+}
+
+.tableDatePicker{
+
 }
 
 
