@@ -123,6 +123,34 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const [startDate, setStartDate] = useState("2026-05-10");
     const [endDate, setEndDate] = useState("2026-08-27");
 
+    useEffect(() => {
+        const filteredLiquids = sortedLiquids.filter((item) => {
+            if (item.typ === "Monatlich") return true;
+
+            if (item.typ === "Einmalig") {
+                return item.datum >= startDate && item.datum <= endDate;
+            }
+
+            return false;
+        });
+
+        const filteredEinnahmen = filteredLiquids.filter(
+            (item) => item.category === "Einnahme"
+        );
+
+        const filteredAusgaben = filteredLiquids.filter(
+            (item) => item.category === "Ausgabe"
+        );
+
+        // reset states wenn Datum sich ändert
+        setSelectedFilteredList(filteredLiquids);
+        setNextSelectedFilteredList(filteredLiquids);
+
+        // optional: category/type reset
+        setActiveCategory2("all");
+        setActiveType2("all");
+    }, [startDate, endDate]);
+
     const getMonthCount = (startDate, endDate) => {
         const start = new Date(startDate);
         const end = new Date(endDate);
