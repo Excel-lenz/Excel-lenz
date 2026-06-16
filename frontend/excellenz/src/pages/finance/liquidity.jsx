@@ -172,13 +172,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const [activeCategory, setActiveCategory] = useState("All");
     const [activeType, setActiveType] = useState("All");
 
-    const [activeCategory2, setActiveCategory2] = useState("All");
-    const [activeType2, setActiveType2] = useState("All");
-
-    const sortOrder = {
-        Monatlich: 0,
-        Einmalig: 1,
-    };
 
     const sortedLiquids = [...liquids].sort((a, b) => {
         if (a.typ === "Monatlich" && b.typ === "Einmalig") return -1;
