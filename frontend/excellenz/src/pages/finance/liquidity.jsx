@@ -123,33 +123,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const [startDate, setStartDate] = useState("2026-05-10");
     const [endDate, setEndDate] = useState("2026-08-27");
 
-    useEffect(() => {
-        const filteredLiquids = sortedLiquids.filter((item) => {
-            if (item.typ === "Monatlich") return true;
 
-            if (item.typ === "Einmalig") {
-                return item.datum >= startDate && item.datum <= endDate;
-            }
-
-            return false;
-        });
-
-        const filteredEinnahmen = filteredLiquids.filter(
-            (item) => item.category === "Einnahme"
-        );
-
-        const filteredAusgaben = filteredLiquids.filter(
-            (item) => item.category === "Ausgabe"
-        );
-
-        // reset states wenn Datum sich ändert
-        setSelectedFilteredList(filteredLiquids);
-        setNextSelectedFilteredList(filteredLiquids);
-
-        // optional: category/type reset
-        setActiveCategory2("all");
-        setActiveType2("all");
-    }, [startDate, endDate]);
 
     const getMonthCount = (startDate, endDate) => {
         const start = new Date(startDate);
@@ -178,9 +152,9 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     //implementiere noch rechnung für erstengrades
     const [erstenGrades, setErstenGrades] = useState(55);
 
-    var allEinzahlungen = rechenallEinzahlungen();
+    const allEinzahlungen = rechenallEinzahlungen();
 
-    var allAuszahlungen = rechenallAuszahlungen();
+    const allAuszahlungen = rechenallAuszahlungen();
 
     const cashFlow = einzahlungen - auszahlungen;
     const operativerCF = gewinn + abschreibung;
@@ -195,6 +169,11 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     };
 
 
+    const [activeCategory, setActiveCategory] = useState("All");
+    const [activeType, setActiveType] = useState("All");
+
+    const [activeCategory2, setActiveCategory2] = useState("All");
+    const [activeType2, setActiveType2] = useState("All");
 
     const sortOrder = {
         Monatlich: 0,
@@ -212,25 +191,16 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         return 0;
     });
 
-    const sortedEinnahmen = sortedLiquids.filter((item) =>{
-        return item.category === "Einnahme";
-    })
+    const settingsSortedList = sortedLiquids.filter((item) =>{
+            if(activeCategory === "All" || item.category === activeCategory){
+                if(activeType === "All" || item.typ === activeType){
+                    return true;
+                }
+            }
+            return false;
+        })
 
-    const sortedAusgaben = sortedLiquids.filter((item) =>{
-        return item.category === "Ausgabe";
-    })
 
-    const [selectedSortedList, setSelectedSortedList] = useState(sortedLiquids);
-
-    const [nextSelectedSortedList, setNextSelectedSortedList] = useState(selectedSortedList);
-
-    const selectedSortedMonatlich = selectedSortedList.filter((item) =>{
-        return item.typ === "Monatlich";
-    })
-
-    const selectedSortedEinmalig = selectedSortedList.filter((item) =>{
-        return item.typ === "Einmalig";
-    })
 
     const filteredLiquids = sortedLiquids.filter((item) => {
         if (item.typ === "Monatlich") return true;
@@ -242,30 +212,15 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         return false;
     });
 
-    const filteredEinnahmen = filteredLiquids.filter((item) =>{
-        return item.category === "Einnahme";
+    const settingsFilteredList = filteredLiquids.filter((item) =>{
+        if(activeCategory === "All" || item.category === activeCategory){
+            if(activeType === "All" || item.typ === activeType){
+                return true;
+            }
+        }
+        return false;
     })
 
-    const filteredAusgaben = filteredLiquids.filter((item) =>{
-        return item.category === "Ausgabe";
-    })
-
-    const [selectedFilteredList, setSelectedFilteredList] = useState(filteredLiquids);
-
-    const [nextSelectedFilteredList, setNextSelectedFilteredList] = useState(selectedFilteredList);
-
-    const selectedFilteredMonatlich = selectedFilteredList.filter((item) =>{
-        return item.typ === "Monatlich";
-    })
-
-    const selectedFilteredEinmalig = selectedFilteredList.filter((item) =>{
-        return item.typ === "Einmalig";
-    })
-
-
-    useEffect(() => {
-        setNextSelectedSortedList(selectedSortedList);
-    }, [selectedSortedList]);
 
     function LiquidDatePicker({ typeDate, setTypeDate }) {
         return (
@@ -300,11 +255,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     }
 
 
-    const [activeCategory, setActiveCategory] = useState("all");
-    const [activeType, setActiveType] = useState("all");
 
-    const [activeCategory2, setActiveCategory2] = useState("all");
-    const [activeType2, setActiveType2] = useState("all");
 
     function AllTable(){
         return(
@@ -341,29 +292,23 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                             const value = e.target.value;
 
                             setActiveCategory(value);
-                            setActiveType("all");
 
                             switch (value) {
-                                case "einnahmen":
-                                    setSelectedSortedList(sortedEinnahmen);
-                                    setNextSelectedSortedList(sortedEinnahmen);
+                                case "Einnahme":
                                     break;
 
-                                case "ausgaben":
-                                    setSelectedSortedList(sortedAusgaben);
-                                    setNextSelectedSortedList(sortedAusgaben);
+                                case "Ausgabe":
                                     break;
 
                                 default:
-                                    setSelectedSortedList(sortedLiquids);
-                                    setNextSelectedSortedList(sortedLiquids);
                             }
                         }}
                     >
-                        <option value="all">All</option>
-                        <option value="einnahmen">Einnahmen</option>
-                        <option value="ausgaben">Ausgaben</option>
+                        <option value="All">All</option>
+                        <option value="Einnahme">Einnahmen</option>
+                        <option value="Ausgabe">Ausgaben</option>
                     </select>
+
 
                     <select
                         value={activeType}
@@ -373,23 +318,22 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                             setActiveType(value);
 
                             switch (value) {
-                                case "monatlich":
-                                    setNextSelectedSortedList(selectedSortedMonatlich);
+                                case "Monatlich":
                                     break;
 
-                                case "einmalig":
-                                    setNextSelectedSortedList(selectedSortedEinmalig);
+                                case "Einmalig":
                                     break;
 
                                 default:
-                                    setNextSelectedSortedList(selectedSortedList);
+                                    break;
                             }
                         }}
                     >
-                        <option value="all">All</option>
-                        <option value="monatlich">Monatlich</option>
-                        <option value="einmalig">Einmalig</option>
+                        <option value="All">All</option>
+                        <option value="Monatlich">Monatlich</option>
+                        <option value="Einmalig">Einmalig</option>
                     </select>
+
                 </div>
 
 
@@ -408,7 +352,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </thead>
 
                     <tbody>
-                    {nextSelectedSortedList.map((item) => (
+                    {settingsSortedList.map((item) => (
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.category}</td>
@@ -471,59 +415,51 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                 <div className="tableDropdown">
                     <select
-                        value={activeCategory2}
+                        value={activeCategory}
                         onChange={(e) => {
                             const value = e.target.value;
 
-                            setActiveCategory2(value);
-                            setActiveType2("all");
+                            setActiveCategory(value);
 
                             switch (value) {
-                                case "einnahmen":
-                                    setSelectedFilteredList(filteredEinnahmen);
-                                    setNextSelectedFilteredList(filteredEinnahmen);
+                                case "Einnahme":
                                     break;
 
-                                case "ausgaben":
-                                    setSelectedFilteredList(filteredAusgaben);
-                                    setNextSelectedFilteredList(filteredAusgaben);
+                                case "Ausgabe":
                                     break;
 
                                 default:
-                                    setSelectedFilteredList(filteredLiquids);
-                                    setNextSelectedFilteredList(filteredLiquids);
                             }
                         }}
                     >
-                        <option value="all">All</option>
-                        <option value="einnahmen">Einnahmen</option>
-                        <option value="ausgaben">Ausgaben</option>
+                        <option value="All">All</option>
+                        <option value="Einnahme">Einnahmen</option>
+                        <option value="Ausgabe">Ausgaben</option>
                     </select>
 
+
                     <select
-                        value={activeType2}
+                        value={activeType}
                         onChange={(e) => {
                             const value = e.target.value;
 
-                            setActiveType2(value);
+                            setActiveType(value);
 
                             switch (value) {
-                                case "monatlich":
-                                    setNextSelectedFilteredList(selectedFilteredMonatlich);
+                                case "Monatlich":
                                     break;
 
-                                case "einmalig":
-                                    setNextSelectedFilteredList(selectedFilteredEinmalig);
+                                case "Einmalig":
                                     break;
 
                                 default:
-                                    setNextSelectedFilteredList(selectedFilteredList);
+                                    break;
                             }
                         }}
                     >
-                        <option value="all">All</option>
-                        <option value="monatlich">Monatlich</option>
-                        <option value="einmalig">Einmalig</option>
+                        <option value="All">All</option>
+                        <option value="Monatlich">Monatlich</option>
+                        <option value="Einmalig">Einmalig</option>
                     </select>
                 </div>
 
@@ -539,8 +475,9 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </tr>
                     </thead>
 
+
                     <tbody>
-                    {nextSelectedFilteredList.map((item) => (
+                    {settingsFilteredList.map((item) => (
                         <tr key={item.id}>
                             <td>{item.name}</td>
                             <td>{item.category}</td>
@@ -552,6 +489,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                         </tr>
                     ))}
                     </tbody>
+
                 </table>
 
             </section>
