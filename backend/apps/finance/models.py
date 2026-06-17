@@ -50,3 +50,50 @@ class Transaction(models.Model):
         Company.objects.filter(pk=self.company_id).update(
             companyCapital=models.F("companyCapital") + Decimal(delta)
         )
+
+        #monatliche Liquidität
+        year = self.created_at.year
+        month = self.created_at.month
+        monthly, _ = MonthlyLiquidity.objects.get_or_create(
+            company=self.company,
+            year=year,
+            month=month
+        )
+        if self.type == "income":
+            monthly.income += new_total
+            monthly.liquidity += new_total
+        else:
+            monthly.expenses += new_total
+            monthly.liquidity -= new_total
+
+        monthly.save()
+
+class MonthlyLiquidity(models.Model):
+    company = models.ForeignKey(
+        "companies.Company",
+        on_delete=models.CASCADE
+    )
+
+    year = models.IntegerField()
+    month = models.IntegerField()
+
+    income = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        default=0
+    )
+
+    expenses = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        default=0
+    )
+
+    liquidity = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        default=0
+    )
+
+    class Meta:
+        unique_together = ("company", "year", "month")
