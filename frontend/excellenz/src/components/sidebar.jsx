@@ -14,6 +14,7 @@ import {
   FaMoneyBillWave,
   FaFileInvoiceDollar,
   FaUniversity,
+    FaBook,
 } from "react-icons/fa";
 
 import { useNavigate, useLocation } from "react-router-dom";
@@ -233,6 +234,19 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
         <FaCogs />
         {open && <span>Einstellungen</span>}
       </div>
+
+        {/* GLOSSAR */}
+        <div
+            className={`sidebar-item ${
+                isActive("/glossar") ? "active" : ""
+            }`}
+            onClick={() => navigate("/glossar")}
+        >
+            <FaCogs />
+            {open && <span>Glossar</span>}
+        </div>
+
     </div>
   );
 }
+

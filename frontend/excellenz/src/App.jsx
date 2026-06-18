@@ -13,7 +13,7 @@ import Login from "./pages/login/login.jsx";
 import Register from "./pages/login/register.jsx"
 import "./index.css";
 import CompanySetup from "./pages/companySetup"
-
+import Glossar from "./components/Glossar";
 
 export default function App() {
   const [done, setDone] = useState(false);
@@ -124,11 +124,14 @@ export default function App() {
             />
             }
           />
+            <Route path="/glossar" element={<Glossar />} />
 
         </Routes>
       </div>
 
       <LoadingScreen onComplete={() => setDone(true)} />
     </BrowserRouter>
+
+
   );
 }
