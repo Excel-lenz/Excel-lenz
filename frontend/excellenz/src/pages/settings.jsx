@@ -58,12 +58,33 @@ export default function Settings({ sidebarOpen, setSidebarOpen, salesOpen, setSa
   
   const [fiscalYearStart, setFiscalYearStart] = useState("Januar");
   const [budgetWarning, setBudgetWarning] = useState(85);
-  const [privacyMode, setPrivacyMode] = useState(false);
+
+  // Estados locales para el perfil de usuario y seguridad
+  const [email, setEmail] = useState("user@excellenz.de");
+  const [password, setPassword] = useState("12345678");
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Estados para el Modal/Pop-up interactivo
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   const getCurrencySymbol = () => {
     if (currency === "USD") return "$";
     if (currency === "CHF") return "CHF";
     return "€";
+  };
+
+  const handleOpenModal = () => {
+    setIsConfirmed(false);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmChanges = () => {
+    setIsConfirmed(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   const languageOptions = [
@@ -147,13 +168,13 @@ export default function Settings({ sidebarOpen, setSidebarOpen, salesOpen, setSa
             </div>
           </div>
 
-          {/* SECCIÓN 2: FINANZLOGIK & SICHERHEIT */}
+          {/* SECCIÓN 2: FINANZLOGIK */}
           <div style={styles.card}>
             <h2 style={styles.cardTitle}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "12px" }}>
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
-              Finanzlogik &amp; Sicherheit
+              Finanzlogik &amp; Warnungen
             </h2>
 
             <div style={styles.settingRow}>
@@ -180,17 +201,52 @@ export default function Settings({ sidebarOpen, setSidebarOpen, salesOpen, setSa
                 Warnfarbe wird aktiviert bei Überschreitung des Limits.
               </p>
             </div>
+          </div>
 
-            <div style={styles.settingRowInline}>
-              <div>
-                <label style={styles.label}>Sicherheitsmodus</label>
-                <p style={styles.hintText}>verbirgt den aktuellen Kontostand.</p>
+          {/* SECCIÓN 3: BENUTZERPROFIL & ANMELDEDATEN (MODIFICADA) */}
+          <div style={styles.card}>
+            <h2 style={styles.cardTitle}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "12px" }}>
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+              Benutzerprofil &amp; Anmeldedaten
+            </h2>
+
+            <div style={styles.settingRow}>
+              <label style={styles.label}>Neue E-Mail-Adresse</label>
+              <input 
+                type="email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                style={styles.inputField} 
+              />
+            </div>
+
+            <div style={styles.settingRow}>
+              <label style={styles.label}>Neues Passwort</label>
+              <input 
+                type={showPassword ? "text" : "password"} 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                style={styles.inputField} 
+                placeholder="Neues Passwort eingeben"
+              />
+              <div style={styles.checkboxContainer}>
+                <input 
+                  type="checkbox" 
+                  id="togglePasswordVisibility"
+                  checked={showPassword} 
+                  onChange={() => setShowPassword(!showPassword)} 
+                  style={styles.checkbox}
+                />
+                <label htmlFor="togglePasswordVisibility" style={styles.checkboxLabel}>Passwort anzeigen</label>
               </div>
-              <button 
-                onClick={() => setPrivacyMode(!privacyMode)} 
-                style={privacyMode ? styles.switchOn : styles.switchOff}
-              >
-                {privacyMode ? "AKTIV" : "INAKTIV"}
+            </div>
+
+            <div style={styles.cardFooterButtonRow}>
+              <button onClick={handleOpenModal} style={styles.switchOn}>
+                Ändern
               </button>
             </div>
           </div>
@@ -206,7 +262,7 @@ export default function Settings({ sidebarOpen, setSidebarOpen, salesOpen, setSa
             <div style={styles.demoItem}>
               <span style={styles.demoLabel}>Aktueller Kontostand:</span>
               <span style={styles.demoValue}>
-                {privacyMode ? "*** " + getCurrencySymbol() : (numberFormat === "Punkt" ? "45.250" : "45,250") + " " + getCurrencySymbol()}
+                {(numberFormat === "Punkt" ? "45.250" : "45,250") + " " + getCurrencySymbol()}
               </span>
             </div>
             <div style={styles.demoItem}>
@@ -219,6 +275,38 @@ export default function Settings({ sidebarOpen, setSidebarOpen, salesOpen, setSa
         </div>
 
       </div>
+
+      {/* --- POP-UP MODAL DE CONFIRMACIÓN (ESTILO CORPORATIVO) --- */}
+      {isModalOpen && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalContent}>
+            {!isConfirmed ? (
+              <>
+                <p style={styles.modalText}>Sind Sie sicher, dass Sie diese Daten ändern möchten?</p>
+                <div style={styles.modalButtonRow}>
+                  <button onClick={handleCloseModal} style={styles.switchOff}>
+                    Abbrechen
+                  </button>
+                  <button onClick={handleConfirmChanges} style={styles.switchOn}>
+                    Bestätigen
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p style={styles.modalTextSuccess}>
+                  Die Daten wurden geändert. Wir haben eine Bestätigungs-E-Mail an die neue Adresse gesendet.
+                </p>
+                <div style={styles.modalButtonRow}>
+                  <button onClick={handleCloseModal} style={styles.switchOn}>
+                    Schließen
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -268,6 +356,8 @@ const styles = {
     padding: "30px",
     flex: "1 1 450px",
     boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+    display: "flex",
+    flexDirection: "column",
   },
   cardTitle: {
     color: "#2ECC71",
@@ -297,6 +387,44 @@ const styles = {
     fontWeight: "500",
     fontFamily: "'Plus Jakarta Sans', sans-serif",
   },
+  inputField: {
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    borderRadius: "6px",
+    color: "#FFFFFF",
+    padding: "12px 14px",
+    fontSize: "14px",
+    outline: "none",
+    width: "100%",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    boxSizing: "border-box",
+  },
+  checkboxContainer: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    marginTop: "4px",
+  },
+  checkbox: {
+    accentColor: "#2ECC71",
+    cursor: "pointer",
+    width: "16px",
+    height: "16px",
+    margin: 0,
+  },
+  checkboxLabel: {
+    color: "#8A9B9B",
+    fontSize: "13px",
+    cursor: "pointer",
+    userSelect: "none",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+  },
+  cardFooterButtonRow: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: "auto",
+    paddingTop: "10px",
+  },
   customSelectTrigger: {
     backgroundColor: "rgba(255, 255, 255, 0.05)",
     border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -324,8 +452,8 @@ const styles = {
     top: "105%",
     left: 0,
     right: 0,
-    backgroundColor: "#121815", // Carbón-Verde profundo, CERO base azul
-    border: "1px solid #2ECC71", // Borde verde de la marca
+    backgroundColor: "#121815", 
+    border: "1px solid #2ECC71", 
     borderRadius: "6px",
     boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
     zIndex: 100,
@@ -430,5 +558,48 @@ const styles = {
     fontSize: "16px",
     fontWeight: "700",
     fontFamily: "'Plus Jakarta Sans', sans-serif",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.75)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  modalContent: {
+    backgroundColor: "#121815", 
+    border: "2px solid #2ECC71", 
+    borderRadius: "12px",
+    padding: "30px",
+    maxWidth: "450px",
+    width: "90%",
+    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.6)",
+    textAlign: "center",
+  },
+  modalText: {
+    color: "#FFFFFF",
+    fontSize: "16px",
+    fontWeight: "500",
+    lineHeight: "1.5",
+    margin: "0 0 25px 0",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+  },
+  modalTextSuccess: {
+    color: "#2ECC71",
+    fontSize: "16px",
+    fontWeight: "500",
+    lineHeight: "1.5",
+    margin: "0 0 25px 0",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+  },
+  modalButtonRow: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "16px",
   },
 };
