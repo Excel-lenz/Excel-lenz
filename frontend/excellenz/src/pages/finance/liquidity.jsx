@@ -123,6 +123,9 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const [startDate, setStartDate] = useState("2026-05-10");
     const [endDate, setEndDate] = useState("2026-08-27");
 
+    const [heuteDatum, setHeuteDatum] = useState("2026-06-20");
+    const [gruendungsDatum, setGruendungsDatum] = useState("2025-10-14");
+
 
 
     const getMonthCount = (startDate, endDate) => {
@@ -152,13 +155,11 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     //implementiere noch rechnung für erstengrades
     const [erstenGrades, setErstenGrades] = useState(55);
 
-    const allEinzahlungen = rechenallEinzahlungen();
 
-    const allAuszahlungen = rechenallAuszahlungen();
 
     const cashFlow = einzahlungen - auszahlungen;
     const operativerCF = gewinn + abschreibung;
-    const endbestand = bestand + allEinzahlungen + allAuszahlungen;
+
 
     const [showFirstTable, setShowFirstTable] = useState(true);
 
@@ -230,8 +231,11 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
 
     function rechenallEinzahlungen(){
-        return liquids.reduce((total, item) => {
+        return settingsFilteredList.reduce((total, item) => {
             if (item.category === "Einnahme") {
+                if (item.typ === "Monatlich") {
+                    return total + (item.price * monthCount)
+                }
                 return total + item.price;
             }
             return total;
@@ -239,8 +243,11 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     }
 
     function rechenallAuszahlungen(){
-        return liquids.reduce((total, item) => {
+        return settingsFilteredList.reduce((total, item) => {
             if (item.category === "Ausgabe") {
+                if (item.typ === "Monatlich") {
+                    return total + (item.price * monthCount)
+                }
                 return total + item.price;
             }
             return total;
@@ -248,8 +255,12 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     }
 
 
+    const allEinzahlungen = rechenallEinzahlungen();
+    const allAuszahlungen = rechenallAuszahlungen();
 
+    const endbestand = bestand + allEinzahlungen + allAuszahlungen;
 
+    {/*
     function AllTable(){
         return(
 
@@ -264,19 +275,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </button>
                 </div>
 
-                {/*
-                <div className="tableHeader">
-                    <button onClick={() => setSelectedSortedList(sortedLiquids)}>
-                        All
-                    </button>
-                    <button onClick={() => setSelectedSortedList(sortedEinnahmen)}>
-                        Einnahmen
-                    </button>
-                    <button onClick={() => setSelectedSortedList(sortedAusgaben)}>
-                        Ausgaben
-                    </button>
-                </div>
-                */}
 
                 <div className="tableDropdown">
                     <select
@@ -350,7 +348,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                             <td>{item.name}</td>
                             <td>{item.category}</td>
                             <td>{item.typ}</td>
-                            <td>{item.datum}</td>
+                            <td>{formatDate(item.datum)}</td>
                             <td className={item.price < 0 ? "negative" : "positive"}>
                                 € {item.price}
                             </td>
@@ -362,6 +360,8 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
         );
     }
+    */}
+
 
     function MonthTable(){
         return(
@@ -397,13 +397,35 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                         <div>
                             Anzahl der Monate : {monthCount}
                         </div>
+
+                        <button className="tableSwapBtn"
+                                onClick={() => setStartDate(heuteDatum)}
+                        >
+                            Startdatum: heute
+                        </button>
+
+                        <button className="tableSwapBtn"
+                                onClick={() => setStartDate(gruendungsDatum)}
+                        >
+                            Startdatum: gründungstag
+                        </button>
+
+                        <button className="tableSwapBtn"
+                                onClick={() => setEndDate("2026-12-29")}
+                        >
+                            Enddatum zurücksetzen
+                        </button>
+
                     </div>
 
+                    {/*
                     <button className="tableSwapBtn"
                         onClick={() => setShowFirstTable(!showFirstTable)}
                     >
                         Swap Table
                     </button>
+                    */}
+
                 </div>
 
                 <div className="tableDropdown">
@@ -475,7 +497,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                             <td>{item.name}</td>
                             <td>{item.category}</td>
                             <td>{item.typ}</td>
-                            <td>{item.datum}</td>
+                            <td>{formatDate(item.datum)}</td>
                             <td className={item.price < 0 ? "negative" : "positive"}>
                                 € {item.price}
                             </td>
@@ -551,15 +573,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
 
 
-                    {/* HAB VERGESSEN FÜR WAS DAS HIER IST
-                    <div className="revenueCard">
-                        <div>
-                            <span>Nächster Monat</span>
-                            <h2>€ {naechster.toLocaleString()}</h2>
-                        </div>
-                    </div>
-                    */}
-
                     <div className="revenueCard">
                         <div>
                             <span>Liquiditätsgrad 1</span>
@@ -592,14 +605,14 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                     <div className="revenueCard">
                         <div>
-                            <span>alle Einzahlungen diesen Monat</span>
+                            <span>alle Einzahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
                             <h2>€ {allEinzahlungen.toLocaleString()}</h2>
                         </div>
                     </div>
 
                     <div className="revenueCard">
                         <div>
-                            <span>alle Auszahlungen diesen Monat</span>
+                            <span>alle Auszahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
                             <h2>€ {allAuszahlungen.toLocaleString()}</h2>
                         </div>
                     </div>
@@ -627,7 +640,10 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
 
                 <div>
+                    {/*
                     {showFirstTable ? <AllTable /> : <MonthTable />}
+                    */}
+                    <MonthTable />
                 </div>
 
 
