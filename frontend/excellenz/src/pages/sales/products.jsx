@@ -8,29 +8,56 @@ import Card from "../../components/Card";
 
 
 export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}) {
+    const [editingId, setEditingId] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [products, setProducts] = useState([]);
 
     const [productName, setProductName] = useState("");
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
-    const handleSubmit = (e) => {
+const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newProduct = {
-        id: Date.now(),
-        name: productName,
-        price,
-        description
-    };
+    if (editingId) {
+        setProducts(
+            products.map((product) =>
+                product.id === editingId
+                    ? {
+                          ...product,
+                          name: productName,
+                          price,
+                          description,
+                      }
+                    : product
+            )
+        );
+    } else {
+        const newProduct = {
+            id: Date.now(),
+            name: productName,
+            price,
+            description,
+        };
 
-    setProducts([...products, newProduct]);
+        setProducts([...products, newProduct]);
+    }
 
     setProductName("");
     setPrice("");
     setDescription("");
-
+    setEditingId(null);
     setShowForm(false);
+};
+const handleEdit = (product) => {
+    setProductName(product.name);
+    setPrice(product.price);
+    setDescription(product.description);
+
+    setEditingId(product.id);
+    setShowForm(true);
+};
+const handleDelete = (id) => {
+    setProducts(products.filter((product) => product.id !== id));
 };
     return(
         
@@ -65,7 +92,8 @@ export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
 </button>
 </header>
 
-    <div className="productsGrid">
+
+<div className="productsGrid">
     {products.map((product) => (
         <Card
             key={product.id}
@@ -76,9 +104,25 @@ export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
             </p>
 
             <p>{product.description}</p>
+
+            <div className="cardActions">
+                <button
+                    className="editBtn"
+                    onClick={() => handleEdit(product)}
+                >
+                    Bearbeiten
+                </button>
+
+                <button
+                    className="deleteBtn"
+                    onClick={() => handleDelete(product.id)}
+                >
+                    Löschen
+                </button>
+            </div>
         </Card>
     ))}
-    </div>
+</div>
     {showForm && (
     <div className="modalOverlay">
         <div className="modal">
@@ -95,6 +139,7 @@ export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
             required
         />
     </div>
+
 
     <div className="formGroup">
         <label>Preis (€)</label>
