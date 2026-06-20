@@ -10,9 +10,10 @@ import Products from "./pages/sales/products.jsx";
 import LandingPage from "./pages/landing/landingPage.jsx";
 
 import Login from "./pages/login/login.jsx";
-import Register from "./pages/login/register.jsx"
+import Register from "./pages/login/register.jsx";
 import "./index.css";
-import CompanySetup from "./pages/companySetup"
+import CompanySetup from "./pages/companySetup.jsx";
+import Taxes from "./pages/taxes/taxes.jsx"
 
 
 export default function App() {
@@ -108,6 +109,17 @@ export default function App() {
             } 
           />
 
+           <Route path="/taxes" element={ <Taxes
+               sidebarOpen={sidebarOpen}
+               setSidebarOpen={setSidebarOpen}
+               financeOpen={financeOpen}
+               setFinanceOpen={setFinanceOpen}
+               salesOpen={salesOpen}
+               setSalesOpen={setSalesOpen}
+             />
+             }
+           />
+
           {/* Test Route */}
           <Route path="/login" element={ <Login
               onSwitch={() => setIsLogin(false)}
@@ -121,6 +133,11 @@ export default function App() {
             } 
           />
           <Route path="/setup" element={ <CompanySetup
+            />
+            }
+          />
+
+          <Route path="/taxes" element={ <Taxes
             />
             }
           />
