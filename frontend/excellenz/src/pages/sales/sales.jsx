@@ -1,87 +1,86 @@
-import React, { useState } from "react";
+import React from "react";
 import Sidebar from "../../components/Sidebar";
-import "../../styles/pages/sales/sales.css"
-import {FaEuroSign, FaPlus} from "react-icons/fa";
+import Card from "../../components/Card";
 
+import "../../styles/pages/sales/sales.css";
 
+export default function Sales({
+    sidebarOpen,
+    setSidebarOpen,
+    salesOpen,
+    setSalesOpen,
+    financeOpen,
+    setFinanceOpen
+}) {
 
+    const sales = [
+        {
+            id: 1,
+            product: "Gaming Maus",
+            price: 39.99,
+            customer: "Max Mustermann",
+            date: "21.06.2026"
+        },
+        {
+            id: 2,
+            product: "Mechanische Tastatur",
+            price: 89.99,
+            customer: "Anna Schmidt",
+            date: "20.06.2026"
+        },
+        {
+            id: 3,
+            product: "Gaming Headset",
+            price: 69.99,
+            customer: "Peter Müller",
+            date: "19.06.2026"
+        }
+    ];
 
-export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}) {
-    const [showForm, setShowForm] = useState(false);
-    return(
-        
+    return (
         <div className="layout">
 
-            
-                <Sidebar
-                    open={sidebarOpen}
-                    setOpen={setSidebarOpen}
-                    salesOpen={salesOpen}
-                    setSalesOpen={setSalesOpen}
-                    financeOpen={financeOpen}
-                    setFinanceOpen={setFinanceOpen}
-                /> 
+            <Sidebar
+                open={sidebarOpen}
+                setOpen={setSidebarOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+            />
 
-                                             <main className="salesMain">
+            <main className="salesMain">
+
                 <header className="salesHeader">
-                    
-                                <div>
-                                    <h1>Sales</h1>
-                                    <p>
-                                        ?
-                                    </p>
-                                </div>
-            
-                                <button
-    className="addSalesBtn"
-    onClick={() => setShowForm(true)}
->
-    <FaPlus />
-    Neuer Sale
-</button>
-                            </header>
-                            {showForm && (
-    <div className="modalOverlay">
-        <div className="modal">
-            <h2>Neuen Sale anlegen</h2>
+                    <div>
+                        <h1>Sales</h1>
+                        <p>Übersicht aller Verkäufe</p>
+                    </div>
+                </header>
 
-            <form>
-                <div className="formGroup">
-                    <label>Kunde</label>
-                    <input type="text" placeholder="Kundenname" />
+                <div className="salesGrid">
+                    {sales.map((sale) => (
+                        <Card
+                            key={sale.id}
+                            title={sale.product}
+                        >
+                            <p>
+                                <strong>Kunde:</strong> {sale.customer}
+                            </p>
+
+                            <p>
+                                <strong>Preis:</strong> {sale.price} €
+                            </p>
+
+                            <p>
+                                <strong>Datum:</strong> {sale.date}
+                            </p>
+                        </Card>
+                    ))}
                 </div>
 
-                <div className="formGroup">
-                    <label>Betrag (€)</label>
-                    <input type="number" placeholder="0.00" />
-                </div>
+            </main>
 
-                <div className="formGroup">
-                    <label>Beschreibung</label>
-                    <textarea placeholder="Beschreibung..." />
-                </div>
-
-                <div className="modalActions">
-                    <button
-                        type="button"
-                        onClick={() => setShowForm(false)}
-                    >
-                        Abbrechen
-                    </button>
-
-                    <button type="submit">
-                        Speichern
-                    </button>
-                </div>
-            </form>
         </div>
-    </div>
-)}         
-             </main>           
-            
-            
-            
-        </div>
-        
     );
 }

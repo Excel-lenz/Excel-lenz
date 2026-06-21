@@ -77,9 +77,9 @@ const handleDelete = (id) => {
                 <header className="prodHeader">
                     
                                 <div>
-                                    <h1>Products</h1>
+                                    <h1>Produkte</h1>
                                     <p>
-                                        !
+                                        Hier können sie ihre Produkte hinzufügen und die hinzugefügten Produkte sehen.
                                     </p>
                                 </div>
             
