@@ -1,13 +1,12 @@
 import Sidebar from "../../components/sidebar.jsx";
-import React, {useState} from "react";
-import {FaEuroSign, FaPlus} from "react-icons/fa";
-import DatePicker from "react-datepicker";
+import React, {useEffect, useState} from "react";
+import {FaPlus} from "react-icons/fa";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useEffect } from "react";
-import Linechart from "../../components/linechart.jsx"
 
 import "../../styles/pages/finance/liquidity.css";
+import Linechart, {createListContent} from "../../components/linechart.jsx";
+import {LineChart} from "recharts";
 
 
 export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}){
@@ -126,7 +125,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         },
 
         {
-            id: 13,
+            id: 14,
             name: "Kosten",
             category: "Ausgabe",
             typ: "Einmalig",
@@ -135,7 +134,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         },
 
         {
-            id: 13,
+            id: 15,
             name: "Einnahmen von Vekauf",
             category: "Einnahme",
             typ: "Einmalig",
@@ -144,7 +143,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         },
 
         {
-            id: 13,
+            id: 16,
             name: "Kosten",
             category: "Ausgabe",
             typ: "Einmalig",
@@ -153,7 +152,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         },
 
         {
-            id: 13,
+            id: 17,
             name: "Einnahmen von Vekauf",
             category: "Einnahme",
             typ: "Einmalig",
@@ -162,7 +161,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         },
 
         {
-            id: 13,
+            id: 18,
             name: "Kosten",
             category: "Ausgabe",
             typ: "Einmalig",
@@ -182,7 +181,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
     const [heuteDatum, setHeuteDatum] = useState("2026-06-20");
 
-    const [gruendungsDatum, setGruendungsDatum] = useState("2025-10-14");
+    const [gruendungsDatum, setGruendungsDatum] = useState("2026-03-1");
 
 
 
@@ -363,6 +362,77 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
     const cashFlow = (allEinzahlungen + allAuszahlungen)/allMonthCount;
     const operativerCF = gewinn + abschreibung;
+
+
+
+    //stuff für den chart diagramm
+
+
+    function changeIntoMonth(date){
+        return date.slice(0, 7);
+    }
+
+    function nextMonth(yearMonth) {
+        const [year, month] = yearMonth.split("-").map(Number);
+
+        const date = new Date(year, month - 1, 1);
+        date.setMonth(date.getMonth() + 1);
+
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    }
+
+    function erstelleEinnahmeListe(){
+        const arr = new Array(allMonthCount).fill(0)
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const heute = new Date(heuteDatum);
+        let index = 0;
+        let heuteIndex = 0;
+        let currentMonth = changeIntoMonth(startDate);
+
+        if(start < heute){
+            heuteIndex =
+                (heute.getFullYear() - start.getFullYear()) * 12 +
+                (heute.getMonth() - start.getMonth());
+        }
+
+        while (index < heuteIndex){
+            arr[index]= filteredLiquids.reduce((total, item) => {
+                if (item.typ === "Einmalig" && item.datum.startsWith(currentMonth) && item.category === "Einnahme") {
+                    return total + item.price;
+                }
+                return total;
+            }, 0);
+            index += 1;
+            currentMonth = nextMonth(currentMonth);
+        }
+
+        while (index < allMonthCount){
+            arr[index]= filteredLiquids.reduce((total, item) => {
+                if (item.typ === "Monatlich" && item.category === "Einnahme"){
+                    return total + item.price;
+                }
+                if (item.typ === "Einmalig" && item.datum.startsWith(currentMonth) && item.category === "Einnahme") {
+                    return total + item.price;
+                }
+                return total;
+            }, 0);
+            index += 1;
+            currentMonth = nextMonth(currentMonth);
+        }
+
+
+
+        return arr
+
+    }
+
+    const einnahmeListe = erstelleEinnahmeListe();
+
+
+    const chartList =  [createListContent("die Einnahmen", einnahmeListe, "green")]
+
 
     {/*
     function AllTable(){
@@ -685,15 +755,29 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </div>
 
 
+                    <div className="revenueCard">
+                        <div>
+                            <span>Teststuff</span>
+                            <h2>{einnahmeListe.toLocaleString()}    {erstelleEinnahmeListe()}</h2>
+                            <p>{JSON.stringify(einnahmeListe)}</p>
+                        </div>
+                    </div>
+
+
                 </section>
 
                 {/* CHART PLACEHOLDER */}
                 <section className="chartSection">
                     <div className="chartPlaceholder">
-                        <h4>hier kommt noch Chart rein Liniendiagramm mit selbsteingegebener Warnlinie?
-                            <br />
-                            Diagramm von letzten 3 Monate + aktueller Stand + prognose der nächsten 6 Monate?</h4>
-
+                        <Linechart
+                            startdate={startDate}
+                            enddate={endDate}
+                            Ytext={"lol"}
+                            ticks={10000}
+                            minValue={0}
+                            maxValue={100000}
+                            list={chartList}
+                        />
                     </div>
                 </section>
 

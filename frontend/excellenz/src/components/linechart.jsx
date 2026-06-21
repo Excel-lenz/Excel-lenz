@@ -101,6 +101,10 @@ function formatMonthYear(str) {
 
 export default function Linechart({startdate, enddate, Ytext, ticks, minValue, maxValue, list}) {
 
+    console.log("startdate:", startdate);
+    console.log("enddate:", enddate);
+
+
     const data = {
         labels: generateMonthLabels(startdate, enddate),
         datasets: createDataset(list),
