@@ -12,8 +12,9 @@ class Company(models.Model):
     companyCurrency = models.CharField(max_length=255, default="EUR") # Währung
     companyCapital = models.IntegerField(default=0) # Unternehmens - Kapital
     companyGoal = models.IntegerField(default=0) # Unternehmens - Ziel
+
     companyOwner = models.OneToOneField(
         "users.User",
         on_delete=models.CASCADE,
-        related_name="company_owned"
+        related_name="company"
     )

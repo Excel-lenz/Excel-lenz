@@ -42,17 +42,6 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
   return (
     <div className="layout">
-      <Input onCreated={refreshProgress}/>
-
-      <Topbar />
-      <Sidebar
-        open={sidebarOpen}
-        setOpen={setSidebarOpen}
-        salesOpen={salesOpen}
-        setSalesOpen={setSalesOpen}
-        financeOpen={financeOpen}
-        setFinanceOpen={setFinanceOpen}
-      />
 
       <main className="main">
         <header className="header">
