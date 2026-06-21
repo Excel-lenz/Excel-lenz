@@ -148,7 +148,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             category: "Ausgabe",
             typ: "Einmalig",
             datum:"2026-04-15",
-            price: -90000,
+            price: -9000,
         },
 
         {
@@ -382,7 +382,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     }
 
     function erstelleEinnahmeListe(){
-        const arr = new Array(allMonthCount).fill(0)
+        const arr = new Array(allMonthCount).fill(0);
 
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -407,7 +407,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             index += 1;
             currentMonth = nextMonth(currentMonth);
         }
-
         while (index < allMonthCount){
             arr[index]= filteredLiquids.reduce((total, item) => {
                 if (item.typ === "Monatlich" && item.category === "Einnahme"){
@@ -421,17 +420,77 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
             index += 1;
             currentMonth = nextMonth(currentMonth);
         }
-
-
-
         return arr
+    }
 
+    function erstelleAusgabeListe(){
+        const arr = new Array(allMonthCount).fill(0);
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const heute = new Date(heuteDatum);
+        let index = 0;
+        let heuteIndex = 0;
+        let currentMonth = changeIntoMonth(startDate);
+
+        if(start < heute){
+            heuteIndex =
+                (heute.getFullYear() - start.getFullYear()) * 12 +
+                (heute.getMonth() - start.getMonth());
+        }
+
+        while (index < heuteIndex){
+            arr[index]= filteredLiquids.reduce((total, item) => {
+                if (item.typ === "Einmalig" && item.datum.startsWith(currentMonth) && item.category === "Ausgabe") {
+                    return total - item.price;
+                }
+                return total;
+            }, 0);
+            index += 1;
+            currentMonth = nextMonth(currentMonth);
+        }
+        while (index < allMonthCount){
+            arr[index]= filteredLiquids.reduce((total, item) => {
+                if (item.typ === "Monatlich" && item.category === "Ausgabe"){
+                    return total - item.price;
+                }
+                if (item.typ === "Einmalig" && item.datum.startsWith(currentMonth) && item.category === "Ausgabe") {
+                    return total - item.price;
+                }
+                return total;
+            }, 0);
+            index += 1;
+            currentMonth = nextMonth(currentMonth);
+        }
+        return arr
     }
 
     const einnahmeListe = erstelleEinnahmeListe();
+    const ausgabeListe = erstelleAusgabeListe();
 
 
-    const chartList =  [createListContent("die Einnahmen", einnahmeListe, "green")]
+    const gewinnListe = einnahmeListe.map((value, index) => {
+        return value + (ausgabeListe[index] || 0);
+    });
+
+
+    const chart1List =  [
+        createListContent("die Einnahmen", einnahmeListe, "green"),
+        createListContent("die Ausgaben", ausgabeListe, "red")
+    ]
+
+    const chart2List = [
+        createListContent("Gewinn", gewinnListe, "white")
+    ]
+
+    function convertDate(date){
+        let newDate = changeIntoMonth(date);
+        const [year, month] = newDate.split("-");
+        return `${Number(month)}.${year}`;
+    }
+
+    const convertStartDate = convertDate(startDate)
+    const convertEndDate = convertDate(endDate)
 
 
     {/*
@@ -758,8 +817,8 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     <div className="revenueCard">
                         <div>
                             <span>Teststuff</span>
-                            <h2>{einnahmeListe.toLocaleString()}    {erstelleEinnahmeListe()}</h2>
                             <p>{JSON.stringify(einnahmeListe)}</p>
+                            <p>{JSON.stringify(ausgabeListe)}</p>
                         </div>
                     </div>
 
@@ -770,13 +829,23 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                 <section className="chartSection">
                     <div className="chartPlaceholder">
                         <Linechart
-                            startdate={startDate}
-                            enddate={endDate}
-                            Ytext={"lol"}
+                            startdate={convertStartDate}
+                            enddate={convertEndDate}
+                            Ytext={"Einnahmen und Ausgaben in Euro"}
                             ticks={10000}
                             minValue={0}
-                            maxValue={100000}
-                            list={chartList}
+                            maxValue={50000}
+                            list={chart1List}
+                        />
+
+                        <Linechart
+                            startdate={convertStartDate}
+                            enddate={convertEndDate}
+                            Ytext={"Gewinn in Euro"}
+                            ticks={10000}
+                            minValue={0}
+                            maxValue={50000}
+                            list={chart2List}
                         />
                     </div>
                 </section>
