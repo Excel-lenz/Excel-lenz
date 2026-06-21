@@ -9,8 +9,8 @@ import Card from "../../components/Card";
 import {
     getProducts,
     createProduct,
-    updateProduct,   // ===== NEW =====
-    deleteProduct,   // ===== NEW =====
+    updateProduct,
+    deleteProduct,
 } from "../../api/products/productAPI";
 import Input from "../../components/inputs.jsx";
 
@@ -27,10 +27,6 @@ export default function Sales({
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
 
-    // =====================================================
-    // ===== NEW =====
-    // Load products from Django
-    // =====================================================
     const loadProducts = async () => {
         try {
             const data = await getProducts();
@@ -43,10 +39,7 @@ export default function Sales({
         }
     };
 
-    // =====================================================
-    // ===== NEW =====
-    // Load products when component mounts
-    // =====================================================
+
     useEffect(() => {
         const load = async () => {
             const data = await getProducts();
@@ -56,10 +49,7 @@ export default function Sales({
         load();
     }, []);
 
-    // =====================================================
-    // ===== CHANGED =====
-    // Create + Update support
-    // =====================================================
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -103,9 +93,7 @@ export default function Sales({
         }
     };
 
-    // =====================================================
-    // Existing edit handler
-    // =====================================================
+
     const handleEdit = (product) => {
 
         setProductName(product.name);
@@ -117,13 +105,10 @@ export default function Sales({
         setShowForm(true);
     };
 
-    // =====================================================
-    // ===== CHANGED =====
-    // Delete from Django
-    // =====================================================
+
     const handleDelete = async (id) => {
 
-        // ===== NEW =====
+
         if (
             !window.confirm(
                 "Produkt wirklich löschen?"
@@ -133,11 +118,7 @@ export default function Sales({
         }
 
         try {
-
-            // ===== NEW =====
             await deleteProduct(id);
-
-            // ===== NEW =====
             await loadProducts();
 
         } catch (err) {
@@ -166,8 +147,6 @@ export default function Sales({
 
                     <button
                         className="addProdBtn"
-
-                        // ===== CHANGED =====
                         onClick={() => {
 
                             setEditingId(null);
@@ -186,9 +165,7 @@ export default function Sales({
                 </header>
 
                 <div className="productsGrid">
-
                     {products.map((product) => (
-
                         <Card
                             key={product.id}
                             title={product.name}
@@ -239,7 +216,6 @@ export default function Sales({
 
                         <div className="modal">
 
-                            {/* ===== CHANGED ===== */}
                             <h2>
                                 {editingId
                                     ? "Produkt bearbeiten"
@@ -342,8 +318,6 @@ export default function Sales({
                                             setShowForm(
                                                 false
                                             );
-
-                                            // ===== NEW =====
                                             setEditingId(
                                                 null
                                             );
@@ -356,7 +330,6 @@ export default function Sales({
                                     <button
                                         type="submit"
                                     >
-                                        {/* ===== CHANGED ===== */}
                                         {editingId
                                             ? "Aktualisieren"
                                             : "Speichern"}

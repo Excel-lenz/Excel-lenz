@@ -17,7 +17,6 @@ urlpatterns = [
         name="products"
     ),
 
-    # ===== NEW =====
     path(
         "products/<int:pk>/",
         ProductDetailView.as_view(),

@@ -53,7 +53,6 @@ class ProductListCreateView(generics.ListCreateAPIView):
         serializer.save(company=company)
 
 
-# ===== NEW =====
 class ProductDetailView(
     generics.RetrieveUpdateDestroyAPIView
 ):
