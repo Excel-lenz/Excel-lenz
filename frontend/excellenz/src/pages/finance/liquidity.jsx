@@ -16,7 +16,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
         {
             id: 7,
-            name: "Einnahmen von Verkauf",
+            name: "Aktuelle Einnahmen von Verkauf",
             category: "Einnahme",
             typ: "Monatlich",
             price: 21000,
@@ -24,7 +24,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
         {
             id: 8,
-            name: "Fixkosten",
+            name: "Aktuelle Fixkosten",
             category: "Ausgabe",
             typ: "Monatlich",
             price: -9050,
@@ -32,7 +32,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
         {
             id: 9,
-            name: "Variable Kosten",
+            name: "Aktuelle Variable Kosten",
             category: "Ausgabe",
             typ: "Monatlich",
             price: -4200,
@@ -107,13 +107,69 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         },
 
         {
-            id: 11,
+            id: 12,
             name: "CoolesGeld",
             category: "Einnahme",
             typ: "Einmalig",
             datum:"2026-05-07",
             price: 3200,
         },
+
+        {
+            id: 13,
+            name: "Einnahmen von Vekauf",
+            category: "Einnahme",
+            typ: "Einmalig",
+            datum:"2026-05-15",
+            price: 20000,
+        },
+
+        {
+            id: 13,
+            name: "Kosten",
+            category: "Ausgabe",
+            typ: "Einmalig",
+            datum:"2026-05-15",
+            price: -10000,
+        },
+
+        {
+            id: 13,
+            name: "Einnahmen von Vekauf",
+            category: "Einnahme",
+            typ: "Einmalig",
+            datum:"2026-04-15",
+            price: 18000,
+        },
+
+        {
+            id: 13,
+            name: "Kosten",
+            category: "Ausgabe",
+            typ: "Einmalig",
+            datum:"2026-04-15",
+            price: -90000,
+        },
+
+        {
+            id: 13,
+            name: "Einnahmen von Vekauf",
+            category: "Einnahme",
+            typ: "Einmalig",
+            datum:"2026-03-15",
+            price: 15000,
+        },
+
+        {
+            id: 13,
+            name: "Kosten",
+            category: "Ausgabe",
+            typ: "Einmalig",
+            datum:"2026-03-15",
+            price: -7500,
+        },
+
+
 
     ]);
 
@@ -124,6 +180,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const [endDate, setEndDate] = useState("2026-08-27");
 
     const [heuteDatum, setHeuteDatum] = useState("2026-06-20");
+
     const [gruendungsDatum, setGruendungsDatum] = useState("2025-10-14");
 
 
@@ -139,35 +196,26 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         );
     };
 
-    const monthCount = getMonthCount(startDate, endDate);
-
-    //variablen aus der Datenbank holen
-    const [bestand, setBestand] = useState(50000);
-    const [einzahlungen, setEinzahlungen] = useState(12000);
-    const [auszahlungen, setAuszahlungen] = useState(7500);
-    const [naechster, setNaechster] = useState(-3700);
-    const [abschreibung, setAbschreibung] = useState(1200);
-    const [gewinn, setGewinn] = useState(10000);
-
-    //runway rechnung = ((aktuelle liquidität - einmalige abrechnungen) / monatliche abrechnungen)
-    //implementier noch runway rechnung
-    const [runway, setRunway] = useState("31,8 Monate");
-    //implementiere noch rechnung für erstengrades
-    const [erstenGrades, setErstenGrades] = useState(55);
-
-
-
-    const cashFlow = einzahlungen - auszahlungen;
-    const operativerCF = gewinn + abschreibung;
-
-
-    const [showFirstTable, setShowFirstTable] = useState(true);
-
+    const monthCount = getMonthCount(heuteDatum, endDate);
+    const allMonthCount = getMonthCount(startDate, endDate)
 
     const formatDate = (dateString) => {
         if (!dateString) return "";
         return new Date(dateString).toLocaleDateString("de-DE");
     };
+
+    const getDaysBetweenInclusive = (startDate, endDate) =>
+        Math.floor(
+            (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)
+        ) + 1;
+
+    //variablen aus der Datenbank holen
+    const [bestand, setBestand] = useState(500000);
+    const [abschreibung, setAbschreibung] = useState(1200);
+    const [gewinn, setGewinn] = useState(10000);
+
+    const [kurzfristig, setKurzfristig] = useState(800000);
+
 
 
     const [activeCategory, setActiveCategory] = useState("All");
@@ -230,6 +278,50 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     }
 
 
+
+
+
+    function addDays(dateString, days) {
+        const date = new Date(dateString);
+        date.setDate(date.getDate() + days);
+        return date.toISOString().split("T")[0];
+    }
+
+
+    const [afterToday, setAfterToday] = useState(addDays(heuteDatum, 1));
+
+
+    const beforeTodayList = sortedLiquids.filter((item) => {
+        if (item.typ === "Einmalig") {
+            return item.datum >= startDate && item.datum <= heuteDatum;
+        }
+
+        return false;
+    });
+
+    const afterTodayList = sortedLiquids.filter((item) => {
+        if (item.typ === "Monatlich") return true;
+
+        if (item.typ === "Einmalig") {
+            return item.datum >= afterToday && item.datum <= endDate;
+        }
+
+        return false;
+    });
+
+    const [zukunftGewinn, setZukunftGewinn] = useState(0);
+
+    useEffect(() => {
+        const summe = afterTodayList.reduce((total, item) => {
+            if (item.typ === "Monatlich") {
+                return total + item.price * monthCount;
+            }
+            return total + item.price;
+        }, 0);
+
+        setZukunftGewinn(summe);
+    }, [afterTodayList, monthCount]);
+
     function rechenallEinzahlungen(){
         return settingsFilteredList.reduce((total, item) => {
             if (item.category === "Einnahme") {
@@ -258,7 +350,18 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const allEinzahlungen = rechenallEinzahlungen();
     const allAuszahlungen = rechenallAuszahlungen();
 
-    const endbestand = bestand + allEinzahlungen + allAuszahlungen;
+    const endbestand = bestand + zukunftGewinn
+
+
+
+    //implementiere noch rechnung für erstengrades
+    const [erstenGrades, setErstenGrades] = useState((bestand/kurzfristig)*100);
+
+
+
+
+    const cashFlow = (allEinzahlungen + allAuszahlungen)/allMonthCount;
+    const operativerCF = gewinn + abschreibung;
 
     {/*
     function AllTable(){
@@ -401,13 +504,13 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                         <button className="tableSwapBtn"
                                 onClick={() => setStartDate(heuteDatum)}
                         >
-                            Startdatum: heute
+                            Startdatum: heute {formatDate(heuteDatum)}
                         </button>
 
                         <button className="tableSwapBtn"
                                 onClick={() => setStartDate(gruendungsDatum)}
                         >
-                            Startdatum: gründungstag
+                            Startdatum: gründungstag {formatDate(gruendungsDatum)}
                         </button>
 
                         <button className="tableSwapBtn"
@@ -566,7 +669,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                     <div className="revenueCard">
                         <div>
-                            <span>Liquide Mittel am Periodenende</span>
+                            <span>Liquide Mittel am Periodenende ({formatDate(endDate)})</span>
                             <h2>€ {endbestand.toLocaleString()}</h2>
                         </div>
                     </div>
@@ -575,15 +678,8 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                     <div className="revenueCard">
                         <div>
-                            <span>Liquiditätsgrad 1</span>
+                            <span>Liquiditätsgrad 1 (noch implementieren)</span>
                             <h2>{erstenGrades.toLocaleString()}%</h2>
-                        </div>
-                    </div>
-
-                    <div className="revenueCard">
-                        <div>
-                            <span>Runway</span>
-                            <h2>{runway.toLocaleString()}</h2>
                         </div>
                     </div>
 
@@ -619,14 +715,14 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                     <div className="revenueCard">
                         <div>
-                            <span>Cashflow</span>
-                            <h2>€ {cashFlow.toLocaleString()}</h2>
+                            <span>Cashflow von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                            <h2>€ {cashFlow.toLocaleString()} / Monat</h2>
                         </div>
                     </div>
 
                     <div className="revenueCard">
                         <div>
-                            <span>Operativer Cashflow</span>
+                            <span>Operativer Cashflow (noch nicht richtig implementiert)</span>
                             <h2>€ {operativerCF.toLocaleString()}</h2>
                         </div>
                     </div>
