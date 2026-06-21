@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useEffect } from "react";
+import Linechart from "../../components/linechart.jsx"
 
 import "../../styles/pages/finance/liquidity.css";
 
