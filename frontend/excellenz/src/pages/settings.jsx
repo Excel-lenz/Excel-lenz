@@ -7,14 +7,7 @@ export default function Settings({sidebarOpen, setSidebarOpen, salesOpen, setSal
     return(
         <div>
             <div className="layout">
-                <Sidebar
-                    open={sidebarOpen}
-                    setOpen={setSidebarOpen}
-                    salesOpen={salesOpen}
-                    setSalesOpen={setSalesOpen}
-                    financeOpen={financeOpen}
-                    setFinanceOpen={setFinanceOpen}
-                />
+
             </div>
         </div>
     );

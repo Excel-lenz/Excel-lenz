@@ -1,76 +1,75 @@
-import React, { useState } from "react";
-import Sidebar from "../../components/Sidebar";
-import "../../styles/pages/sales/sales.css"
-import {FaEuroSign, FaPlus} from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import Card from "../../components/Card";
+import "../../styles/pages/sales/sales.css";
+import { getSales } from "../../api/sales/salesAPI";
 
 
 
 
-export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}) {
-    const [showForm, setShowForm] = useState(false);
-    return(
-        
+export default function Sales({
+
+}) {
+    const [sales, setSales] = useState([]);
+    useEffect(() => {
+        const loadSales = async () => {
+            try {
+                const data = await getSales();
+                setSales(data);
+            } catch (err) {
+                console.error(
+                    "Failed loading sales:",
+                    err
+                );
+            }
+        };
+
+        loadSales();
+
+    }, []);
+
+    return (
         <div className="layout">
             <main className="salesMain">
                 <header className="salesHeader">
-                    
-                                <div>
-                                    <h1>Sales</h1>
-                                    <p>
-                                        ?
-                                    </p>
-                                </div>
-            
-                                <button
-    className="addSalesBtn"
-    onClick={() => setShowForm(true)}
->
-    <FaPlus />
-    Neuer Sale
-</button>
-                            </header>
-                            {showForm && (
-    <div className="modalOverlay">
-        <div className="modal">
-            <h2>Neuen Sale anlegen</h2>
+                    <div>
+                        <h1>Sales</h1>
+                        <p>Übersicht aller Verkäufe</p>
+                    </div>
+                </header>
 
-            <form>
-                <div className="formGroup">
-                    <label>Kunde</label>
-                    <input type="text" placeholder="Kundenname" />
+                <div className="salesGrid">
+                    {sales.map((sale) => (
+                        <Card
+                            key={sale.id}
+                            title={sale.name}
+                        >
+                            <p>
+                                <strong>Kategorie:</strong> {sale.category}
+                            </p>
+
+                            <p>
+                                <strong>Preis:</strong> {sale.price} €
+                            </p>
+
+                            <p>
+                                <strong>Anzahl:</strong> {sale.quantity}
+                            </p>
+
+                            <p>
+                                <strong>Gesamt:</strong>{" "}
+                                {(sale.price * sale.quantity).toFixed(2)} €
+                            </p>
+
+                            <p>
+                                <strong>Datum:</strong>{" "}
+                                {new Date(sale.date).toLocaleDateString()}
+                            </p>
+                        </Card>
+                    ))}
                 </div>
 
-                <div className="formGroup">
-                    <label>Betrag (€)</label>
-                    <input type="number" placeholder="0.00" />
-                </div>
+            </main>
 
-                <div className="formGroup">
-                    <label>Beschreibung</label>
-                    <textarea placeholder="Beschreibung..." />
-                </div>
-
-                <div className="modalActions">
-                    <button
-                        type="button"
-                        onClick={() => setShowForm(false)}
-                    >
-                        Abbrechen
-                    </button>
-
-                    <button type="submit">
-                        Speichern
-                    </button>
-                </div>
-            </form>
         </div>
-    </div>
-)}         
-             </main>           
-            
-            
-            
-        </div>
-        
     );
 }

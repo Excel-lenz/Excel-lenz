@@ -1,15 +1,31 @@
-from rest_framework import viewsets
-from rest_framework import generics
+from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
-from .models import Transaction
-from .models import Product
-from .serializers import TransactionSerializer
-from .serializers import ProductSerializer
+from .models import Transaction, Product
+from .serializers import TransactionSerializer, ProductSerializer
 from apps.companies.models import Company
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 class TransactionViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
+
+    @action(detail=False, methods=["get"])
+    def sales(self, request):
+
+        company = request.user.company
+
+        sales = Transaction.objects.filter(
+            company=company,
+            product__isnull=False
+        ).order_by("-date")
+
+        serializer = self.get_serializer(
+            sales,
+            many=True
+        )
+
+        return Response(serializer.data)
 
     def get_queryset(self):
         return Transaction.objects.filter(

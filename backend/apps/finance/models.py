@@ -2,6 +2,7 @@ from django.db import models
 from apps.companies.models import Company
 from decimal import Decimal
 from django.utils.timezone import now
+import uuid
 
 class Transaction(models.Model):
     TYPE_CHOICES = [
@@ -9,13 +10,14 @@ class Transaction(models.Model):
         ("expense", "Expense"),
     ]
 
+    transaction_ID = models.CharField(max_length=30,unique=False,blank=True,null=True)
     company = models.ForeignKey("companies.Company", on_delete=models.CASCADE)
 
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
 
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
-
+    product = models.ForeignKey("finance.Product",on_delete=models.SET_NULL,null=True,blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     net_amount = models.DecimalField(max_digits=15,decimal_places=2,default=0 )
     quantity = models.PositiveIntegerField()
@@ -40,10 +42,14 @@ class Transaction(models.Model):
         gross_total = self.total
 
         self.tax_amount = (
-            gross_total * Decimal(self.tax_rate) / Decimal("100")
+            gross_total * Decimal(str(self.tax_rate or 0)) / Decimal("100")
         )
 
         self.net_amount = gross_total - self.tax_amount
+
+        if not self.transaction_ID:
+            self.transaction_ID = f"TX-{uuid.uuid4().hex[:8].upper()}"
+
 
         super().save(*args, **kwargs)
 

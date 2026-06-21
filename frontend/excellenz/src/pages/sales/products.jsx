@@ -15,12 +15,6 @@ import {
 import Input from "../../components/inputs.jsx";
 
 export default function Sales({
-                                  sidebarOpen,
-                                  setSidebarOpen,
-                                  salesOpen,
-                                  setSalesOpen,
-                                  financeOpen,
-                                  setFinanceOpen,
                               }) {
 
     const [editingId, setEditingId] = useState(null);

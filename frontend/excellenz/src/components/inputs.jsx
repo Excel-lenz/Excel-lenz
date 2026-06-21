@@ -318,6 +318,7 @@ export default function Input( {onCreated} ) {
                                     } else {
 
                                         payload = {
+                                            product: selectedProduct.id,
                                             name: selectedProduct.name,
                                             category: selectedProduct.category,
                                             type: "income",

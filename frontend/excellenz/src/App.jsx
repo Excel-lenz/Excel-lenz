@@ -13,11 +13,11 @@ import Login from "./pages/login/login.jsx";
 import Register from "./pages/login/register.jsx"
 import "./index.css";
 import CompanySetup from "./pages/companySetup"
-
 import CompanySetupGuard from "./protection/companySetupGuard.jsx";
 import ProtectedRoute from "./protection/protectedRoute.jsx";
 import DashboardGuard from "./protection/dashboardGuard.jsx";
 import Input from "./components/inputs";
+
 
 export default function App() {
   const [done, setDone] = useState(false);
@@ -41,6 +41,7 @@ export default function App() {
           flexDirection: "column", 
         }}
       >
+
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route
@@ -60,23 +61,25 @@ export default function App() {
                 </DashboardGuard>
               }
           />
-          <Route path="/settings" element={ 
+          <Route path="/settings" element={
             <DashboardGuard>
-              <Settings
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-                financeOpen={financeOpen}
-                setFinanceOpen={setFinanceOpen}
-                salesOpen={salesOpen}
-                setSalesOpen={setSalesOpen}
-              />
+                <Layout
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={setSidebarOpen}
+                    salesOpen={salesOpen}
+                    setSalesOpen={setSalesOpen}
+                    financeOpen={financeOpen}
+                    setFinanceOpen={setFinanceOpen}
+                >
+                    <Settings/>
+                </Layout>
             </DashboardGuard>
-            } 
+            }
           />
 
           {/* Finance routes */}
 
-          <Route path="/finance" element={ 
+          <Route path="/finance" element={
             <DashboardGuard>
               <Finance
                 sidebarOpen={sidebarOpen}
@@ -87,10 +90,10 @@ export default function App() {
                 setSalesOpen={setSalesOpen}
               />
             </DashboardGuard>
-            } 
+            }
           />
 
-          <Route path="/finance/revenue" element={ 
+          <Route path="/finance/revenue" element={
             <DashboardGuard>
               <Revenue
                 sidebarOpen={sidebarOpen}
@@ -101,10 +104,10 @@ export default function App() {
                 setSalesOpen={setSalesOpen}
               />
             </DashboardGuard>
-            } 
+            }
           />
 
-          <Route path="/sales" element={ 
+          <Route path="/sales" element={
             <DashboardGuard>
                 <Layout
                     sidebarOpen={sidebarOpen}
@@ -124,7 +127,7 @@ export default function App() {
                     />
                 </Layout>
             </DashboardGuard>
-            } 
+            }
           />
 
 
@@ -150,25 +153,23 @@ export default function App() {
           <Route path="/login" element={ <Login
               onSwitch={() => setIsLogin(false)}
             />
-            } 
+            }
           />
 
           <Route path="/register" element={ <Register
               onSwitch={() => setIsLogin(true)}
             />
-            } 
+            }
           />
-          <Route path="/setup" element={ 
+          <Route path="/setup" element={
              <CompanySetupGuard>
               <CompanySetup />
             </CompanySetupGuard>
             }
           />
-
         </Routes>
-      </div>
-
-      <LoadingScreen onComplete={() => setDone(true)} />
-    </BrowserRouter>
-  );
+  </div>
+  <LoadingScreen onComplete={() => setDone(true)} />
+</BrowserRouter>
+);
 }

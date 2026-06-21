@@ -1,4 +1,8 @@
 import axios from "axios";
+import {PRODUKTE} from "../auth"
+import { authFetch, authPost } from "../funcs";
+
+
 
 const API_URL = "http://127.0.0.1:8000/api/finance/products/";
 

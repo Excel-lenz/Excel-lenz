@@ -20,3 +20,4 @@ export const GOAL = COMPANY + 'goal/'
 // Finance
 const FINANCE = BASE_URL + ':' + PORT + '/api/finance/'
 export const TRANSACTION = FINANCE + 'transactions/'
+export const PRODUKTE = BASE_URL + ':' + PORT + 'sales/products/'
