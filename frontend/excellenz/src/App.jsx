@@ -8,6 +8,7 @@ import Revenue from "./pages/finance/revenue.jsx";
 import Sales from "./pages/sales/sales.jsx";
 import Products from "./pages/sales/products.jsx";
 import LandingPage from "./pages/landing/landingPage.jsx";
+import Costs from "./pages/finance/costs.jsx";
 
 import Login from "./pages/login/login.jsx";
 import Register from "./pages/login/register.jsx"
@@ -64,6 +65,17 @@ export default function App() {
           {/* Finance routes */}
 
           <Route path="/finance" element={ <Finance
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+              financeOpen={financeOpen}
+              setFinanceOpen={setFinanceOpen}
+              salesOpen={salesOpen}
+              setSalesOpen={setSalesOpen}
+            />
+            } 
+          />
+
+          <Route path="/finance/costs" element={ <Costs
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
               financeOpen={financeOpen}
