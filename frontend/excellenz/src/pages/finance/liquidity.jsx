@@ -323,7 +323,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     }, [afterTodayList, monthCount]);
 
     function rechenallEinzahlungen(){
-        return settingsFilteredList.reduce((total, item) => {
+        return filteredLiquids.reduce((total, item) => {
             if (item.category === "Einnahme") {
                 if (item.typ === "Monatlich") {
                     return total + (item.price * monthCount)
@@ -335,7 +335,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     }
 
     function rechenallAuszahlungen(){
-        return settingsFilteredList.reduce((total, item) => {
+        return filteredLiquids.reduce((total, item) => {
             if (item.category === "Ausgabe") {
                 if (item.typ === "Monatlich") {
                     return total + (item.price * monthCount)
