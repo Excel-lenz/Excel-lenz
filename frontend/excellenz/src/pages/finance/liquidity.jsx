@@ -173,15 +173,20 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     ]);
 
 
+    //variablen aus der Datenbank holen
+    const [heuteDatum, setHeuteDatum] = useState("2026-06-20");
+    const [gruendungsDatum, setGruendungsDatum] = useState("2026-03-1");
+
+    const [bestand, setBestand] = useState(500000);
+    const [abschreibung, setAbschreibung] = useState(1200);
+    const [kurzfristig, setKurzfristig] = useState(800000);
+    //ignorier das hier, nur platzhalter für operativer cashflow
+    const [gewinn, setGewinn] = useState(10000);
+
 
 
     const [startDate, setStartDate] = useState("2026-05-10");
     const [endDate, setEndDate] = useState("2026-08-27");
-
-    const [heuteDatum, setHeuteDatum] = useState("2026-06-20");
-
-    const [gruendungsDatum, setGruendungsDatum] = useState("2026-03-1");
-
 
 
     const getMonthCount = (startDate, endDate) => {
@@ -204,12 +209,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     };
 
 
-    //variablen aus der Datenbank holen
-    const [bestand, setBestand] = useState(500000);
-    const [abschreibung, setAbschreibung] = useState(1200);
-    const [gewinn, setGewinn] = useState(10000);
 
-    const [kurzfristig, setKurzfristig] = useState(800000);
 
 
 
