@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/settings.jsx";
 import Finance from "./pages/finance.jsx";
 import Revenue from "./pages/finance/revenue.jsx";
+import Liquidity from "./pages/finance/liquidity.jsx";
 import Sales from "./pages/sales/sales.jsx";
 import Products from "./pages/sales/products.jsx";
 import LandingPage from "./pages/landing/landingPage.jsx";
@@ -13,6 +14,7 @@ import Login from "./pages/login/login.jsx";
 import Register from "./pages/login/register.jsx"
 import "./index.css";
 import CompanySetup from "./pages/companySetup"
+
 
 
 export default function App() {
@@ -83,6 +85,17 @@ export default function App() {
               setSalesOpen={setSalesOpen}
             />
             } 
+          />
+
+          <Route path="/finance/liquidity" element={ <Liquidity
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+              financeOpen={financeOpen}
+              setFinanceOpen={setFinanceOpen}
+              salesOpen={salesOpen}
+              setSalesOpen={setSalesOpen}
+          />
+          }
           />
 
           <Route path="/sales" element={ <Sales
