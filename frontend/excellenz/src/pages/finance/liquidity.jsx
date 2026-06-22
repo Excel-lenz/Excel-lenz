@@ -6,7 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import "../../styles/pages/finance/liquidity.css";
 import Linechart, {createListContent} from "../../components/linechart.jsx";
-import {LineChart} from "recharts";
 
 
 export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}){
@@ -204,10 +203,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         return new Date(dateString).toLocaleDateString("de-DE");
     };
 
-    const getDaysBetweenInclusive = (startDate, endDate) =>
-        Math.floor(
-            (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)
-        ) + 1;
 
     //variablen aus der Datenbank holen
     const [bestand, setBestand] = useState(500000);
@@ -232,16 +227,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
         return 0;
     });
-
-    const settingsSortedList = sortedLiquids.filter((item) =>{
-            if(activeCategory === "All" || item.category === activeCategory){
-                if(activeType === "All" || item.typ === activeType){
-                    return true;
-                }
-            }
-            return false;
-        })
-
 
 
     const filteredLiquids = sortedLiquids.filter((item) => {
@@ -346,9 +331,35 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
         }, 0);
     }
 
+    function rechenallFilteredEinzahlungen(){
+        return settingsFilteredList.reduce((total, item) => {
+            if (item.category === "Einnahme") {
+                if (item.typ === "Monatlich") {
+                    return total + (item.price * monthCount)
+                }
+                return total + item.price;
+            }
+            return total;
+        }, 0);
+    }
+
+    function rechenallFilteredAuszahlungen(){
+        return settingsFilteredList.reduce((total, item) => {
+            if (item.category === "Ausgabe") {
+                if (item.typ === "Monatlich") {
+                    return total + (item.price * monthCount)
+                }
+                return total + item.price;
+            }
+            return total;
+        }, 0);
+    }
+
 
     const allEinzahlungen = rechenallEinzahlungen();
     const allAuszahlungen = rechenallAuszahlungen();
+    const allFilteredEinzahlungen = rechenallFilteredEinzahlungen();
+    const allFilteredAuszahlungen = rechenallFilteredAuszahlungen();
 
     const endbestand = bestand + zukunftGewinn
 
@@ -492,110 +503,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const convertStartDate = convertDate(startDate)
     const convertEndDate = convertDate(endDate)
 
-
-    {/*
-    function AllTable(){
-        return(
-
-            <section className="revenueTableWrapper">
-                <div className="tableHeader">
-                    <h3>Liquiditätsbewegung insgesamt</h3>
-
-                    <button className="tableSwapBtn"
-                        onClick={() => setShowFirstTable(!showFirstTable)}
-                    >
-                        Swap Table
-                    </button>
-                </div>
-
-
-                <div className="tableDropdown">
-                    <select
-                        value={activeCategory}
-                        onChange={(e) => {
-                            const value = e.target.value;
-
-                            setActiveCategory(value);
-
-                            switch (value) {
-                                case "Einnahme":
-                                    break;
-
-                                case "Ausgabe":
-                                    break;
-
-                                default:
-                            }
-                        }}
-                    >
-                        <option value="All">All</option>
-                        <option value="Einnahme">Einnahmen</option>
-                        <option value="Ausgabe">Ausgaben</option>
-                    </select>
-
-
-                    <select
-                        value={activeType}
-                        onChange={(e) => {
-                            const value = e.target.value;
-
-                            setActiveType(value);
-
-                            switch (value) {
-                                case "Monatlich":
-                                    break;
-
-                                case "Einmalig":
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                        }}
-                    >
-                        <option value="All">All</option>
-                        <option value="Monatlich">Monatlich</option>
-                        <option value="Einmalig">Einmalig</option>
-                    </select>
-
-                </div>
-
-
-
-
-
-                <table className="revenueTable">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Kategorie</th>
-                        <th>Typ</th>
-                        <th>Voladate</th>
-                        <th>Betrag</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    {settingsSortedList.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.name}</td>
-                            <td>{item.category}</td>
-                            <td>{item.typ}</td>
-                            <td>{formatDate(item.datum)}</td>
-                            <td className={item.price < 0 ? "negative" : "positive"}>
-                                € {item.price}
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </section>
-
-        );
-    }
-    */}
-
-
     function MonthTable(){
         return(
             <section className="revenueTableWrapper">
@@ -650,14 +557,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                         </button>
 
                     </div>
-
-                    {/*
-                    <button className="tableSwapBtn"
-                        onClick={() => setShowFirstTable(!showFirstTable)}
-                    >
-                        Swap Table
-                    </button>
-                    */}
 
                 </div>
 
@@ -852,7 +751,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
                 {/* CARDS */}
                 <section className="revenueStats">
-
                     <div className="revenueCard">
                         <div>
                             <span>alle Einzahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
@@ -873,6 +771,23 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                             <h2>€ {cashFlow.toLocaleString()} / Monat</h2>
                         </div>
                     </div>
+                </section>
+
+                {/* CARDS */}
+                <section className="revenueStats">
+                    <div className="revenueCard">
+                        <div>
+                            <span>alle gefilterten Einzahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                            <h2>€ {allFilteredEinzahlungen.toLocaleString()}</h2>
+                        </div>
+                    </div>
+
+                    <div className="revenueCard">
+                        <div>
+                            <span>alle gefilterten Auszahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                            <h2>€ {allFilteredAuszahlungen.toLocaleString()}</h2>
+                        </div>
+                    </div>
 
                     <div className="revenueCard">
                         <div>
@@ -880,9 +795,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                             <h2>€ {operativerCF.toLocaleString()}</h2>
                         </div>
                     </div>
-
-
-
                 </section>
 
 
@@ -890,9 +802,6 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
 
 
                 <div>
-                    {/*
-                    {showFirstTable ? <AllTable /> : <MonthTable />}
-                    */}
                     <MonthTable />
                 </div>
 
