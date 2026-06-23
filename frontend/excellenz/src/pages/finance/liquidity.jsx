@@ -534,9 +534,13 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                             />
                         </div>
 
+                        {/*
+
                         <div>
                             Anzahl der Monate : {monthCount}
                         </div>
+
+                        */}
 
                         <button className="tableSwapBtn"
                                 onClick={() => setStartDate(heuteDatum)}
@@ -675,14 +679,10 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     <div>
                         <h1>Liquidität</h1>
                         <p>
-                            was macht überhaupt liquidittti
+                            Übersicht der Liquiditätsbewegung
                         </p>
                     </div>
 
-                    <button className="addRevenueBtn">
-                        <FaPlus />
-                        hier einfügen oder so
-                    </button>
                 </header>
 
 
@@ -704,6 +704,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                     </div>
 
 
+                    {/*
 
                     <div className="revenueCard">
                         <div>
@@ -721,6 +722,7 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                         </div>
                     </div>
 
+                    */}
 
                 </section>
 
@@ -753,14 +755,14 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                 <section className="revenueStats">
                     <div className="revenueCard">
                         <div>
-                            <span>alle Einzahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                            <span>alle Einnahmen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
                             <h2>€ {allEinzahlungen.toLocaleString()}</h2>
                         </div>
                     </div>
 
                     <div className="revenueCard">
                         <div>
-                            <span>alle Auszahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                            <span>alle Ausgaben von {formatDate(startDate)} bis {formatDate(endDate)}</span>
                             <h2>€ {allAuszahlungen.toLocaleString()}</h2>
                         </div>
                     </div>
@@ -777,23 +779,25 @@ export default function Liquidity({sidebarOpen, setSidebarOpen, salesOpen, setSa
                 <section className="revenueStats">
                     <div className="revenueCard">
                         <div>
-                            <span>alle gefilterten Einzahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                            <span>alle gefilterten Einnahmen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
                             <h2>€ {allFilteredEinzahlungen.toLocaleString()}</h2>
                         </div>
                     </div>
 
                     <div className="revenueCard">
                         <div>
-                            <span>alle gefilterten Auszahlungen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                            <span>alle gefilterten Ausgaben von {formatDate(startDate)} bis {formatDate(endDate)}</span>
                             <h2>€ {allFilteredAuszahlungen.toLocaleString()}</h2>
                         </div>
                     </div>
 
                     <div className="revenueCard">
+                        {/*
                         <div>
                             <span>Operativer Cashflow (noch nicht richtig implementiert)</span>
                             <h2>€ {operativerCF.toLocaleString()}</h2>
                         </div>
+                        */}
                     </div>
                 </section>
 
