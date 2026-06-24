@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import {authFetch} from "../api/funcs";
+import { ME } from "../api/auth";
 
 export default function CompanySetupGuard({ children }) {
   const [loading, setLoading] = useState(true);
   const [hasCompany, setHasCompany] = useState(false);
 
   const isAuth = !!localStorage.getItem("access");
-  const token = localStorage.getItem("access");
-
   useEffect(() => {
     async function loadUser() {
         try {
-        const res = await authFetch("http://localhost:8000/api/auth/me/");
+        const res = await authFetch(ME);
         const data = await res.json();
 
         setHasCompany(data.companySetupDone);

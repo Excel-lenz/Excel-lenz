@@ -8,6 +8,11 @@ import Revenue from "./pages/finance/revenue.jsx";
 import Sales from "./pages/sales/sales.jsx";
 import Products from "./pages/sales/products.jsx";
 import LandingPage from "./pages/landing/landingPage.jsx";
+import Taxes from "./pages/taxes/taxes.jsx"
+import Investitionen from "./pages/finance/investment.jsx";
+import Costs from "./pages/finance/costs.jsx";
+import Glossar from "./pages/glossar.jsx";
+import Liquidity from "./pages/finance/liquidity.jsx";
 
 import Login from "./pages/login/login.jsx";
 import Register from "./pages/login/register.jsx"
@@ -17,6 +22,7 @@ import CompanySetup from "./pages/companySetup"
 import CompanySetupGuard from "./protection/companySetupGuard.jsx";
 import ProtectedRoute from "./protection/protectedRoute.jsx";
 import DashboardGuard from "./protection/dashboardGuard.jsx";
+
 
 
 export default function App() {
@@ -100,6 +106,20 @@ export default function App() {
             } 
           />
 
+          <Route path="/finance/costs" element={ 
+            <DashboardGuard>
+              <Costs
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+            </DashboardGuard>
+            } 
+          />
+
           <Route path="/sales" element={ 
             <DashboardGuard>
               <Sales
@@ -128,6 +148,64 @@ export default function App() {
             </DashboardGuard>
             } 
           />
+
+           <Route path="/taxes" element={ 
+             <DashboardGuard>
+                <Taxes
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  financeOpen={financeOpen}
+                  setFinanceOpen={setFinanceOpen}
+                  salesOpen={salesOpen}
+                  setSalesOpen={setSalesOpen}
+                />
+             </DashboardGuard>
+             }
+           />
+
+           <Route path="/finance/investitionen" element={ 
+             <DashboardGuard>
+                <Investitionen
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  financeOpen={financeOpen}
+                  setFinanceOpen={setFinanceOpen}
+                  salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+              </DashboardGuard>
+              }
+            />
+
+            <Route path="/finance/liquidity" element={ 
+              <DashboardGuard>
+                <Liquidity
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  financeOpen={financeOpen}
+                  setFinanceOpen={setFinanceOpen}
+                  salesOpen={salesOpen}
+                  setSalesOpen={setSalesOpen}
+                />
+              </DashboardGuard>
+            }
+          />
+
+            <Route path="/glossar" element={
+              <DashboardGuard>
+                <Glossar
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  financeOpen={financeOpen}
+                  setFinanceOpen={setFinanceOpen}
+                  salesOpen={salesOpen}
+                  setSalesOpen={setSalesOpen}
+                />
+              </DashboardGuard>
+            } 
+          />
+
+          
 
           {/* Test Route */}
           <Route path="/login" element={ <Login

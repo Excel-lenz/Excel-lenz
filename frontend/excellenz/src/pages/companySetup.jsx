@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../styles/pages/companySetup.css";
 import { usePopup } from "../context/popupContext";
 import { useNavigate } from "react-router-dom";
+import { COMPANY } from "../api/auth";
 
 function isUserLogin(navigate){
 
@@ -40,13 +41,19 @@ export default function CompanySetup() {
       key: "legalForm",
       label: "Bitte gib die Rechtsform deines Unternehmens ein:",
       type: "select",
-      options: ["GmbH", "UG", "AG", "e.K.", "GbR", "OHG", "KG", "SE", "Verein"],
+      options: ["GmbH", "UG", "AG", "e.K.", "GbR", "OHG", "KG", "Verein"],
     },
     {
       key: "companyHeadquarters",
       label: "Bitte gib den Unternehmenssitz ein:",
       placeholder: "Unternehmenssitz",
       type: "text",
+    },
+    {
+      key:"foundingDate",
+      label: "Bitte gib das Gründungsdatum ein:",
+      placeholder:"22.05.2000",
+      type: "date"
     },
     {
       key: "economicSector",
@@ -112,11 +119,11 @@ export default function CompanySetup() {
           : formData.economicSector,
       companyCurrency: formData.preferredCurrency,
       companyCapital: formData.capital,
-      comapnyGoal: formData.goal,
+      companyGoal: formData.goal,
     };
 
     try {
-      const response = await fetch("http://localhost:8000/api/companies/", {
+      const response = await fetch(COMPANY, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

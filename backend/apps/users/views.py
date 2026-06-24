@@ -6,6 +6,7 @@ from .serializers import (
     LoginSerializer,
     RegisterSerializer,
     MeSerializer,
+    SettingsSerializer,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -61,6 +62,14 @@ class RegisterView(generics.CreateAPIView):
 # IsAuthenticated ist hier sehr wichtig. Sensible Daten sollen NUR accessable sein, wenn der nutzer richtig Authentifiziert ist!!
 class MeView(generics.RetrieveAPIView):
     serializer_class = MeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
+class SettingsView(generics.RetrieveUpdateAPIView):
+    serializer_class = SettingsSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):

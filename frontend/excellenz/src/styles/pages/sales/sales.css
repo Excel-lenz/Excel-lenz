@@ -1,0 +1,268 @@
+.salesMain {
+    flex: 1;
+    padding: 40px;
+}
+
+.salesHeader {
+    margin-bottom: 30px;
+}
+
+.salesHeader h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.salesHeader p {
+    margin-top: 8px;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.salesTableWrapper {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(12px);
+}
+
+.salesToolbar {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr auto auto auto;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.salesSearchInput,
+.salesFilterSelect,
+.salesDateInput {
+    height: 40px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e5e7eb;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 13px;
+}
+
+.salesSearchInput::placeholder {
+    color: #6b7280;
+}
+
+.salesSearchInput:focus,
+.salesFilterSelect:focus,
+.salesDateInput:focus {
+    outline: none;
+    border-color: rgba(0, 255, 136, 0.35);
+}
+
+.salesFilterSelect,
+.salesDateInput {
+    color-scheme: dark;
+}
+
+.salesGhostBtn {
+    height: 40px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #9ca3af;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.salesGhostBtn:hover {
+    color: #f3f4f6;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.salesTableMeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.salesError {
+    margin: 0 0 10px;
+    color: #fca5a5;
+    font-size: 13px;
+}
+
+.salesTableScroll {
+    overflow-x: auto;
+}
+
+.salesTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 820px;
+}
+
+.salesTable thead {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.salesTable th {
+    text-align: left;
+    padding: 14px 12px;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.salesTable td {
+    padding: 14px 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    font-size: 14px;
+    color: #e5e7eb;
+}
+
+.salesTable tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.salesTotal {
+    color: #34d399;
+    font-weight: 600;
+}
+
+.salesRowActions {
+    display: flex;
+    gap: 8px;
+}
+
+.salesEditBtn,
+.salesDeleteBtn,
+.salesSaveBtn {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.salesEditBtn {
+    background: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+}
+
+.salesEditBtn:hover {
+    background: rgba(0, 255, 136, 0.22);
+}
+
+.salesDeleteBtn {
+    background: rgba(255, 77, 109, 0.15);
+    color: #ff9fb1;
+}
+
+.salesDeleteBtn:hover {
+    background: rgba(255, 77, 109, 0.22);
+}
+
+.salesEmptyState {
+    text-align: center;
+    color: #9ca3af;
+    padding: 24px 12px;
+}
+
+.salesModalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 16px;
+}
+
+.salesModal {
+    width: 620px;
+    max-width: 100%;
+    background: #141420;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.salesModal h2 {
+    margin: 0 0 16px;
+}
+
+.salesFormGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.salesFormGrid label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: #d1d5db;
+}
+
+.salesFormGrid input {
+    height: 40px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #f3f4f6;
+    padding: 0 10px;
+}
+
+.salesFormGrid input:focus {
+    outline: none;
+    border-color: rgba(0, 255, 136, 0.45);
+}
+
+.salesModalActions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.salesSaveBtn {
+    background: #00ff88;
+    color: #0b0b10;
+}
+
+.salesSaveBtn:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 1080px) {
+    .salesToolbar {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .salesMain {
+        padding: 24px 14px;
+    }
+
+    .salesHeader h1 {
+        font-size: 26px;
+    }
+
+    .salesToolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .salesFormGrid {
+        grid-template-columns: 1fr;
+    }
+}

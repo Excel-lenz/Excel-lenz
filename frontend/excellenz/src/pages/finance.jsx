@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 
 import FinanceInputCard from "../components/finance/financeInputCard";
@@ -8,14 +8,50 @@ import FinanceTabs from "../components/finance/financeTabs";
 import FinanceChart from "../components/finance/financeChart";
 import RecentEntries from "../components/finance/recentEntries"; 
 import Input from "../components/inputs";
+import { getCapital } from "../api/funcs";
+import { getCompanySettings } from "../api/company";
+import { getTransactions } from "../api/inputs/inputAPI";
+import { formatCurrency, normalizeCurrencySettings } from "../utils/currency";
 
 import "../styles/pages/finance.css";
 
 export default function Finance({ sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen }) {
+  const [capital, setCapital] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+  const [companySettings, setCompanySettings] = useState(() => normalizeCurrencySettings());
+
+  const loadFinanceData = async () => {
+    const [capitalData, transactionData, settings] = await Promise.all([
+      getCapital(),
+      getTransactions(),
+      getCompanySettings(),
+    ]);
+
+    setCapital(Number(capitalData.capital || 0));
+    setTransactions(transactionData);
+    setCompanySettings(normalizeCurrencySettings(settings));
+  };
+
+  useEffect(() => {
+    loadFinanceData().catch((error) => {
+      console.error("Fehler beim Laden der Finanzdaten:", error);
+    });
+  }, []);
+
+  const incomeTotal = transactions
+    .filter((transaction) => transaction.type === "income")
+    .reduce((sum, transaction) => sum + Number(transaction.total ?? transaction.price * transaction.quantity), 0);
+
+  const expenseTotal = transactions
+    .filter((transaction) => transaction.type === "expense")
+    .reduce((sum, transaction) => sum + Number(transaction.total ?? transaction.price * transaction.quantity), 0);
+
+  const netCashflow = incomeTotal - expenseTotal;
+
   return (
     <div className="layout">
 
-      <Input />
+      <Input onCreated={loadFinanceData} />
 
       <Sidebar
         open={sidebarOpen}
@@ -51,8 +87,8 @@ export default function Finance({ sidebarOpen, setSidebarOpen, salesOpen, setSal
         </section>*/}
 
         <section className="bottomGrid">
-          <FinanceChart />
-          <RecentEntries />
+          <FinanceChart transactions={transactions} currencySettings={companySettings} />
+          <RecentEntries transactions={transactions} currencySettings={companySettings} />
         </section>
 
         {/* Eingaben */}
@@ -85,27 +121,27 @@ export default function Finance({ sidebarOpen, setSidebarOpen, salesOpen, setSal
         {/* Finanzkennzahlen */}
         <section className="overviewGrid">
           <FinanceOverviewCard
-            title="Deckungsbeitrag"
-            value="€24.500"
-            status="Positiv"
+            title="Gesamter Umsatz"
+            value={formatCurrency(incomeTotal, companySettings)}
+            status="Live aus dem Backend"
           />
 
           <FinanceOverviewCard
-            title="Gewinn / Verlust"
-            value="+ €8.200"
-            status="Gewinn"
+            title="Gesamtausgaben"
+            value={formatCurrency(expenseTotal, companySettings)}
+            status="Live aus dem Backend"
           />
 
           <FinanceOverviewCard
-            title="Break-even-Point"
-            value="73 Verkäufe"
-            status="Stabil"
+            title="Netto-Cashflow"
+            value={formatCurrency(netCashflow, companySettings)}
+            status={netCashflow >= 0 ? "Positiv" : "Negativ"}
           />
 
           <FinanceOverviewCard
-            title="Liquidität"
-            value="€14.300"
-            status="Sicher"
+            title="Unternehmenskapital"
+            value={formatCurrency(capital, companySettings)}
+            status="Backend-Wert"
           />
         </section>
 

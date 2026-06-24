@@ -1,4 +1,4 @@
-import {CAPITAL} from "./auth.jsx";
+import {API_BASE_URL, CAPITAL, SETTINGS} from "./auth.jsx";
 
 export const getCapital = async () => {
   const res = await authFetch(CAPITAL);
@@ -19,7 +19,7 @@ export const getCapital = async () => {
 export async function refreshAccessToken() {
   const refresh = localStorage.getItem("refresh");
 
-  const res = await fetch("http://localhost:8000/api/auth/refresh/", {
+  const res = await fetch(`${API_BASE_URL}/api/auth/refresh/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,15 +44,28 @@ export async function refreshAccessToken() {
 
 export async function authFetch(url) {
   let token = localStorage.getItem("access");
+  const refresh = localStorage.getItem("refresh");
+
+  if (!token && refresh) {
+    try {
+      token = await refreshAccessToken();
+    } catch {
+      token = null;
+    }
+  }
 
   let res = await fetch(url, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   });
 
-  if (res.status === 401) {
-    token = await refreshAccessToken();
+  if (res.status === 401 && refresh) {
+    try {
+      token = await refreshAccessToken();
+    } catch {
+      return res;
+    }
 
     res = await fetch(url, {
       headers: {
@@ -67,18 +80,31 @@ export async function authFetch(url) {
 export async function authPost(url, data)
 {
   let token = localStorage.getItem("access");
+  const refresh = localStorage.getItem("refresh");
+
+  if (!token && refresh) {
+    try {
+      token = await refreshAccessToken();
+    } catch {
+      token = null;
+    }
+  }
 
   let res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify(data),
   });
 
-  if (res.status === 401) {
-    token = await refreshAccessToken();
+  if (res.status === 401 && refresh) {
+    try {
+      token = await refreshAccessToken();
+    } catch {
+      return res;
+    }
 
     res = await fetch(url, {
       method: "POST",
@@ -91,4 +117,103 @@ export async function authPost(url, data)
   }
 
   return res;
+}
+
+export async function authDelete(url) {
+  let token = localStorage.getItem("access");
+  const refresh = localStorage.getItem("refresh");
+
+  if (!token && refresh) {
+    try {
+      token = await refreshAccessToken();
+    } catch {
+      token = null;
+    }
+  }
+
+  let res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (res.status === 401 && refresh) {
+    try {
+      token = await refreshAccessToken();
+    } catch {
+      return res;
+    }
+
+    res = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  return res;
+}
+
+export async function authPatch(url, data) {
+  let token = localStorage.getItem("access");
+  const refresh = localStorage.getItem("refresh");
+
+  if (!token && refresh) {
+    try {
+      token = await refreshAccessToken();
+    } catch {
+      token = null;
+    }
+  }
+
+  let res = await fetch(url, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (res.status === 401 && refresh) {
+    try {
+      token = await refreshAccessToken();
+    } catch {
+      return res;
+    }
+
+    res = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  return res;
+}
+
+// Settings API Functions
+export async function getSettings() {
+  const res = await authFetch(SETTINGS);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch settings");
+  }
+
+  return await res.json();
+}
+
+export async function updateSettings(settingsData) {
+  const res = await authPatch(SETTINGS, settingsData);
+
+  if (!res.ok) {
+    throw new Error("Failed to update settings");
+  }
+
+  return await res.json();
 }

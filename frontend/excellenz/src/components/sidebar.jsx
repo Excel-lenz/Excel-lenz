@@ -14,7 +14,11 @@ import {
   FaMoneyBillWave,
   FaFileInvoiceDollar,
   FaUniversity,
+  FaBook,
+
 } from "react-icons/fa";
+
+import { RiExchangeDollarFill } from "react-icons/ri";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -143,14 +147,26 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
 
           <div
             className={`submenu-item ${
-              isActive("/finance/liquidity")
+              isActive("/taxes")
                 ? "active-sub"
                 : ""
             }`}
-            onClick={() => navigate("/finance/liquidity")}
+            onClick={() => navigate("/taxes")}
           >
-            <FaUniversity />
-            <span>Liquidität</span>
+            <RiExchangeDollarFill/>
+            <span>Steuern</span>
+          </div>
+
+          <div
+              className={`submenu-item ${
+                  isActive("/finance/investitionen")
+                      ? "active-sub"
+                      : ""
+              }`}
+              onClick={() => navigate("/finance/investitionen")}
+          >
+              <FaChartLine />
+              <span>Investitionen</span>
           </div>
         </div>
       )}
@@ -223,6 +239,7 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
         </div>
       )}
 
+
       {/* SETTINGS */}
       <div
         className={`sidebar-item ${
@@ -233,6 +250,18 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
         <FaCogs />
         {open && <span>Einstellungen</span>}
       </div>
+
+      {/* GLOSSAR */}
+      <div
+          className={`sidebar-item ${
+              isActive("/glossar") ? "active" : ""
+          }`}
+          onClick={() => navigate("/glossar")}
+      >
+          <FaCogs />
+          {open && <span>Glossar</span>}
+      </div>
+
     </div>
   );
 }

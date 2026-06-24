@@ -79,6 +79,27 @@ class MeSerializer(serializers.ModelSerializer):
             "companySetupDone",
             "isMailVerified",
             "currentStreak",
+            "language",
+            "currency",
+            "numberFormat",
+            "popupsEnabled",
+            "fiscalYearStart",
+            "budgetWarning",
+            "privacyMode",
+        )
+
+
+class SettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "language",
+            "currency",
+            "numberFormat",
+            "popupsEnabled",
+            "fiscalYearStart",
+            "budgetWarning",
+            "privacyMode",
         )
 
 

@@ -10,10 +10,13 @@ import Topbar from "../components/topbar.jsx"
 import Input from "../components/inputs.jsx";
 import Tooltip from "../components/tooltip.jsx";
 import CriticalNotes from "../components/criticalNotes.jsx";
+import { getCompanySettings } from "../api/company.jsx";
+import { formatCurrency, normalizeCurrencySettings } from "../utils/currency.jsx";
 
 // imports for progressbar - data
 import { getCapital } from "../api/funcs.jsx";
 import { getOverallGoal } from "../api/progress/progressbar.jsx";
+import { getTransactions } from "../api/inputs/inputAPI";
 
 
 
@@ -22,14 +25,21 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const [capital, setCapital] = useState("");
     const [goal, setGoal] = useState("");
     const [progressPercentage, setProgressPercentage] = useState("");
+    const [transactions, setTransactions] = useState([]);
+  const [companySettings, setCompanySettings] = useState(() => normalizeCurrencySettings());
 
     const refreshProgress = async () => {
       try {
-        const capitalData = await getCapital();
-        const goalData = await getOverallGoal();
-        setCapital(capitalData.capital);
-        setGoal(goalData.goal);
-        setProgressPercentage(Math.round((capitalData.capital/goalData.goal)*10))
+        const [capitalData, goalData, transactionData] = await Promise.all([
+          getCapital(),
+          getOverallGoal(),
+          getTransactions(),
+        ]);
+
+        setCapital(Number(capitalData.capital || 0));
+        setGoal(Number(goalData.goal || 0));
+        setTransactions(transactionData);
+        setProgressPercentage(goalData.goal ? Math.round((capitalData.capital / goalData.goal) * 100) : 0)
       } catch (err) {
         console.error("Fehler beim Laden des Kapitals:", err);
       }
@@ -37,7 +47,12 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
   
     useEffect(() => {
         refreshProgress();
+        getCompanySettings()
+          .then((settings) => setCompanySettings(normalizeCurrencySettings(settings)))
+          .catch(() => undefined);
       }, []);
+
+    const missingAmount = Math.max(Number(goal || 0) - Number(capital || 0), 0);
 
 
   return (
@@ -67,21 +82,30 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
           <ProgressBar value={progressPercentage} />
           <div className="progressMeta">
             <span>{progressPercentage}% erreicht</span>
-            <span>{capital}€ / {goal}€</span>
+            <span>{formatCurrency(capital, companySettings)} / {formatCurrency(goal, companySettings)}</span>
           </div>
         </section>
 
         <section className="chartCard">
-          <ChartPlaceholder />
+          <ChartPlaceholder
+            transactions={transactions}
+            capital={capital}
+            goal={goal}
+            currencySettings={companySettings}
+          />
         </section>
 
         <section className="cards">
          <Tooltip text="Zeigt, ob dein Startup finanziell im Plan liegt.">
-            <CriticalNotes></CriticalNotes>
+            <CriticalNotes
+              isCritical={Number(capital) < Number(goal) * 0.5}
+              title={Number(capital) < Number(goal) * 0.5 ? "Kritische Hinweise" : "Voll auf Kurs"}
+              text={Number(capital) < Number(goal) * 0.5 ? "Das Kapital liegt deutlich unter dem Zielwert." : "Kapitalentwicklung und Ziel stehen solide im Plan."}
+            />
           </Tooltip>
           
           <Tooltip text="Das nächste große Finanzziel, das erreicht werden soll.">
-            <Card title="Nächster Meilenstein">75% – €14.000 fehlen</Card>
+            <Card title="Nächster Meilenstein">75% - {formatCurrency(missingAmount, companySettings)} fehlen</Card>
           </Tooltip>
           
           <Tooltip text="Deine Performance im Vergleich zur Vorwoche.">

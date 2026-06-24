@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import { getCapital, refreshAccessToken } from "../../api/funcs";
+import { getCapital } from "../../api/funcs";
+import { getCompanySettings } from "../../api/company";
 
 import {
   FaPlus,
-  FaEuroSign,
   FaChartLine,
   FaBoxOpen,
 } from "react-icons/fa";
@@ -12,6 +12,8 @@ import {
 import "../../styles/pages/finance/revenue.css";
 import Input from "../../components/inputs";
 import { getTransactions } from "../../api/inputs/inputAPI";
+import FinanceChart from "../../components/finance/financeChart";
+import { formatCurrency, getCurrencySymbol, normalizeCurrencySettings } from "../../utils/currency";
 
 export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}) 
 {
@@ -19,6 +21,9 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
   const [revenues, setRevenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [companySettings, setCompanySettings] = useState(() => normalizeCurrencySettings());
+
+  const currencySymbol = getCurrencySymbol(companySettings);
 
 
   const loadCapital = async () => {
@@ -32,6 +37,10 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
   
   useEffect(() => {
     loadCapital();
+
+    getCompanySettings()
+      .then((settings) => setCompanySettings(normalizeCurrencySettings(settings)))
+      .catch(() => undefined);
   }, []);
 
   const fetchTransaction = async () => {
@@ -93,12 +102,12 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
 
           <div className="revenueCard">
             <div className="cardIcon green">
-              <FaEuroSign />
+              <span>{currencySymbol}</span>
             </div>
 
             <div>
               <span>Gesamtkapital</span>
-              <h2>{capital}€</h2>
+              <h2>{formatCurrency(capital, companySettings)}</h2>
             </div>
           </div>
 
@@ -126,11 +135,8 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
 
         </section>
 
-        {/* CHART PLACEHOLDER */}
         <section className="chartSection">
-          <div className="chartPlaceholder">
-            Umsatzdiagramm
-          </div>
+          <FinanceChart transactions={revenues} currencySettings={companySettings} />
         </section>
 
         {/* TABLE */}
@@ -158,7 +164,7 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
                 >
                   <td>{item.name}</td>
                   <td>{item.category}</td>
-                  <td>{item.price}€</td>
+                  <td>{formatCurrency(item.price, companySettings)}</td>
                   <td>{item.quantity}</td>
 
                   <td
@@ -166,9 +172,8 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
                       item.type === "expense" ? "highlightExpense" : "highlightIncome"
                     }
                   > 
-                   {item.type === "expense" ? " -" : " "}
-                   {item.total_revenue ?? item.price * item.quantity}
-                   € 
+                   {item.type === "expense" ? "-" : ""}
+                   {formatCurrency(item.total_revenue ?? item.price * item.quantity, companySettings)}
                   </td>
                 </tr>
               ))}

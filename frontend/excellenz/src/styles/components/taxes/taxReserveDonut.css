@@ -1,0 +1,126 @@
+.tax-reserve-card {
+  background: linear-gradient(180deg, #171821, #13141c);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 28px;
+  margin-top: 24px;
+  color: #ffffff;
+  max-width: 560px;
+  min-height: 360px;
+}
+
+.tax-reserve-card h3 {
+  margin: 0 0 24px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.donut-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 30px auto;
+}
+
+.donut-bg {
+  stroke: #24252d;
+}
+
+.donut-progress {
+  stroke: #00ff88;
+  filter: none;
+  transition: stroke-dashoffset 0.4s ease;
+}
+
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.donut-center strong {
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.donut-center span {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #a1a7b3;
+}
+
+.tax-details {
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.tax-data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tax-data-row span {
+  color: #a1a7b3;
+  font-size: 15px;
+}
+
+.tax-data-row strong {
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.reserve-status {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(0, 255, 136, 0.08);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  color: #00ff88;
+  font-weight: 600;
+}
+
+.tax-reserve-card h3 {
+  margin: 0;
+}
+
+
+.reserve-slider-box {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reserve-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.reserve-slider-header span {
+  color: #a1a7b3;
+  font-size: 14px;
+}
+
+.reserve-slider-header strong {
+  color: #00ff88;
+  font-size: 14px;
+}
+
+.reserve-slider {
+  width: 100%;
+  accent-color: #00ff88;
+}
