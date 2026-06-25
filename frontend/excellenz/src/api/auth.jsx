@@ -10,6 +10,7 @@ export const REGISTER = joinUrl('/api/auth/register/')
 export const LOGIN = joinUrl('/api/auth/login/')
 export const ME = joinUrl('/api/auth/me/')
 export const SETTINGS = joinUrl('/api/auth/settings/')
+export const CHANGE_PASSWORD = joinUrl('/api/auth/change-password/')
 
 
 // Company
@@ -25,6 +26,7 @@ export const TRANSACTION = joinUrl('/api/finance/transactions/')
 export const INVESTMENT = joinUrl('/api/finance/investments/')
 export const COST_ITEMS = joinUrl('/api/finance/cost-items/')
 export const TAX_RESERVE = joinUrl('/api/finance/tax-reserve/')
+export const LIQUIDITY_SUMMARY = joinUrl('/api/finance/liquidity-summary/')
 
 // Products
 export const PRODUCTS = joinUrl('/api/finance/products/')

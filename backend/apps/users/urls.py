@@ -9,7 +9,8 @@ from .views import (
     RegisterView,
     MeView,
     SettingsView,
-    CustomTokenObtainPairView
+    CustomTokenObtainPairView,
+    ChangePasswordView,
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path("refresh/", TokenRefreshView.as_view()),
     path("me/", MeView.as_view()),
     path("settings/", SettingsView.as_view()),
+    path("change-password/", ChangePasswordView.as_view()),
 ]

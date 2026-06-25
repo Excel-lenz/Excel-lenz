@@ -5,6 +5,7 @@ from .views import (
     InvestmentViewSet,
     TaxReserveSettingView,
     CostItemViewSet,
+    LiquiditySummaryView,
     ProductListCreateView,
     ProductDetailView,
 )
@@ -17,6 +18,7 @@ router.register(r"cost-items", CostItemViewSet, basename="cost-item")
 urlpatterns = [
     path("", include(router.urls)),
     path("tax-reserve/", TaxReserveSettingView.as_view(), name="tax-reserve-setting"),
+    path("liquidity-summary/", LiquiditySummaryView.as_view(), name="liquidity-summary"),
     path(
         "products/",
         ProductListCreateView.as_view(),

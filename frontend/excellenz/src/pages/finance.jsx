@@ -9,27 +9,25 @@ import FinanceChart from "../components/finance/financeChart";
 import RecentEntries from "../components/finance/recentEntries"; 
 import Input from "../components/inputs";
 import { getCapital } from "../api/funcs";
-import { getCompanySettings } from "../api/company";
 import { getTransactions } from "../api/inputs/inputAPI";
-import { formatCurrency, normalizeCurrencySettings } from "../utils/currency";
+import { formatCurrency } from "../utils/currency";
+import { useCurrencySettings } from "../context/currencySettingsContext.jsx";
 
 import "../styles/pages/finance.css";
 
 export default function Finance({ sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen }) {
   const [capital, setCapital] = useState(0);
   const [transactions, setTransactions] = useState([]);
-  const [companySettings, setCompanySettings] = useState(() => normalizeCurrencySettings());
+  const { currencySettings } = useCurrencySettings();
 
   const loadFinanceData = async () => {
-    const [capitalData, transactionData, settings] = await Promise.all([
+    const [capitalData, transactionData] = await Promise.all([
       getCapital(),
       getTransactions(),
-      getCompanySettings(),
     ]);
 
     setCapital(Number(capitalData.capital || 0));
     setTransactions(transactionData);
-    setCompanySettings(normalizeCurrencySettings(settings));
   };
 
   useEffect(() => {
@@ -87,8 +85,8 @@ export default function Finance({ sidebarOpen, setSidebarOpen, salesOpen, setSal
         </section>*/}
 
         <section className="bottomGrid">
-          <FinanceChart transactions={transactions} currencySettings={companySettings} />
-          <RecentEntries transactions={transactions} currencySettings={companySettings} />
+          <FinanceChart transactions={transactions} currencySettings={currencySettings} />
+          <RecentEntries transactions={transactions} currencySettings={currencySettings} />
         </section>
 
         {/* Eingaben */}
@@ -122,25 +120,25 @@ export default function Finance({ sidebarOpen, setSidebarOpen, salesOpen, setSal
         <section className="overviewGrid">
           <FinanceOverviewCard
             title="Gesamter Umsatz"
-            value={formatCurrency(incomeTotal, companySettings)}
+            value={formatCurrency(incomeTotal, currencySettings)}
             status="Live aus dem Backend"
           />
 
           <FinanceOverviewCard
             title="Gesamtausgaben"
-            value={formatCurrency(expenseTotal, companySettings)}
+            value={formatCurrency(expenseTotal, currencySettings)}
             status="Live aus dem Backend"
           />
 
           <FinanceOverviewCard
             title="Netto-Cashflow"
-            value={formatCurrency(netCashflow, companySettings)}
+            value={formatCurrency(netCashflow, currencySettings)}
             status={netCashflow >= 0 ? "Positiv" : "Negativ"}
           />
 
           <FinanceOverviewCard
             title="Unternehmenskapital"
-            value={formatCurrency(capital, companySettings)}
+            value={formatCurrency(capital, currencySettings)}
             status="Backend-Wert"
           />
         </section>

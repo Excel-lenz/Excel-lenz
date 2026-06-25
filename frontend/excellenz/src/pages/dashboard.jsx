@@ -10,8 +10,8 @@ import Topbar from "../components/topbar.jsx"
 import Input from "../components/inputs.jsx";
 import Tooltip from "../components/tooltip.jsx";
 import CriticalNotes from "../components/criticalNotes.jsx";
-import { getCompanySettings } from "../api/company.jsx";
-import { formatCurrency, normalizeCurrencySettings } from "../utils/currency.jsx";
+import { formatCurrency } from "../utils/currency.jsx";
+import { useCurrencySettings } from "../context/currencySettingsContext.jsx";
 
 // imports for progressbar - data
 import { getCapital } from "../api/funcs.jsx";
@@ -26,7 +26,7 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
     const [goal, setGoal] = useState("");
     const [progressPercentage, setProgressPercentage] = useState("");
     const [transactions, setTransactions] = useState([]);
-  const [companySettings, setCompanySettings] = useState(() => normalizeCurrencySettings());
+    const { currencySettings } = useCurrencySettings();
 
     const refreshProgress = async () => {
       try {
@@ -47,9 +47,6 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
   
     useEffect(() => {
         refreshProgress();
-        getCompanySettings()
-          .then((settings) => setCompanySettings(normalizeCurrencySettings(settings)))
-          .catch(() => undefined);
       }, []);
 
     const missingAmount = Math.max(Number(goal || 0) - Number(capital || 0), 0);
@@ -82,7 +79,7 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
           <ProgressBar value={progressPercentage} />
           <div className="progressMeta">
             <span>{progressPercentage}% erreicht</span>
-            <span>{formatCurrency(capital, companySettings)} / {formatCurrency(goal, companySettings)}</span>
+            <span>{formatCurrency(capital, currencySettings)} / {formatCurrency(goal, currencySettings)}</span>
           </div>
         </section>
 
@@ -91,7 +88,7 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
             transactions={transactions}
             capital={capital}
             goal={goal}
-            currencySettings={companySettings}
+            currencySettings={currencySettings}
           />
         </section>
 
@@ -105,7 +102,7 @@ export default function Dashboard({sidebarOpen, setSidebarOpen, salesOpen, setSa
           </Tooltip>
           
           <Tooltip text="Das nächste große Finanzziel, das erreicht werden soll.">
-            <Card title="Nächster Meilenstein">75% - {formatCurrency(missingAmount, companySettings)} fehlen</Card>
+            <Card title="Nächster Meilenstein">75% - {formatCurrency(missingAmount, currencySettings)} fehlen</Card>
           </Tooltip>
           
           <Tooltip text="Deine Performance im Vergleich zur Vorwoche.">

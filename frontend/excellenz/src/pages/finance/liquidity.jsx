@@ -17,9 +17,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../../styles/pages/finance/liquidity.css";
 import { getTransactions } from "../../api/inputs/inputAPI.jsx";
 import { getCostItems } from "../../api/finance/costs.jsx";
+import { getLiquiditySummary } from "../../api/finance/liquidity.jsx";
 import { getCapital } from "../../api/funcs.jsx";
-import { getCompanySettings } from "../../api/company.jsx";
-import { formatCurrency, normalizeCurrencySettings } from "../../utils/currency.jsx";
+import { formatCurrency } from "../../utils/currency.jsx";
+import { useCurrencySettings } from "../../context/currencySettingsContext.jsx";
 
 const toIsoDate = (date) => {
   if (!(date instanceof Date)) return "";
@@ -164,7 +165,7 @@ export default function Liquidity({
   const [transactions, setTransactions] = useState([]);
   const [costItems, setCostItems] = useState([]);
   const [capital, setCapital] = useState(0);
-  const [companySettings, setCompanySettings] = useState(() => normalizeCurrencySettings());
+  const { currencySettings } = useCurrencySettings();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -173,23 +174,22 @@ export default function Liquidity({
   const [endDate, setEndDate] = useState(initialEnd);
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeType, setActiveType] = useState("All");
+  const [summaryData, setSummaryData] = useState(null);
 
   const loadLiquidityData = async () => {
     try {
       setLoading(true);
       setError("");
 
-      const [transactionData, costData, capitalData, companyData] = await Promise.all([
+      const [transactionData, costData, capitalData] = await Promise.all([
         getTransactions(),
         getCostItems(),
         getCapital(),
-        getCompanySettings(),
       ]);
 
       setTransactions(Array.isArray(transactionData) ? transactionData : []);
       setCostItems(Array.isArray(costData) ? costData : []);
       setCapital(Number(capitalData?.capital || 0));
-      setCompanySettings(normalizeCurrencySettings(companyData));
     } catch (err) {
       console.error("Failed to load liquidity data:", err);
       setError("Liquiditätsdaten konnten nicht geladen werden.");
@@ -201,6 +201,36 @@ export default function Liquidity({
   useEffect(() => {
     loadLiquidityData();
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadSummary = async () => {
+      try {
+        const summary = await getLiquiditySummary({
+          startDate,
+          endDate,
+          category: activeCategory,
+          type: activeType,
+        });
+
+        if (!cancelled) {
+          setSummaryData(summary);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          console.error("Failed to load liquidity summary:", err);
+          setSummaryData(null);
+        }
+      }
+    };
+
+    loadSummary();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [startDate, endDate, activeCategory, activeType]);
 
   const recurringExpensePerMonth = useMemo(() => {
     return costItems.reduce((sum, item) => {
@@ -391,17 +421,18 @@ export default function Liquidity({
 
   const allEinzahlungen = useMemo(() => monthlyData.reduce((sum, row) => sum + row.income, 0), [monthlyData]);
   const allAuszahlungen = useMemo(() => monthlyData.reduce((sum, row) => sum + row.expense, 0), [monthlyData]);
-  const allFilteredEinzahlungen = useMemo(
-    () => settingsFilteredList.filter((x) => x.category === "Einnahme").reduce((sum, x) => sum + x.price, 0),
-    [settingsFilteredList]
-  );
-  const allFilteredAuszahlungen = useMemo(
-    () =>
-      settingsFilteredList
-        .filter((x) => x.category === "Ausgabe")
-        .reduce((sum, x) => sum + Math.abs(x.price), 0),
-    [settingsFilteredList]
-  );
+  const allFilteredEinzahlungen = useMemo(() => {
+    const backendValue = Number(summaryData?.filtered?.income);
+    if (Number.isFinite(backendValue)) return backendValue;
+    return settingsFilteredList.filter((x) => x.category === "Einnahme").reduce((sum, x) => sum + x.price, 0);
+  }, [summaryData, settingsFilteredList]);
+  const allFilteredAuszahlungen = useMemo(() => {
+    const backendValue = Number(summaryData?.filtered?.expense);
+    if (Number.isFinite(backendValue)) return backendValue;
+    return settingsFilteredList
+      .filter((x) => x.category === "Ausgabe")
+      .reduce((sum, x) => sum + Math.abs(x.price), 0);
+  }, [summaryData, settingsFilteredList]);
 
   const monthCount = monthList.length || 1;
   const cashFlow = (allEinzahlungen - allAuszahlungen) / monthCount;
@@ -429,7 +460,7 @@ export default function Liquidity({
         <header className="revenueHeader">
           <div>
             <h1>Liquidität</h1>
-            <p>Analyse von Ein- und Auszahlungen auf Basis deiner Backend-Daten</p>
+            <p>Analyse von Ein- und Auszahlungen auf Basis deiner Daten</p>
           </div>
 
           <button className="addRevenueBtn" onClick={loadLiquidityData} type="button">
@@ -467,25 +498,37 @@ export default function Liquidity({
               <div className="revenueCard">
                 <div>
                   <span>Aktuelle Liquidität</span>
-                  <h2>{formatCurrency(capital, companySettings)}</h2>
+                  <h2>{formatCurrency(capital, currencySettings)}</h2>
                 </div>
               </div>
               <div className="revenueCard">
                 <div>
                   <span>Periodenende {formatDate(endDate)}</span>
-                  <h2>{formatCurrency(endbestand, companySettings)}</h2>
+                  <h2>{formatCurrency(endbestand, currencySettings)}</h2>
                 </div>
               </div>
               <div className="revenueCard">
                 <div>
                   <span>Ø Cashflow / Monat</span>
-                  <h2>{formatCurrency(cashFlow, companySettings)}</h2>
+                  <h2>{formatCurrency(cashFlow, currencySettings)}</h2>
                 </div>
               </div>
               <div className="revenueCard">
                 <div>
                   <span>Liquiditätsgrad 1</span>
                   <h2>{liquiGrad1.toFixed(1)}%</h2>
+                </div>
+              </div>
+              <div className="revenueCard">
+                <div>
+                  <span>alle gefilterten Einnahmen von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                  <h2>{formatCurrency(allFilteredEinzahlungen, currencySettings)}</h2>
+                </div>
+              </div>
+              <div className="revenueCard">
+                <div>
+                  <span>alle gefilterten Ausgaben von {formatDate(startDate)} bis {formatDate(endDate)}</span>
+                  <h2>{formatCurrency(-allFilteredAuszahlungen, currencySettings)}</h2>
                 </div>
               </div>
             </section>
@@ -499,8 +542,8 @@ export default function Liquidity({
                     <LineChart data={monthlyData}>
                       <CartesianGrid stroke="rgba(255,255,255,0.06)" />
                       <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 12 }} />
-                      <YAxis stroke="#6b7280" width={90} tick={{ fontSize: 11 }} tickFormatter={(v) => formatCurrency(v, companySettings)} />
-                      <Tooltip formatter={(v) => formatCurrency(v, companySettings)} contentStyle={{ background: "#111", border: "1px solid #333" }} />
+                      <YAxis stroke="#6b7280" width={90} tick={{ fontSize: 11 }} tickFormatter={(v) => formatCurrency(v, currencySettings)} />
+                      <Tooltip formatter={(v) => formatCurrency(v, currencySettings)} contentStyle={{ background: "#111", border: "1px solid #333" }} />
                       <Legend />
                       <Line type="monotone" dataKey="income" stroke="#00ff88" strokeWidth={2} name="Einnahmen" dot={false} />
                       <Line type="monotone" dataKey="expense" stroke="#ff4d6d" strokeWidth={2} name="Ausgaben" dot={false} />
@@ -514,8 +557,8 @@ export default function Liquidity({
                     <LineChart data={monthlyData}>
                       <CartesianGrid stroke="rgba(255,255,255,0.06)" />
                       <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 12 }} />
-                      <YAxis stroke="#6b7280" width={90} tick={{ fontSize: 11 }} tickFormatter={(v) => formatCurrency(v, companySettings)} />
-                      <Tooltip formatter={(v) => formatCurrency(v, companySettings)} contentStyle={{ background: "#111", border: "1px solid #333" }} />
+                      <YAxis stroke="#6b7280" width={90} tick={{ fontSize: 11 }} tickFormatter={(v) => formatCurrency(v, currencySettings)} />
+                      <Tooltip formatter={(v) => formatCurrency(v, currencySettings)} contentStyle={{ background: "#111", border: "1px solid #333" }} />
                       <Legend />
                       <Line type="monotone" dataKey="liquidity" stroke="#fbbf24" strokeWidth={3} name="Liquiditätsverlauf" dot={false} />
                     </LineChart>
@@ -540,7 +583,7 @@ export default function Liquidity({
                 </div>
 
                 <div className="liq-toolbar-presets">
-                  {[["30d","30T"], ["90d","90T"], ["ytd","YTD"], ["12m","12M"], ["all","Alle"]].map(([preset, label]) => (
+                  {[["30d","30T"], ["90d","90T"], ["12m","12M"], ["all","Alle"]].map(([preset, label]) => (
                     <button key={preset} className="liq-preset-btn" onClick={() => applyDatePreset(preset)} type="button">{label}</button>
                   ))}
                 </div>
@@ -598,7 +641,7 @@ export default function Liquidity({
                         <td>{item.typ}</td>
                         <td>{formatDate(item.datum)}</td>
                         <td className={item.price < 0 ? "negative" : "positive"}>
-                          {formatCurrency(item.price, companySettings)}
+                          {formatCurrency(item.price, currencySettings)}
                         </td>
                       </tr>
                     ))

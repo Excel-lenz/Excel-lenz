@@ -17,8 +17,8 @@ export const formatCurrency = (value, settings, options = {}) => {
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
     ...options,
   }).format(toNumber(value));
 };
@@ -38,8 +38,8 @@ export const getCurrencySymbol = (settings) => {
   const currencyPart = new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   })
     .formatToParts(0)
     .find((part) => part.type === "currency");

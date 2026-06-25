@@ -7,6 +7,7 @@ from .serializers import (
     RegisterSerializer,
     MeSerializer,
     SettingsSerializer,
+    ChangePasswordSerializer,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -74,3 +75,17 @@ class SettingsView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+
+        user = request.user
+        user.set_password(serializer.validated_data["new_password"])
+        user.save(update_fields=["password"])
+
+        return Response({"detail": "Passwort wurde erfolgreich aktualisiert."}, status=status.HTTP_200_OK)

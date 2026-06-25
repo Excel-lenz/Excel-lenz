@@ -9,6 +9,8 @@ import TaxDeadlines from "../../components/taxes/taxDeadlines";
 import TaxCheckbox from "../../components/taxes/taxCheckbox";
 import TaxOptionGroup from "../../components/taxes/taxOptionGroup";
 import { getTaxSummary, updateTaxReserveRate } from "../../api/taxes/taxes";
+import { formatCurrency, normalizeCurrencySettings } from "../../utils/currency.jsx";
+import { useCurrencySettings } from "../../context/currencySettingsContext.jsx";
 
 export default function Taxes({
     sidebarOpen,
@@ -19,6 +21,7 @@ export default function Taxes({
     setFinanceOpen
     })
 {
+  const { currencySettings } = useCurrencySettings();
 
   const [taxData, setTaxData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,10 +45,13 @@ export default function Taxes({
     loadTaxData();
   }, []);
 
-  const company = useMemo(() => ({
-    currency: taxData?.currency || "EUR",
-    locale: taxData?.locale || "de-DE",
-  }), [taxData]);
+  const company = useMemo(
+    () => normalizeCurrencySettings({
+      currency: currencySettings.currency || taxData?.currency,
+      locale: currencySettings.locale || taxData?.locale,
+    }),
+    [currencySettings.currency, currencySettings.locale, taxData?.currency, taxData?.locale]
+  );
 
   const fallbackTaxData = {
     profitBeforeTax: 0,
@@ -129,14 +135,6 @@ locale: "en-US"
 currency: "EUR",
 locale: "de-DE"
 */
-  //Formatierung der Währung
-  const formatCurrency = (value) =>
-    value.toLocaleString(company.locale, {
-      style: "currency",
-      currency: company.currency,
-      maximumFractionDigits: 0,
-    });
-
   //UseStates für Häckchenkästchen
   const [vatExtension, setVatExtension] = useState(false);
   const [tradeTaxPrepayment, setTradeTaxPrepayment] = useState(false);
@@ -294,10 +292,10 @@ locale: "de-DE"
         )}
 
         <section className="cards">
-          <TaxCard title="Gewinn vor Steuern" color="default">{formatCurrency(liveTaxData.profitBeforeTax)}</TaxCard>
-          <TaxCard title="Geschätzte Steuerlast" color="orange">{formatCurrency(totalEstimatedTax)}</TaxCard>
-          <TaxCard title="Steuerrücklagen" color="default">{formatCurrency(currentReserve)}</TaxCard>
-          <TaxCard title="Gewinn nach Steuern" color="default">{formatCurrency(profitAfterTax)}</TaxCard>
+          <TaxCard title="Gewinn vor Steuern" color="default">{formatCurrency(liveTaxData.profitBeforeTax, company)}</TaxCard>
+          <TaxCard title="Geschätzte Steuerlast" color="orange">{formatCurrency(totalEstimatedTax, company)}</TaxCard>
+          <TaxCard title="Steuerrücklagen" color="default">{formatCurrency(currentReserve, company)}</TaxCard>
+          <TaxCard title="Gewinn nach Steuern" color="default">{formatCurrency(profitAfterTax, company)}</TaxCard>
         </section>
 
         <section className="tax-overview">

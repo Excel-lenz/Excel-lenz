@@ -58,6 +58,20 @@
   border-color: rgba(0, 255, 136, 0.35);
 }
 
+.settings-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #f2f2f8;
+  outline: none;
+}
+
+.settings-input:focus {
+  border-color: rgba(0, 255, 136, 0.35);
+}
+
 .settings-toggle {
   border: 1px solid transparent;
   border-radius: 999px;
@@ -151,6 +165,48 @@
 .settings-error {
   margin: 8px 0 20px;
   color: #ff6b6b;
+}
+
+.settings-success {
+  margin: 8px 0 20px;
+  color: #00ff88;
+}
+
+.settings-security {
+  margin-bottom: 18px;
+}
+
+.settings-password-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  max-width: 560px;
+}
+
+.settings-inline-msg {
+  margin: 2px 0;
+}
+
+.settings-save-btn {
+  width: fit-content;
+  border: 1px solid rgba(0, 255, 136, 0.35);
+  background: rgba(0, 255, 136, 0.14);
+  color: #00ff88;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-save-btn:hover:not(:disabled) {
+  background: rgba(0, 255, 136, 0.2);
+}
+
+.settings-save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 900px) {

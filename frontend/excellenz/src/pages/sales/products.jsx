@@ -12,9 +12,13 @@ import {
     deleteProduct,
 } from "../../api/products/productsAPI";
 import Input from "../../components/inputs.jsx";
+import { formatCurrency, getCurrencySymbol } from "../../utils/currency.jsx";
+import { useCurrencySettings } from "../../context/currencySettingsContext.jsx";
 
 export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen
                               }) {
+    const { currencySettings } = useCurrencySettings();
+    const currencySymbol = getCurrencySymbol(currencySettings);
 
     const [editingId, setEditingId] = useState(null);
     const [showForm, setShowForm] = useState(false);
@@ -147,8 +151,8 @@ export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
                 <header className="prodHeader">
 
                     <div>
-                        <h1>Products</h1>
-                        <p>!</p>
+                        <h1>Produkte</h1>
+                        <p>Hier können Sie Ihre Produkte hinzufügen und verwalten.</p>
                     </div>
 
                     <button
@@ -179,7 +183,7 @@ export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
 
                             <p>
                                 <strong>Preis:</strong>{" "}
-                                {product.price} €
+                                {formatCurrency(product.price, currencySettings, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </p>
 
                             <p>
@@ -255,7 +259,7 @@ export default function Sales({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
                                 <div className="formGroup">
 
                                     <label>
-                                        Preis (€)
+                                        Preis ({currencySymbol})
                                     </label>
 
                                     <input

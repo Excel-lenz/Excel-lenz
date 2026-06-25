@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import Topbar from "../components/topbar.jsx";
-import { getSettings, updateSettings } from "../api/funcs.jsx";
+import { changePassword, getSettings, updateSettings } from "../api/funcs.jsx";
+import { getCurrencySymbol } from "../utils/currency.jsx";
+import { useCurrencySettings } from "../context/currencySettingsContext.jsx";
 import "../styles/pages/dashboard.css";
 import "../styles/pages/settings.css";
 
@@ -13,6 +15,7 @@ export default function Settings({
   financeOpen,
   setFinanceOpen,
 }) {
+  const { currencySettings, patchCurrencySettings } = useCurrencySettings();
   const [language, setLanguage] = useState("Deutsch");
   const [currency, setCurrency] = useState("EUR");
   const [numberFormat, setNumberFormat] = useState("Punkt");
@@ -22,19 +25,27 @@ export default function Settings({
   const [privacyMode, setPrivacyMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [saveNotice, setSaveNotice] = useState("");
+
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordLoading, setPasswordLoading] = useState(false);
 
   useEffect(() => {
     const loadSettings = async () => {
       try {
         setLoading(true);
         const data = await getSettings();
-        setLanguage(data.language);
-        setCurrency(data.currency);
-        setNumberFormat(data.numberFormat);
-        setPopupsEnabled(data.popupsEnabled);
-        setFiscalYearStart(data.fiscalYearStart);
-        setBudgetWarning(data.budgetWarning);
-        setPrivacyMode(data.privacyMode);
+        setLanguage(data?.language ?? "Deutsch");
+        setCurrency(data?.currency ?? "EUR");
+        setNumberFormat(data?.numberFormat ?? "Punkt");
+        setPopupsEnabled(Boolean(data?.popupsEnabled ?? true));
+        setFiscalYearStart(data?.fiscalYearStart ?? "Januar");
+        setBudgetWarning(Number(data?.budgetWarning ?? 85));
+        setPrivacyMode(Boolean(data?.privacyMode ?? false));
         setError("");
       } catch (err) {
         console.error("Failed to load settings:", err);
@@ -50,18 +61,62 @@ export default function Settings({
   const updateSetting = async (key, value) => {
     try {
       await updateSettings({ [key]: value });
+
+      if (key === "currency") {
+        patchCurrencySettings({ currency: value });
+      }
+
       setError("");
+      setSaveNotice("Einstellung gespeichert.");
     } catch (err) {
       console.error(`Failed to update ${key}:`, err);
       setError("Einstellung konnte nicht gespeichert werden.");
+      setSaveNotice("");
     }
   };
 
-  const getCurrencySymbol = () => {
-    if (currency === "USD") return "$";
-    if (currency === "CHF") return "CHF";
-    return "EUR";
+  const handlePasswordSubmit = async (event) => {
+    event.preventDefault();
+    setPasswordMessage("");
+    setPasswordError("");
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setPasswordError("Bitte alle Passwortfelder ausfuellen.");
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setPasswordError("Neues Passwort muss mindestens 8 Zeichen haben.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError("Neues Passwort und Bestaetigung stimmen nicht ueberein.");
+      return;
+    }
+
+    try {
+      setPasswordLoading(true);
+      await changePassword({
+        current_password: currentPassword,
+        new_password: newPassword,
+        confirm_password: confirmPassword,
+      });
+
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setPasswordMessage("Passwort erfolgreich geaendert.");
+      setPasswordError("");
+    } catch (err) {
+      console.error("Failed to change password:", err);
+      setPasswordError(err?.message || "Passwort konnte nicht geaendert werden.");
+    } finally {
+      setPasswordLoading(false);
+    }
   };
+
+  const currencySymbol = getCurrencySymbol({ currency: currencySettings.currency, locale: currencySettings.locale });
 
   return (
     <div className="layout">
@@ -85,6 +140,7 @@ export default function Settings({
 
         {loading && <p className="settings-state">Einstellungen werden geladen...</p>}
         {error && <p className="settings-error">{error}</p>}
+        {!loading && saveNotice && <p className="settings-success">{saveNotice}</p>}
 
         {!loading && (
           <>
@@ -242,8 +298,8 @@ export default function Settings({
                   <p className="settings-preview-label">Aktueller Saldo</p>
                   <p className="settings-preview-value">
                     {privacyMode
-                      ? `*** ${getCurrencySymbol()}`
-                      : `${numberFormat === "Punkt" ? "45.250" : "45,250"} ${getCurrencySymbol()}`}
+                      ? `*** ${currencySymbol}`
+                      : `${numberFormat === "Punkt" ? "45.250,00" : "45,250.00"} ${currencySymbol}`}
                   </p>
                 </div>
                 <div>
@@ -253,6 +309,56 @@ export default function Settings({
                   </p>
                 </div>
               </div>
+            </section>
+
+            <section className="progressSection settings-security">
+              <h3 className="settings-preview-title">Passwort aendern / zuruecksetzen</h3>
+              <p className="settings-hint">Aus Sicherheitsgruenden muss das aktuelle Passwort bestaetigt werden.</p>
+
+              <form className="settings-password-form" onSubmit={handlePasswordSubmit}>
+                <div className="settings-row">
+                  <label className="settings-label" htmlFor="currentPassword">Aktuelles Passwort</label>
+                  <input
+                    id="currentPassword"
+                    className="settings-input"
+                    type="password"
+                    autoComplete="current-password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                  />
+                </div>
+
+                <div className="settings-row">
+                  <label className="settings-label" htmlFor="newPassword">Neues Passwort</label>
+                  <input
+                    id="newPassword"
+                    className="settings-input"
+                    type="password"
+                    autoComplete="new-password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                </div>
+
+                <div className="settings-row">
+                  <label className="settings-label" htmlFor="confirmPassword">Neues Passwort bestaetigen</label>
+                  <input
+                    id="confirmPassword"
+                    className="settings-input"
+                    type="password"
+                    autoComplete="new-password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
+
+                {passwordError && <p className="settings-error settings-inline-msg">{passwordError}</p>}
+                {passwordMessage && <p className="settings-success settings-inline-msg">{passwordMessage}</p>}
+
+                <button className="settings-save-btn" type="submit" disabled={passwordLoading}>
+                  {passwordLoading ? "Speichere..." : "Passwort aktualisieren"}
+                </button>
+              </form>
             </section>
           </>
         )}

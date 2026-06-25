@@ -10,7 +10,9 @@ import {
 } from "react-icons/fa";
 
 import "../../styles/pages/finance/costs.css";
-import { getCostItems, getCompanyCurrency, createCostItem, deleteCostItem, updateCostItem } from "../../api/finance/costs";
+import { getCostItems, createCostItem, deleteCostItem, updateCostItem } from "../../api/finance/costs";
+import { getCurrencySymbol } from "../../utils/currency.jsx";
+import { useCurrencySettings } from "../../context/currencySettingsContext.jsx";
 
 // Currency conversion rates (base EUR)
 const EXCHANGE_RATES = {
@@ -19,14 +21,6 @@ const EXCHANGE_RATES = {
   GBP: 0.86,
   CHF: 0.95,
   JPY: 150,
-};
-
-const currencySymbols = {
-  "EUR": "€",
-  "USD": "$",
-  "GBP": "£",
-  "CHF": "CHF",
-  "JPY": "¥"
 };
 
 const MAX_COST_EUR = 99999999.99;
@@ -75,12 +69,14 @@ const toBackendAmount = (amount) => Number(amount).toFixed(2);
 
 export default function Costs({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}) 
 {
+  const { currencySettings } = useCurrencySettings();
+  const currency = currencySettings.currency;
+  const currencySymbol = getCurrencySymbol(currencySettings);
 
   const [typ, setTyp] = useState("monthly");
   const [costItems, setCostItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currency, setCurrency] = useState("EUR");
   const [showCostForm, setShowCostForm] = useState(false);
   const [mouseX, setMouseX] = useState(0);
 
@@ -107,28 +103,10 @@ export default function Costs({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
     };
   }, []);
 
-  // Fetch cost items and currency on component mount
+  // Fetch cost items on component mount
   useEffect(() => {
-    fetchCostsAndCurrency();
+    fetchCosts();
   }, []);
-
-  const fetchCostsAndCurrency = async () => {
-    try {
-      setLoading(true);
-      const [costsData, currencyData] = await Promise.all([
-        getCostItems(),
-        getCompanyCurrency()
-      ]);
-      setCostItems(costsData);
-      setCurrency(currencyData);
-      setError(null);
-    } catch (err) {
-      console.error("Error fetching data:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const fetchCosts = async () => {
     try {
@@ -230,9 +208,6 @@ export default function Costs({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
     }
   };
 
-  // Get currency symbol
-  const currencySymbol = currencySymbols[currency] || currency;
-
   // Calculate totals with currency conversion
   const fixedCosts = costItems.filter(c => c.cost_type === "fixed");
   const variableCosts = costItems.filter(c => c.cost_type === "variable");
@@ -253,7 +228,10 @@ export default function Costs({sidebarOpen, setSidebarOpen, salesOpen, setSalesO
   // Display cost amount with currency conversion
   const displayCostAmount = (amountInEUR) => {
     const amountInCurrency = convertFromEUR(parseFloat(amountInEUR), currency);
-    return amountInCurrency.toLocaleString("de-DE");
+    return amountInCurrency.toLocaleString("de-DE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   return (

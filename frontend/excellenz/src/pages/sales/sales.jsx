@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Sidebar from "../../components/sidebar.jsx";
 import "../../styles/pages/sales/sales.css";
 import { deleteSale, getSales, updateSale } from "../../api/sales/salesAPI";
+import { formatCurrency } from "../../utils/currency.jsx";
+import { useCurrencySettings } from "../../context/currencySettingsContext.jsx";
 
 const parseDateValue = (value) => {
     if (!value) return null;
@@ -43,12 +45,8 @@ const formatDate = (value) => {
     return date ? date.toLocaleDateString("de-DE") : "-";
 };
 
-const formatMoney = (value) => {
-    const number = Number(value || 0);
-    return `${number.toFixed(2)} €`;
-};
-
 export default function Sales({ sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen }) {
+    const { currencySettings } = useCurrencySettings();
     const [sales, setSales] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -291,10 +289,10 @@ export default function Sales({ sidebarOpen, setSidebarOpen, salesOpen, setSales
                                             <tr key={sale.id}>
                                                 <td>{sale.name || "-"}</td>
                                                 <td>{sale.category || "-"}</td>
-                                                <td>{formatMoney(sale.price)}</td>
+                                                <td>{formatCurrency(sale.price, currencySettings, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                                 <td>{sale.quantity ?? "-"}</td>
                                                 <td>{Number(sale.tax_rate || 0).toFixed(2)}</td>
-                                                <td className="salesTotal">{formatMoney(total)}</td>
+                                                <td className="salesTotal">{formatCurrency(total, currencySettings, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                                 <td>{formatDate(sale.date || sale.created_at)}</td>
                                                 <td>
                                                     <div className="salesRowActions">

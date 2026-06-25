@@ -1,4 +1,4 @@
-import {API_BASE_URL, CAPITAL, SETTINGS} from "./auth.jsx";
+import {API_BASE_URL, CAPITAL, CHANGE_PASSWORD, SETTINGS} from "./auth.jsx";
 
 export const getCapital = async () => {
   const res = await authFetch(CAPITAL);
@@ -216,4 +216,22 @@ export async function updateSettings(settingsData) {
   }
 
   return await res.json();
+}
+
+export async function changePassword(passwordData) {
+  const res = await authPost(CHANGE_PASSWORD, passwordData);
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    const firstMessage =
+      data?.detail ||
+      data?.current_password?.[0] ||
+      data?.new_password?.[0] ||
+      data?.confirm_password?.[0] ||
+      "Passwort konnte nicht aktualisiert werden.";
+
+    throw new Error(firstMessage);
+  }
+
+  return data;
 }

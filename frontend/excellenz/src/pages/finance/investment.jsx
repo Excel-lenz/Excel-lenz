@@ -7,18 +7,18 @@ import { FaWallet, FaChartLine, FaHourglassHalf, FaCoins, FaPlus, FaTrash } from
 import Sidebar from "../../components/sidebar";
 import { createInvestment, deleteInvestment, getInvestments } from '../../api/finance/investments';
 import "../../styles/pages/finance/investment.css";
-import { getCompanySettings } from "../../api/company";
-import { formatCurrency, getCurrencySymbol, normalizeCurrencySettings } from "../../utils/currency";
+import { formatCurrency, getCurrencySymbol } from "../../utils/currency";
+import { useCurrencySettings } from "../../context/currencySettingsContext.jsx";
 
 export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen }) {
     const [investments, setInvestments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [companySettings, setCompanySettings] = useState(() => normalizeCurrencySettings());
+    const { currencySettings } = useCurrencySettings();
 
     const [formData, setFormData] = useState({ category: 'Produktentwicklung', cost: '', start_date: '', description: '', status: 'Geplant' });
 
-    const currencySymbol = getCurrencySymbol(companySettings);
+    const currencySymbol = getCurrencySymbol(currencySettings);
 
     const loadInvestments = async () => {
         try {
@@ -35,10 +35,6 @@ export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, 
 
     useEffect(() => {
         loadInvestments();
-
-        getCompanySettings()
-            .then((settings) => setCompanySettings(normalizeCurrencySettings(settings)))
-            .catch(() => undefined);
     }, []);
 
     const totalCost = investments.reduce((sum, item) => sum + Number(item.cost || 0), 0);
@@ -168,7 +164,7 @@ export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, 
                         <div className="invest-icon-wrapper" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#60a5fa' }}><FaWallet size={20} /></div>
                         <div className="invest-kpi-info">
                             <p>Investitionskosten</p>
-                            <h3>{formatCurrency(totalCost, companySettings)}</h3>
+                            <h3>{formatCurrency(totalCost, currencySettings)}</h3>
                         </div>
                     </div>
                     <div className="invest-kpi-card">
@@ -191,7 +187,7 @@ export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, 
                         <div className="invest-kpi-info">
                             <p>Erwarteter Gewinn</p>
                             {/* Hier wird der Gewinn jetzt live aktualisiert */}
-                            <h3>{formatCurrency(dynamicProfit, companySettings)}</h3>
+                            <h3>{formatCurrency(dynamicProfit, currencySettings)}</h3>
                         </div>
                     </div>
                 </section>
@@ -213,13 +209,13 @@ export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, 
                                     <YAxis
                                         stroke="#64748b"
                                         style={{ fontSize: '11px' }}
-                                        tickFormatter={(value) => formatCurrency(value, companySettings)}
+                                        tickFormatter={(value) => formatCurrency(value, currencySettings)}
                                         width={96}
                                         label={{ value: 'Betrag', angle: -90, position: 'insideLeft', fill: '#64748b' }}
                                     />
                                     <Tooltip
                                         contentStyle={{ backgroundColor: '#161622', borderColor: '#222235', color: '#fff' }}
-                                        formatter={(value) => formatCurrency(value, companySettings)}
+                                        formatter={(value) => formatCurrency(value, currencySettings)}
                                     />
                                     <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                                     <Line type="monotone" dataKey="Gesamtkosten" stroke="#ef4444" strokeWidth={2} dot={{ r: 4 }} />
@@ -239,7 +235,7 @@ export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, 
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}
                                     </Pie>
-                                    <Tooltip formatter={(value) => formatCurrency(value, companySettings)} />
+                                    <Tooltip formatter={(value) => formatCurrency(value, currencySettings)} />
                                 </PieChart>
                             </ResponsiveContainer>
                         </div>
@@ -292,7 +288,7 @@ export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, 
                                 <textarea rows="2" placeholder="Kurzbeschreibung..." value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} className="invest-field" style={{ resize: 'none' }}></textarea>
                             </div>
                             <button type="submit" className="invest-submit-btn">
-                                <FaPlus size={12} /> Simulation starten
+                                <FaPlus size={12} /> Investment hinzufügen
                             </button>
                         </form>
                     </div>
@@ -323,7 +319,7 @@ export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, 
                             {item.status}
                           </span>
                                             </td>
-                                            <td style={{ textAlign: 'right', fontWeight: '600' }}>{formatCurrency(item.cost, companySettings)}</td>
+                                            <td style={{ textAlign: 'right', fontWeight: '600' }}>{formatCurrency(item.cost, currencySettings)}</td>
                                             <td style={{ textAlign: 'center', color: '#94a3b8' }}>
                                                 {item.start_date ? new Date(item.start_date).toLocaleDateString('de-DE') : '-'}
                                             </td>
@@ -346,7 +342,7 @@ export default function Investitionen({ sidebarOpen, setSidebarOpen, salesOpen, 
 
                         <div className="invest-total-row">
                             <span style={{ color: '#94a3b8' }}>Gesamt</span>
-                            <span style={{ color: '#fff', fontSize: '16px', fontWeight: 'bold' }}>{formatCurrency(totalCost, companySettings)}</span>
+                            <span style={{ color: '#fff', fontSize: '16px', fontWeight: 'bold' }}>{formatCurrency(totalCost, currencySettings)}</span>
                         </div>
                     </div>
                 </section>
