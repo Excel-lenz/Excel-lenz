@@ -1,0 +1,537 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #141420, #0b0b10);
+  color: #eaeaf0;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.costsMain {
+  flex: 1;
+  padding: 40px;
+}
+
+.costsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.costsHeader h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.kostenplanung {
+  display: grid;
+  gap: 18px;
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.header p {
+  color: #64748b;
+}
+
+.toggle {
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.toggle button {
+  border: none;
+  background: transparent;
+  padding: 10px 18px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.toggle .active {
+  background: #0b0b10;
+  color: white;
+}
+
+.cardsEingaben {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 0;
+  align-items: stretch;
+  
+}
+
+.fixkosten, .variableKosten {
+  display: flex;
+}
+
+.fixkosten .costsCard, .variableKosten .costsCard {
+  flex: 1;
+}
+
+.cardsAusgaben {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.costsCard {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  transition: 0.2s ease;
+
+}
+
+.costsCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 255, 136, 0.2);
+}
+
+.costsCard span {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.costsCard h2 {
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+.costsCard input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #111827;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.costsCard input:focus {
+  outline: none;
+  border-color: rgba(0, 255, 136, 0.2);
+}
+
+.resultCard {
+  text-align: center;
+}
+
+.inputGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+th,
+td {
+  text-align: left;
+  padding: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* New styles for improved costs page */
+
+.error-message {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #fca5a5;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.addBtn, .saveBtn, .cancelBtn, .editBtn, .deleteBtn {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s ease;
+}
+
+.addBtn {
+  background: rgba(0, 255, 136, 0.2);
+  color: #00ff88;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  width: 100%;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.addBtn:hover {
+  background: rgba(0, 255, 136, 0.3);
+  transform: translateY(-2px);
+}
+
+.costsCard select {
+  width: 100%;
+  padding: 10px;
+  padding-right: 36px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  background: rgba(0, 255, 136, 0.08);
+  color: #fff;
+  box-sizing: border-box;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff88' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 18px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.costsCard select option {
+  background: #0f1117;
+  color: #eaeaf0;
+}
+
+.costsCard select:focus {
+  outline: none;
+  border-color: rgba(0, 255, 136, 0.6);
+  background-color: rgba(0, 255, 136, 0.12);
+}
+
+.costsCard label {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.costsSection {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  margin-bottom: 20px;
+}
+
+.costsSection h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.sectionDesc {
+  color: #64748b;
+  font-size: 13px;
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
+.costsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.costItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: 0.2s ease;
+}
+
+.costItem:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.costInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex: 1;
+}
+
+.costName {
+  font-weight: 500;
+  color: #eaeaf0;
+  font-size: 14px;
+}
+
+.costPeriod {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.costAmount {
+  font-weight: 600;
+  color: #00ff88;
+  font-size: 14px;
+  min-width: 100px;
+  text-align: right;
+}
+
+.costActions {
+  display: flex;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.editBtn {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 6px 10px;
+}
+
+.editBtn:hover {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+.deleteBtn {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 6px 10px;
+}
+
+.deleteBtn:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.emptyMessage {
+  color: #64748b;
+  font-size: 14px;
+  padding: 12px;
+  text-align: center;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: rgba(20, 20, 32, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.saveBtn {
+  background: rgba(0, 255, 136, 0.2);
+  color: #00ff88;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  flex: 1;
+  justify-content: center;
+}
+
+.saveBtn:hover {
+  background: rgba(0, 255, 136, 0.3);
+}
+
+.cancelBtn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #64748b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 1;
+  justify-content: center;
+}
+
+.cancelBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Cost Form Styles - Similar to inputs.jsx */
+
+.costFormButtonContainer {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 500;
+}
+
+.costFormButton {
+  background: rgb(15, 31, 30);
+  color: #00ff88;
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 14px 20px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.costFormButton:hover {
+  background: rgb(20, 40, 39);
+  box-shadow: 0 0 25px rgba(0, 255, 136, 0.2);
+}
+
+.costFormMenu {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 350px;
+  padding: 20px;
+  background: rgba(15, 31, 30, 0.98);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 500;
+  backdrop-filter: blur(12px);
+}
+
+.formMenuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.formMenuHeader h3 {
+  margin: 0;
+  color: #00ff88;
+  font-size: 16px;
+}
+
+.closeFormButton {
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 24px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.closeFormButton:hover {
+  color: #eaeaf0;
+}
+
+.costFormMenu label {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 4px;
+  display: block;
+}
+
+.costFormMenu input,
+.costFormMenu select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  background: rgba(0, 255, 136, 0.08);
+  color: #eaeaf0;
+  box-sizing: border-box;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.costFormMenu select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff88' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 20px;
+  padding-right: 36px;
+}
+
+.costFormMenu select option {
+  background: rgb(15, 31, 30);
+  color: #eaeaf0;
+  padding: 10px;
+}
+
+.costFormMenu input:focus,
+.costFormMenu select:focus {
+  outline: none;
+  border-color: rgba(0, 255, 136, 0.6);
+  background: rgba(0, 255, 136, 0.12);
+}
+
+.confirmCostButton {
+  margin-top: 8px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #00ff88;
+  color: #0b0b10;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.confirmCostButton:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}

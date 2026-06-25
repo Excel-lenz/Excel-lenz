@@ -1,18 +1,28 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoadingScreen from "./components/loadingScreen";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard.jsx";
 import Settings from "./pages/settings.jsx";
 import Finance from "./pages/finance.jsx";
 import Revenue from "./pages/finance/revenue.jsx";
 import Sales from "./pages/sales/sales.jsx";
 import Products from "./pages/sales/products.jsx";
 import LandingPage from "./pages/landing/landingPage.jsx";
+import Taxes from "./pages/taxes/taxes.jsx"
+import Investitionen from "./pages/finance/investment.jsx";
+import Costs from "./pages/finance/costs.jsx";
+import Glossar from "./pages/glossar.jsx";
+import Liquidity from "./pages/finance/liquidity.jsx";
 
 import Login from "./pages/login/login.jsx";
 import Register from "./pages/login/register.jsx"
 import "./index.css";
 import CompanySetup from "./pages/companySetup"
+
+import CompanySetupGuard from "./protection/companySetupGuard.jsx";
+import ProtectedRoute from "./protection/protectedRoute.jsx";
+import DashboardGuard from "./protection/dashboardGuard.jsx";
+
 
 
 export default function App() {
@@ -40,73 +50,162 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={
-            <Dashboard
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              financeOpen={financeOpen}
-              setFinanceOpen={setFinanceOpen}
-              salesOpen={salesOpen}
-              setSalesOpen={setSalesOpen}
-            />
+            <DashboardGuard>
+              <Dashboard
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+            </DashboardGuard>
             } 
           />
-          <Route path="/settings" element={ <Settings
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              financeOpen={financeOpen}
-              setFinanceOpen={setFinanceOpen}
-              salesOpen={salesOpen}
-              setSalesOpen={setSalesOpen}
-            />
+          <Route path="/settings" element={ 
+            <DashboardGuard>
+              <Settings
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+            </DashboardGuard>
             } 
           />
 
           {/* Finance routes */}
 
-          <Route path="/finance" element={ <Finance
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              financeOpen={financeOpen}
-              setFinanceOpen={setFinanceOpen}
-              salesOpen={salesOpen}
-              setSalesOpen={setSalesOpen}
-            />
+          <Route path="/finance" element={ 
+            <DashboardGuard>
+              <Finance
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+            </DashboardGuard>
             } 
           />
 
-          <Route path="/finance/revenue" element={ <Revenue
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              financeOpen={financeOpen}
-              setFinanceOpen={setFinanceOpen}
-              salesOpen={salesOpen}
-              setSalesOpen={setSalesOpen}
-            />
+          <Route path="/finance/revenue" element={ 
+            <DashboardGuard>
+              <Revenue
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+            </DashboardGuard>
             } 
           />
 
-          <Route path="/sales" element={ <Sales
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              financeOpen={financeOpen}
-              setFinanceOpen={setFinanceOpen}
-              salesOpen={salesOpen}
-              setSalesOpen={setSalesOpen}
-            />
+          <Route path="/finance/costs" element={ 
+            <DashboardGuard>
+              <Costs
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+            </DashboardGuard>
+            } 
+          />
+
+          <Route path="/sales" element={ 
+            <DashboardGuard>
+              <Sales
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+            </DashboardGuard>
             } 
           />
 
 
-          <Route path="/sales/products" element={ <Products
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              financeOpen={financeOpen}
-              setFinanceOpen={setFinanceOpen}
-              salesOpen={salesOpen}
-              setSalesOpen={setSalesOpen}
-            />
+          <Route path="/sales/products" element={ 
+            <DashboardGuard>
+              <Products
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                financeOpen={financeOpen}
+                setFinanceOpen={setFinanceOpen}
+                salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+            </DashboardGuard>
             } 
           />
+
+           <Route path="/taxes" element={ 
+             <DashboardGuard>
+                <Taxes
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  financeOpen={financeOpen}
+                  setFinanceOpen={setFinanceOpen}
+                  salesOpen={salesOpen}
+                  setSalesOpen={setSalesOpen}
+                />
+             </DashboardGuard>
+             }
+           />
+
+           <Route path="/finance/investitionen" element={ 
+             <DashboardGuard>
+                <Investitionen
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  financeOpen={financeOpen}
+                  setFinanceOpen={setFinanceOpen}
+                  salesOpen={salesOpen}
+                setSalesOpen={setSalesOpen}
+              />
+              </DashboardGuard>
+              }
+            />
+
+            <Route path="/finance/liquidity" element={ 
+              <DashboardGuard>
+                <Liquidity
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  financeOpen={financeOpen}
+                  setFinanceOpen={setFinanceOpen}
+                  salesOpen={salesOpen}
+                  setSalesOpen={setSalesOpen}
+                />
+              </DashboardGuard>
+            }
+          />
+
+            <Route path="/glossar" element={
+              <DashboardGuard>
+                <Glossar
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  financeOpen={financeOpen}
+                  setFinanceOpen={setFinanceOpen}
+                  salesOpen={salesOpen}
+                  setSalesOpen={setSalesOpen}
+                />
+              </DashboardGuard>
+            } 
+          />
+
+          
 
           {/* Test Route */}
           <Route path="/login" element={ <Login
@@ -120,8 +219,10 @@ export default function App() {
             />
             } 
           />
-          <Route path="/setup" element={ <CompanySetup
-            />
+          <Route path="/setup" element={ 
+             <CompanySetupGuard>
+              <CompanySetup />
+            </CompanySetupGuard>
             }
           />
 

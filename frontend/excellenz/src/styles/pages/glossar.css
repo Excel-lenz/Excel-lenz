@@ -1,0 +1,144 @@
+.glossar-main {
+  padding-top: 54px;
+}
+
+.glossar-header {
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.glossar-search {
+  width: min(420px, 100%);
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #f2f2f8;
+  outline: none;
+}
+
+.glossar-search:focus {
+  border-color: rgba(0, 255, 136, 0.35);
+}
+
+.glossar-grid {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.glossar-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: sticky;
+  top: 16px;
+}
+
+.glossar-categories-title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #a1a1b3;
+}
+
+.glossar-category-btn {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #d8d8e2;
+  text-align: left;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.glossar-category-btn:hover {
+  border-color: rgba(0, 255, 136, 0.25);
+}
+
+.glossar-category-btn.active {
+  background: rgba(0, 255, 136, 0.14);
+  color: #00ff88;
+  border-color: rgba(0, 255, 136, 0.35);
+}
+
+.glossar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.glossar-item {
+  padding: 14px;
+}
+
+.glossar-item-trigger {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+}
+
+.glossar-badge {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 255, 136, 0.28);
+  color: #00ff88;
+  font-size: 11px;
+}
+
+.glossar-item-title {
+  margin: 0;
+  font-size: 18px;
+  color: #ececf6;
+}
+
+.glossar-arrow {
+  color: #00ff88;
+  transition: transform 0.2s ease;
+}
+
+.glossar-arrow.open {
+  transform: rotate(180deg);
+}
+
+.glossar-definition {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cacad8;
+  line-height: 1.6;
+}
+
+.glossar-empty {
+  color: #a1a1b3;
+  text-align: center;
+}
+
+@media (max-width: 1020px) {
+  .glossar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .glossar-categories {
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .glossar-main {
+    padding: 24px 18px 24px;
+  }
+}

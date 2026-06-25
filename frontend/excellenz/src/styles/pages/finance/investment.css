@@ -1,0 +1,198 @@
+.invest-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+    margin-top: 20px;
+}
+
+.invest-kpi-card {
+    background: #161622; /* Passend zum Dark-Theme */
+    border: 1px solid #222235;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.invest-icon-wrapper {
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.invest-kpi-info h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 4px 0 0 0;
+    color: #ffffff;
+}
+
+.invest-kpi-info p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Haupt-Layout für Diagramme, Formular und Tabelle */
+.invest-main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.invest-section-card {
+    background: #161622;
+    border: 1px solid #222235;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.invest-section-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #10b981; /* Excellenz Grün */
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/* Formular-Styling */
+.invest-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: 13px;
+}
+
+.invest-form-group label {
+    color: #94a3b8;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.invest-field {
+    background: #0b0b10;
+    border: 1px solid #222235;
+    border-radius: 8px;
+    padding: 10px;
+    color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.invest-field:focus {
+    border-color: #10b981;
+}
+
+.invest-submit-btn {
+    background: #10b981;
+    color: #000;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.invest-submit-btn:hover {
+    background: #059669;
+}
+
+/* Tabellen-Styling */
+.invest-table-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.invest-data-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.invest-data-table th {
+    padding-bottom: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+    border-bottom: 1px solid #222235;
+}
+
+.invest-data-table td {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(34, 34, 53, 0.5);
+    color: #cbd5e1;
+}
+
+.invest-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #222235;
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Status Badges Styling */
+.invest-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-abgeschlossen {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge-bearbeitung {
+    background: rgba(245, 158, 11, 0.12);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge-geplant {
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Delete Button Styling */
+.invest-delete-btn {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+}
+
+.invest-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    opacity: 1;
+    transform: scale(1.05);
+}

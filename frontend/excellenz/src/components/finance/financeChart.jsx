@@ -12,23 +12,44 @@ import {
 } from "recharts";
 
 import "../../styles/components/finance/financeChart.css";
+import { formatCurrency, normalizeCurrencySettings } from "../../utils/currency";
 
-const data = [
-  { month: "Jan", liquid: 12000, costs: 9000 },
-  { month: "Feb", liquid: 18000, costs: 11000 },
-  { month: "Mär", liquid: 22000, costs: 13000 },
-  { month: "Apr", liquid: 26000, costs: 15000 },
-  { month: "Mai", liquid: 31000, costs: 18000 },
-  { month: "Jun", liquid: 37000, costs: 21000 },
-  { month: "Jul", liquid: 32000, costs: 12000 },
-  { month: "Aug", liquid: 41000, costs: 14000 },
-  { month: "Sep", liquid: 40000, costs: 12000 },
-  { month: "Okt", liquid: 43000, costs: 21000 },
-  { month: "Nov", liquid: 30000, costs: 40000 },
-  { month: "Dez", liquid: 34000, costs: 30000 },
-];
+const monthFormatter = new Intl.DateTimeFormat("de-DE", { month: "short" });
 
-export default function FinanceChart() {
+export default function FinanceChart({ transactions = [], currencySettings }) {
+  const settings = normalizeCurrencySettings(currencySettings);
+  const groupedByMonth = new Map();
+
+  transactions.forEach((transaction) => {
+    const date = new Date(transaction.created_at);
+
+    if (Number.isNaN(date.getTime())) {
+      return;
+    }
+
+    const key = `${date.getFullYear()}-${date.getMonth()}`;
+    const current = groupedByMonth.get(key) || {
+      month: `${monthFormatter.format(date)} ${date.getFullYear()}`,
+      liquid: 0,
+      costs: 0,
+    };
+
+    const amount = Number(transaction.total ?? transaction.price * transaction.quantity);
+
+    if (transaction.type === "expense") {
+      current.costs += amount;
+      current.liquid -= amount;
+    } else {
+      current.liquid += amount;
+    }
+
+    groupedByMonth.set(key, current);
+  });
+
+  const data = Array.from(groupedByMonth.entries())
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([, value]) => value);
+
   return (
     <div className="financeChartCard">
 
@@ -45,7 +66,7 @@ export default function FinanceChart() {
       </div>
 
       <div className="chartContainer">
-        <ResponsiveContainer width="100%" height={320}>
+        <ResponsiveContainer width="100%" height={320} minWidth={280} minHeight={240}>
           <LineChart data={data}>
             
             <CartesianGrid
@@ -56,13 +77,17 @@ export default function FinanceChart() {
             <XAxis
               dataKey="month"
               stroke="#9ca3af"
+              label={{ value: "Zeitraum (Monat)", position: "insideBottom", offset: -8, fill: "#9ca3af" }}
             />
 
             <YAxis
               stroke="#9ca3af"
+              tickFormatter={(value) => formatCurrency(value, settings)}
+              width={96}
+              label={{ value: "Betrag", angle: -90, position: "insideLeft", fill: "#9ca3af" }}
             />
 
-            <Tooltip />
+            <Tooltip formatter={(value) => formatCurrency(value, settings)} />
 
             <Line
               type="monotone"

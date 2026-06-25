@@ -1,8 +1,22 @@
 
 import React from "react";
 import "../../styles/components/finance/recentEntries.css";
+import { formatCurrency, getCurrencySymbol, normalizeCurrencySettings } from "../../utils/currency";
 
-export default function RecentEntries() {
+const dateFormatter = new Intl.DateTimeFormat("de-DE", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+
+export default function RecentEntries({ transactions = [], currencySettings }) {
+  const settings = normalizeCurrencySettings(currencySettings);
+  const currencySymbol = getCurrencySymbol(settings);
+
+  const recentTransactions = [...transactions]
+    .sort((left, right) => new Date(right.created_at) - new Date(left.created_at))
+    .slice(0, 3);
+
   return (
     <div className="recentEntriesCard">
       <div className="recentEntriesHeader">
@@ -12,52 +26,31 @@ export default function RecentEntries() {
       </div>
 
       <div className="recentEntriesList">
-
-        <div className="entryItem">
-          <div className="entryIcon green">
-            €
+        {recentTransactions.length === 0 && (
+          <div className="entryItem">
+            <div className="entryContent">
+              <h4>Noch keine Einträge</h4>
+              <p>Sobald Transaktionen vorhanden sind, erscheinen sie hier.</p>
+            </div>
           </div>
+        )}
 
-          <div className="entryContent">
-            <h4>Einnahme hinzugefügt</h4>
-            <p>Webdesign Projekt — €4.500</p>
+        {recentTransactions.map((transaction) => (
+          <div className="entryItem" key={transaction.id}>
+            <div className={`entryIcon ${transaction.type === "expense" ? "orange" : "green"}`}>
+              {currencySymbol}
+            </div>
+
+            <div className="entryContent">
+              <h4>{transaction.name}</h4>
+              <p>{transaction.category} — {formatCurrency(transaction.total ?? transaction.price * transaction.quantity, settings)}</p>
+            </div>
+
+            <span className="entryDate">
+              {transaction.created_at ? dateFormatter.format(new Date(transaction.created_at)) : "-"}
+            </span>
           </div>
-
-          <span className="entryDate">
-            Heute
-          </span>
-        </div>
-
-        <div className="entryItem">
-          <div className="entryIcon blue">
-            €
-          </div>
-
-          <div className="entryContent">
-            <h4>Fixkosten aktualisiert</h4>
-            <p>Büromiete — €1.200</p>
-          </div>
-
-          <span className="entryDate">
-            Gestern
-          </span>
-        </div>
-
-        <div className="entryItem">
-          <div className="entryIcon orange">
-            €
-          </div>
-
-          <div className="entryContent">
-            <h4>Investition hinzugefügt</h4>
-            <p>MacBook Pro — €2.199</p>
-          </div>
-
-          <span className="entryDate">
-            20.05
-          </span>
-        </div>
-
+        ))}
       </div>
     </div>
   );

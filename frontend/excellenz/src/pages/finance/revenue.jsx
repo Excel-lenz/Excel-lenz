@@ -1,33 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
+import { getCapital } from "../../api/funcs";
 
 import {
   FaPlus,
-  FaEuroSign,
   FaChartLine,
   FaBoxOpen,
 } from "react-icons/fa";
 
 import "../../styles/pages/finance/revenue.css";
+import Input from "../../components/inputs";
+import { getTransactions } from "../../api/inputs/inputAPI";
+import FinanceChart from "../../components/finance/financeChart";
+import { formatCurrency, getCurrencySymbol } from "../../utils/currency";
+import { useCurrencySettings } from "../../context/currencySettingsContext.jsx";
 
 export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSalesOpen, financeOpen, setFinanceOpen}) 
 {
-  const [revenues, setRevenues] = useState([
-    {
-      id: 1,
-      name: "Webdesign Projekt",
-      category: "Dienstleistung",
-      price: 1500,
-      quantity: 3,
-    },
-    {
-      id: 2,
-      name: "SEO Betreuung",
-      category: "Abo",
-      price: 500,
-      quantity: 5,
-    },
-  ]);
+  const [capital, setCapital] = useState(0);
+  const [revenues, setRevenues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { currencySettings } = useCurrencySettings();
+
+  const currencySymbol = getCurrencySymbol(currencySettings);
+
+
+  const loadCapital = async () => {
+    try {
+      const data = await getCapital();
+      setCapital(data.capital);
+    } catch (err) {
+      console.error("Fehler beim Laden des Kapitals:", err);
+    }
+  };
+  
+  useEffect(() => {
+    loadCapital();
+  }, []);
+
+  const fetchTransaction = async () => {
+    try {
+      setLoading(true);
+
+      const data = await getTransactions();
+      setRevenues(data);
+      loadCapital();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransaction();
+  }, []);
+
 
   const totalRevenue = revenues.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -36,6 +65,11 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
 
   return (
     <div className="layout">
+
+      <Input onCreated={async () => {
+        await fetchTransaction ();
+      }} />
+
       <Sidebar
         open={sidebarOpen}
         setOpen={setSidebarOpen}
@@ -57,10 +91,6 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
             </p>
           </div>
 
-          <button className="addRevenueBtn">
-            <FaPlus />
-            Neue Einnahme
-          </button>
         </header>
 
         {/* KPI CARDS */}
@@ -68,12 +98,12 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
 
           <div className="revenueCard">
             <div className="cardIcon green">
-              <FaEuroSign />
+              <span>{currencySymbol}</span>
             </div>
 
             <div>
-              <span>Gesamtumsatz</span>
-              <h2>€ {totalRevenue.toLocaleString()}</h2>
+              <span>Gesamtkapital</span>
+              <h2>{formatCurrency(capital, currencySettings)}</h2>
             </div>
           </div>
 
@@ -101,23 +131,14 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
 
         </section>
 
-        {/* CHART PLACEHOLDER */}
         <section className="chartSection">
-          <div className="chartPlaceholder">
-            Umsatzdiagramm
-          </div>
+          <FinanceChart transactions={revenues} currencySettings={currencySettings} />
         </section>
 
         {/* TABLE */}
         <section className="revenueTableWrapper">
-
           <div className="tableHeader">
-            <h3>Einnahmen</h3>
-
-            <button className="tableAddBtn">
-              <FaPlus />
-              Hinzufügen
-            </button>
+            <h3>Transaktionen</h3>
           </div>
 
           <table className="revenueTable">
@@ -133,20 +154,28 @@ export default function Revenue({sidebarOpen, setSidebarOpen, salesOpen, setSale
 
             <tbody>
               {revenues.map((item) => (
-                <tr key={item.id}>
+                <tr
+                  key={item.id}
+                  className={item.type === "expense" ? "expenseRow" : "incomeRow"}
+                >
                   <td>{item.name}</td>
                   <td>{item.category}</td>
-                  <td>€ {item.price}</td>
+                  <td>{formatCurrency(item.price, currencySettings)}</td>
                   <td>{item.quantity}</td>
-                  <td className="highlight">
-                    € {item.price * item.quantity}
+
+                  <td
+                    className={
+                      item.type === "expense" ? "highlightExpense" : "highlightIncome"
+                    }
+                  > 
+                   {item.type === "expense" ? "-" : ""}
+                   {formatCurrency(item.total_revenue ?? item.price * item.quantity, currencySettings)}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-
-        </section>
+      </section>
       </main>
     </div>
   );

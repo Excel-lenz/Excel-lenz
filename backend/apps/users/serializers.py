@@ -6,7 +6,7 @@ from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
 from rest_framework.fields import ErrorDetail
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -76,6 +76,50 @@ class MeSerializer(serializers.ModelSerializer):
             "id",
             "username",
             "email",
+            "companySetupDone",
+            "isMailVerified",
+            "currentStreak",
+            "language",
+            "currency",
+            "numberFormat",
+            "popupsEnabled",
+            "fiscalYearStart",
+            "budgetWarning",
+            "privacyMode",
         )
+
+
+class SettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "language",
+            "currency",
+            "numberFormat",
+            "popupsEnabled",
+            "fiscalYearStart",
+            "budgetWarning",
+            "privacyMode",
+        )
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        user = self.context["request"].user
+
+        if not user.check_password(attrs["current_password"]):
+            raise serializers.ValidationError({"current_password": "Aktuelles Passwort ist falsch."})
+
+        if attrs["new_password"] != attrs["confirm_password"]:
+            raise serializers.ValidationError({"confirm_password": "Passwörter stimmen nicht überein."})
+
+        if attrs["new_password"] == attrs["current_password"]:
+            raise serializers.ValidationError({"new_password": "Neues Passwort muss sich vom alten unterscheiden."})
+
+        return attrs
 
 

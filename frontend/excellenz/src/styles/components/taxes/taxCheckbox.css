@@ -1,0 +1,55 @@
+.tax-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 16px 18px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: background 0.2s ease;
+}
+
+.tax-checkbox:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.tax-checkbox input {
+  display: none;
+}
+
+.tax-checkbox-box {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: #00ff88;
+  font-size: 14px;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.tax-checkbox input:checked + .tax-checkbox-box {
+  border-color: #00ff88;
+  background: rgba(0, 255, 136, 0.12);
+}
+
+.tax-checkbox-label {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}

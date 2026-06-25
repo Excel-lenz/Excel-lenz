@@ -1,0 +1,40 @@
+.tax-overview {
+  display: grid;
+  grid-template-columns: 540px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.tax-right-column {
+  display: grid;
+  gap: 24px;
+}
+
+.tax-deadlines-section {
+  margin-top: 24px;
+}
+
+.tax-settings-card {
+  margin-top: 24px;
+
+  background: linear-gradient(180deg, #171821, #13141c);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 18px;
+  padding: 28px;
+}
+
+.tax-settings-card h3 {
+  margin: 0 0 24px 0;
+
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.tax-checkbox-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 24px;
+}

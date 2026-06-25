@@ -1,0 +1,131 @@
+.sales-tax-card {
+  width: 100%;
+
+  background: linear-gradient(180deg, #171821, #13141c);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 18px;
+  padding: 28px;
+
+  margin-top: 24px;
+
+  color: white;
+}
+
+
+.sales-tax-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 32px;
+}
+
+.sales-tax-header h3 {
+  margin: 0;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  color: white;
+}
+
+.sales-tax-header span {
+  font-size: 14px;
+  color: #a1a7b3;
+}
+
+.sales-tax-calculation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 40px;
+}
+
+.sales-tax-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  flex: 1;
+}
+
+.sales-tax-label {
+  margin-bottom: 8px;
+
+  font-size: 13px;
+  color: #a1a7b3;
+
+  text-align: center;
+}
+
+.sales-tax-value {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.sales-tax-symbol {
+  font-size: 28px;
+  font-weight: 700;
+
+  color: #6b7280;
+}
+
+.sales-tax-value.positive {
+  color: #00ff88;
+}
+
+.sales-tax-value.neutral {
+  color: #ffffff;
+}
+
+.sales-tax-value.warning {
+  color: #f59e0b;
+}
+
+.sales-tax-value.refund {
+  color: #00ff88;
+}
+
+.sales-tax-footer {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.sales-tax-due-date {
+  padding: 16px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sales-tax-due-date strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: white;
+}
+
+.sales-tax-due-date span {
+  font-size: 13px;
+  color: #a1a7b3;
+}
+
+.sales-tax-status {
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: rgba(0, 255, 136, 0.08);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+
+  color: #00ff88;
+  font-weight: 600;
+}
