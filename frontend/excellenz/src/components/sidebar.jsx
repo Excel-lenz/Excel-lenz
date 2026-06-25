@@ -113,47 +113,60 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
         )}
       </div>
 
-      {/* SUBMENU FINANCE*/}
-      {financeOpen && open && (
-        <div className="submenu">
-          
-          <div
-            className={`submenu-item ${
-              isActive("/finance/revenue")
-                ? "active-sub"
-                : ""
-            }`}
-            onClick={() => navigate("/finance/revenue")}
-          >
-            <FaMoneyBillWave />
-            <span>Umsatzplanung</span>
-          </div>
+{/* SUBMENU FINANCE*/}
+{financeOpen && open && (
+  <div className="submenu">
 
-          <div
-            className={`submenu-item ${
-              isActive("/finance/costs")
-                ? "active-sub"
-                : ""
-            }`}
-            onClick={() => navigate("/finance/costs")}
-          >
-            <FaFileInvoiceDollar />
-            <span>Kostenplanung</span>
-          </div>
+    <div
+      className={`submenu-item ${
+        isActive("/finance/revenue")
+          ? "active-sub"
+          : ""
+      }`}
+      onClick={() => navigate("/finance/revenue")}
+    >
+      <FaMoneyBillWave />
+      <span>Umsatzplanung</span>
+    </div>
 
-          <div
-            className={`submenu-item ${
-              isActive("/finance/liquidity")
-                ? "active-sub"
-                : ""
-            }`}
-            onClick={() => navigate("/finance/liquidity")}
-          >
-            <FaUniversity />
-            <span>Liquidität</span>
-          </div>
-        </div>
-      )}
+    <div
+      className={`submenu-item ${
+        isActive("/finance/costs")
+          ? "active-sub"
+          : ""
+      }`}
+      onClick={() => navigate("/finance/costs")}
+    >
+      <FaFileInvoiceDollar />
+      <span>Kostenplanung</span>
+    </div>
+
+    <div
+      className={`submenu-item ${
+        isActive("/finance/liquidity")
+          ? "active-sub"
+          : ""
+      }`}
+      onClick={() => navigate("/finance/liquidity")}
+    >
+      <FaUniversity />
+      <span>Liquidität</span>
+    </div>
+
+    <div
+      className={`submenu-item ${
+        isActive("/finance/forecast")
+          ? "active-sub"
+          : ""
+      }`}
+      onClick={() => navigate("/finance/forecast")}
+    >
+      <FaChartLine />
+      <span>Finanzprognose</span>
+    </div>
+
+  </div>
+)}
 
       {/* SUBMENU SALES*/}
       <div
@@ -221,6 +234,8 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
             <span>Liquidität</span>
           </div>
         </div>
+
+        
       )}
 
       {/* SETTINGS */}

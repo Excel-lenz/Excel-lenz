@@ -9,6 +9,7 @@ import Liquidity from "./pages/finance/liquidity.jsx";
 import Sales from "./pages/sales/sales.jsx";
 import Products from "./pages/sales/products.jsx";
 import LandingPage from "./pages/landing/landingPage.jsx";
+import FinanceForecast from "./pages/finance/financeForecast.jsx";
 
 import Login from "./pages/login/login.jsx";
 import Register from "./pages/login/register.jsx"
@@ -88,6 +89,17 @@ export default function App() {
           />
 
           <Route path="/finance/liquidity" element={ <Liquidity
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+              financeOpen={financeOpen}
+              setFinanceOpen={setFinanceOpen}
+              salesOpen={salesOpen}
+              setSalesOpen={setSalesOpen}
+          />
+          }
+          />
+
+          <Route path="/finance/forecast" element={ <FinanceForecast
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
               financeOpen={financeOpen}
