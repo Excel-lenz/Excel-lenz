@@ -8,6 +8,7 @@ from .views import (
     LiquiditySummaryView,
     ProductListCreateView,
     ProductDetailView,
+    FinanceForecastView,
 )
 
 router = DefaultRouter()
@@ -19,15 +20,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path("tax-reserve/", TaxReserveSettingView.as_view(), name="tax-reserve-setting"),
     path("liquidity-summary/", LiquiditySummaryView.as_view(), name="liquidity-summary"),
-    path(
-        "products/",
-        ProductListCreateView.as_view(),
-        name="products"
-    ),
-
-    path(
-        "products/<int:pk>/",
-        ProductDetailView.as_view(),
-        name="product-detail"
-    ),
+    path( "products/", ProductListCreateView.as_view(),name="products"),
+    path("products/<int:pk>/",ProductDetailView.as_view(), name="product-detail"),
+    path("forecast/",FinanceForecastView.as_view(),name="forecast",),
 ]

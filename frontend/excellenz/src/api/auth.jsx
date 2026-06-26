@@ -27,6 +27,7 @@ export const INVESTMENT = joinUrl('/api/finance/investments/')
 export const COST_ITEMS = joinUrl('/api/finance/cost-items/')
 export const TAX_RESERVE = joinUrl('/api/finance/tax-reserve/')
 export const LIQUIDITY_SUMMARY = joinUrl('/api/finance/liquidity-summary/')
+export const FORECAST = joinUrl("/api/finance/forecast/");
 
 // Products
 export const PRODUCTS = joinUrl('/api/finance/products/')

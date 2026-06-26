@@ -30,7 +30,7 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
 
   return (
     <div className={`sidebar ${open ? "open" : "collapsed"}`}>
-      
+
       {/* HEADER */}
       <div className="sidebar-header">
         <img
@@ -46,7 +46,7 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
         )}
       </div>
 
-      
+
       {/* TOGGLE */}
       {/*
 
@@ -82,7 +82,7 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
         {open && <span>Dashboard</span>}
       </div>
 
-      
+
 
 
       {/* FINANCE SECTION */}
@@ -120,7 +120,7 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
       {/* SUBMENU FINANCE*/}
       {financeOpen && open && (
         <div className="submenu">
-          
+
           <div
             className={`submenu-item ${
               isActive("/finance/revenue")
@@ -168,6 +168,21 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
               <FaChartLine />
               <span>Investitionen</span>
           </div>
+
+            <div
+                className={`submenu-item ${
+                    isActive("/finance/forecast")
+                        ? "active-sub"
+                        : ""
+                }`}
+                onClick={() => navigate("/finance/forecast")}
+            >
+                <FaChartLine />
+                <span>Finanzprognose</span>
+            </div>
+
+
+
         </div>
       )}
 
@@ -200,7 +215,7 @@ export default function Sidebar({ open, setOpen, financeOpen, setFinanceOpen, sa
 
       {salesOpen && open && (
         <div className="submenu">
-          
+
           <div
             className={`submenu-item ${
               isActive("/sales")

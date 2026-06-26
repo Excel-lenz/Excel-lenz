@@ -1,0 +1,196 @@
+/* ===========================
+   Layout
+=========================== */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #141420, #0b0b10);
+    color: #eaeaf0;
+    font-family: Inter, system-ui, sans-serif;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.forecastMain {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+/* ===========================
+   Header
+=========================== */
+
+.forecastHeader {
+    margin-bottom: 25px;
+}
+
+.forecastHeader h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.forecastHeader p {
+    margin-top: 8px;
+    color: #9ca3af;
+}
+
+/* ===========================
+   Chart
+=========================== */
+
+.forecastChart {
+    margin-bottom: 30px;
+}
+
+.forecastChart .card {
+    width: 100%;
+    padding: 30px;
+}
+
+/* ===========================
+   Szenario Buttons
+=========================== */
+
+.scenarioButtons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.scenarioButtons button {
+    background: #1b1b28;
+    color: #d1d5db;
+
+    border: 1px solid #303040;
+    border-radius: 10px;
+
+    padding: 10px 18px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.scenarioButtons button:hover {
+    border-color: #00ff88;
+    color: #00ff88;
+}
+
+.activeScenario {
+    background: #00ff88 !important;
+    color: #0b0b10 !important;
+    border-color: #00ff88 !important;
+}
+
+/* ===========================
+   KPI Cards
+=========================== */
+
+/* Wrapper für die KPI-Karten */
+.forecastGridWrapper {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* KPI-Reihe */
+.forecastGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+}
+
+
+
+/* ===========================
+   Untere Cards
+=========================== */
+
+.forecastBottom {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+}
+
+/* ===========================
+   Inhalt
+=========================== */
+
+.forecastGrid h2 {
+
+    margin: 14px 0;
+
+    color: #00ff88;
+
+    font-size: 40px;
+
+}
+
+.forecastGrid p,
+.forecastBottom p {
+
+    color: #d1d5db;
+
+    line-height: 1.7;
+
+}
+
+.forecastBottom ul {
+
+    margin: 0;
+
+    padding-left: 20px;
+
+}
+
+.forecastBottom li {
+
+    margin: 10px 0;
+
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 1200px) {
+
+    .forecastGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .forecastBottom {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .forecastGrid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  
+}
+
+/* OPTIONAL: smooth hover for Card component /
+.cards > {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}

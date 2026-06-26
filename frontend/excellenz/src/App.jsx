@@ -13,7 +13,7 @@ import Investitionen from "./pages/finance/investment.jsx";
 import Costs from "./pages/finance/costs.jsx";
 import Glossar from "./pages/glossar.jsx";
 import Liquidity from "./pages/finance/liquidity.jsx";
-
+import FinanceForecast from "./pages/finance/financeForecast.jsx";
 import Login from "./pages/login/login.jsx";
 import Register from "./pages/login/register.jsx"
 import "./index.css";
@@ -92,6 +92,7 @@ export default function App() {
             } 
           />
 
+
           <Route path="/finance/revenue" element={ 
             <DashboardGuard>
               <Revenue
@@ -134,6 +135,19 @@ export default function App() {
             } 
           />
 
+            <Route path="/finance/forecast" element={
+                <DashboardGuard>
+                    <FinanceForecast
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={setSidebarOpen}
+                    financeOpen={financeOpen}
+                    setFinanceOpen={setFinanceOpen}
+                    salesOpen={salesOpen}
+                    setSalesOpen={setSalesOpen}
+                    />
+                </DashboardGuard>
+            }
+            />
 
           <Route path="/sales/products" element={ 
             <DashboardGuard>
